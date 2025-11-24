@@ -5,19 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Your Cart</title>
     <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '9083739771684521');
-      fbq('track', 'PageView');
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js"
+      );
+      fbq("init", "9083739771684521");
+      fbq("track", "PageView");
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=9083739771684521&ev=PageView&noscript=1"
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=9083739771684521&ev=PageView&noscript=1"
     /></noscript>
     <link rel="icon" type="image/png" href="icon/32.png" />
     <link rel="apple-touch-icon" href="icon/180.png" />
@@ -176,12 +195,37 @@
         background: #e74c3c;
         color: #fff;
       }
-      .empty-cart-message {
+
+      /* --- Empty Cart Styling --- */
+      .empty-cart-container {
         text-align: center;
-        color: #777;
-        font-size: 1.1rem;
-        padding: 50px 0;
+        padding: 60px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
       }
+      .empty-cart-message {
+        color: #777;
+        font-size: 1.2rem;
+        margin: 0;
+      }
+      .continue-shopping-btn {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #25d366;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: background-color 0.2s, transform 0.2s;
+        font-size: 1rem;
+      }
+      .continue-shopping-btn:hover {
+        background-color: #1da851;
+        transform: translateY(-2px);
+      }
+
       .cart-actions {
         position: fixed;
         bottom: 0;
@@ -201,11 +245,11 @@
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        font-size: 1rem; /* 調整為兩個按鈕 */
+        font-size: 1rem;
         font-weight: bold;
         transition: background-color 0.2s, transform 0.2s;
         flex-grow: 1;
-        max-width: 220px; /* 調整最大寬度 */
+        max-width: 220px;
       }
       @media (min-width: 600px) {
         .cart-actions button {
@@ -226,11 +270,10 @@
       .send-whatsapp-btn {
         background-color: #25d366;
         color: white;
-        /* --- 新增的樣式 --- */
-        display: inline-flex; /* 讓內容(圖標和文字)水平排列 */
-        align-items: center; /* 垂直置中 */
-        justify-content: center; /* 水平置中 */
-        gap: 8px; /* 在圖標和文字之間添加一點間距 */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
       }
       .send-whatsapp-btn:hover {
         background-color: #1da851;
@@ -269,7 +312,7 @@
         font-weight: 700;
       }
 
-      /* !!! NEW: Discount Tiers Styles !!! */
+      /* Discount Tiers Styles */
       .discount-tiers-container {
         margin: 20px 0 0 0;
         padding: 20px;
@@ -287,10 +330,7 @@
       }
       #tiers-list {
         display: grid;
-        grid-template-columns: repeat(
-          auto-fit,
-          minmax(150px, 1fr)
-        ); /* Responsive columns */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 10px;
         font-size: 0.95rem;
       }
@@ -312,25 +352,24 @@
       }
       .tier-item .tier-discount {
         font-weight: bold;
-        color: #28a745; /* Green for discount */
+        color: #28a745;
       }
-      /* Style for the current active tier */
       .tier-item.current-tier {
-        background-color: #d4edda; /* Light green background */
-        border-color: #c3e6cb; /* Darker green border */
-        transform: scale(1.05); /* Slightly enlarge */
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        transform: scale(1.05);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
       .tier-item.current-tier .tier-qty {
-        color: #155724; /* Darker green text */
+        color: #155724;
       }
       .tier-item.current-tier .tier-discount {
-        color: #155724; /* Darker green text */
+        color: #155724;
       }
 
       /* --- ORDER MODAL STYLES --- */
       .modal {
-        display: none; /* Hidden by default */
+        display: none;
         position: fixed;
         z-index: 100;
         left: 0;
@@ -338,7 +377,7 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+        background-color: rgba(0, 0, 0, 0.5);
         align-items: center;
         justify-content: center;
         padding: 20px;
@@ -354,8 +393,14 @@
         animation: slideUp 0.3s ease-out;
       }
       @keyframes slideUp {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
       }
       .modal-content h3 {
         margin-top: 0;
@@ -463,13 +508,13 @@
         style="
           margin: 15px 0 0 0;
           padding: 15px;
-          background-color: #e7f3ff; /* Light blue background */
-          border: 1px solid #b3d7ff; /* Blue border */
-          color: #004085; /* Dark blue text */
+          background-color: #e7f3ff;
+          border: 1px solid #b3d7ff;
+          color: #004085;
           border-radius: 8px;
           text-align: center;
           font-weight: bold;
-          display: none; /* Hidden by default */
+          display: none;
         "
       ></div>
 
@@ -482,7 +527,7 @@
         <div id="tiers-list"></div>
       </div>
     </div>
-    
+
     <div class="cart-actions">
       <button id="clear-cart-btn" class="clear-cart-btn">Clear Cart</button>
 
@@ -505,17 +550,25 @@
     <div id="order-modal" class="modal">
       <div class="modal-content">
         <h3>Shipping Details</h3>
-        
+
         <div class="form-group">
-          <label for="cust-name">Your Name</label>
-          <input type="text" id="cust-name" placeholder="Enter your full name" />
+          <label for="cust-name">Your Name (Fake name is ok)</label>
+          <input
+            type="text"
+            id="cust-name"
+            placeholder="Enter your full name"
+          />
         </div>
-        
+
         <div class="form-group">
           <label for="cust-address">Detail Address</label>
-          <input type="text" id="cust-address" placeholder="Street, Apt/Suite, City" />
+          <input
+            type="text"
+            id="cust-address"
+            placeholder="Street, Apt/Suite, City"
+          />
         </div>
-        
+
         <div class="form-group">
           <label for="cust-zip">Zip Code</label>
           <input type="text" id="cust-zip" placeholder="Zip / Postal Code" />
@@ -528,7 +581,9 @@
 
         <div class="modal-actions">
           <button id="cancel-order-btn" class="btn-cancel">Cancel</button>
-          <button id="confirm-order-btn" class="btn-confirm">Confirm & Send</button>
+          <button id="confirm-order-btn" class="btn-confirm">
+            Confirm & Send
+          </button>
         </div>
       </div>
     </div>
@@ -538,12 +593,12 @@
       const cartItemsList = document.getElementById("cart-items-list");
       const clearCartBtn = document.getElementById("clear-cart-btn");
       const makeOrderBtn = document.getElementById("make-order-btn");
-      
+
       // Modal Elements
       const orderModal = document.getElementById("order-modal");
       const cancelOrderBtn = document.getElementById("cancel-order-btn");
       const confirmOrderBtn = document.getElementById("confirm-order-btn");
-      
+
       // Form Input Elements
       const custNameInput = document.getElementById("cust-name");
       const custAddressInput = document.getElementById("cust-address");
@@ -662,8 +717,13 @@
         }
 
         if (cartItems.length === 0) {
-          cartItemsList.innerHTML =
-            "<p class='empty-cart-message'>Your cart is empty.</p>";
+          // !!! CHANGED: Empty State with Continue Shopping Button !!!
+          cartItemsList.innerHTML = `
+            <div class="empty-cart-container">
+                <p class='empty-cart-message'>Your cart is empty.</p>
+                <a href="index.html" class="continue-shopping-btn">Continue Shopping</a>
+            </div>
+          `;
           document.getElementById("cart-summary").style.display = "none";
           if (upsellMessageEl) upsellMessageEl.style.display = "none";
           if (discountTiersContainer)
@@ -911,14 +971,12 @@
       });
 
       // --- MODAL LOGIC FOR "MAKE ORDER" ---
-      
+
       // 1. Open Modal
       makeOrderBtn.addEventListener("click", () => {
         const cartItems = loadCartFromLocalStorage();
         if (cartItems.length === 0) {
-          alert(
-            "Your cart is empty. Please add items before making an order."
-          );
+          alert("Your cart is empty. Please add items before making an order.");
           return;
         }
         orderModal.style.display = "flex";
@@ -970,13 +1028,13 @@
 
         // Build WhatsApp Message
         const customerInfoLines = [
-            `*New Order Request*`,
-            `--- Customer Info ---`,
-            `Name: ${name}`,
-            `Address: ${address}`,
-            `Zip Code: ${zip}`,
-            `Email: ${email}`,
-            `---`
+          `*New Order Request*`,
+          `--- Customer Info ---`,
+          `Name: ${name}`,
+          `Address: ${address}`,
+          `Zip Code: ${zip}`,
+          `Email: ${email}`,
+          `---`,
         ];
 
         const summaryLines = [
@@ -1008,8 +1066,8 @@
         ].join("%0A");
 
         // Optional: Track "Purchase" or "Contact" event via Pixel before redirect
-        if (typeof fbq === 'function') {
-            fbq('track', 'InitiateCheckout'); 
+        if (typeof fbq === "function") {
+          fbq("track", "InitiateCheckout");
         }
 
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
@@ -1022,7 +1080,6 @@
           orderModal.style.display = "none";
         }, 1000);
       });
-
     </script>
     <script src="db.js"></script>
   </body>
