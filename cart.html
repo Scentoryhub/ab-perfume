@@ -18,6 +18,7 @@
       }
       gtag("js", new Date());
 
+      // 这里的 ID 需要替换为你自己的 GA4 ID，或者保留原样如果已经配置好
       gtag("config", "G-ZKERETN8Y2", {
         custom_map: { dimension1: "client_id" },
       });
@@ -70,7 +71,7 @@
         padding: 0;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         background: #f4f4f4;
-        color: #222;
+        color: #111;
         -webkit-font-smoothing: antialiased;
         padding-bottom: 140px;
       }
@@ -98,35 +99,38 @@
       }
 
       #capture-area {
-        max-width: 800px; /* 默认窄一点，适合单列 */
+        max-width: 1100px;
         margin: 0 auto;
         padding: 0 15px;
-        transition: max-width 0.3s ease; /* 宽度切换动画 */
       }
 
-      /* --- Product List Layout --- */
+      /* --- Product List Grid Layout --- */
       .cart-items-list {
         list-style: none;
         padding: 0;
         margin: 0;
         display: grid;
         gap: 12px;
-        grid-template-columns: 1fr; /* 默认为单列 */
+        grid-template-columns: 1fr;
       }
 
-      /* * 动态布局类 (由 JS 控制)
-       * 仅在 PC 端 (>768px) 生效
-       */
       @media (min-width: 768px) {
-        /* 双列模式 */
-        .cart-items-list.layout-2col {
+        .cart-items-list {
           grid-template-columns: 1fr 1fr;
           gap: 15px;
         }
-        /* 三列模式 */
-        .cart-items-list.layout-3col {
+        .cart-item {
+          padding: 12px 15px !important;
+        }
+      }
+
+      @media (min-width: 1200px) {
+        #capture-area {
+          max-width: 1400px;
+        }
+        .cart-items-list {
           grid-template-columns: 1fr 1fr 1fr;
-          gap: 15px;
+          gap: 20px;
         }
       }
 
@@ -173,7 +177,6 @@
         color: #777;
         margin-bottom: 4px;
       }
-
       .item-price {
         font-size: 0.9rem;
         font-weight: 700;
@@ -339,9 +342,9 @@
         gap: 8px;
       }
 
-      /* --- Modal --- */
+      /* --- Checkout Modal (新添加的样式) --- */
       .checkout-modal {
-        display: none;
+        display: none; /* 默认隐藏 */
         position: fixed;
         left: 0;
         top: 0;
@@ -355,6 +358,7 @@
       .checkout-modal.open {
         display: flex;
       }
+
       .checkout-container {
         background: #fff;
         padding: 25px;
@@ -363,7 +367,36 @@
         border-radius: 12px;
         max-height: 90vh;
         overflow-y: auto;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: slideUp 0.3s ease-out;
       }
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .checkout-header {
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+      .checkout-header h2 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+      .checkout-header p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-top: 5px;
+      }
+
       .form-group {
         margin-bottom: 15px;
       }
@@ -371,30 +404,41 @@
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
+        font-size: 0.95rem;
       }
       .form-group input,
       .form-group textarea {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         border: 1px solid #ddd;
-        border-radius: 6px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
       }
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: #25d366;
+        outline: none;
+      }
+
       .checkout-btn-group {
         display: flex;
         gap: 10px;
-        margin-top: 20px;
+        margin-top: 25px;
       }
       .cancel-btn,
       .confirm-btn {
         flex: 1;
         padding: 12px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: bold;
         cursor: pointer;
+        font-size: 1rem;
       }
       .cancel-btn {
         background: #eee;
+        color: #333;
       }
       .confirm-btn {
         background: #25d366;
@@ -473,46 +517,54 @@
             d="M90,43.841c0,24.213-19.779,43.841-44.182,43.841c-7.747,0-15.025-1.98-21.357-5.455L0,90l7.975-23.522   c-4.023-6.606-6.34-14.354-6.34-22.637C1.635,19.628,21.416,0,45.818,0C70.223,0,90,19.628,90,43.841z M45.818,6.982   c-20.484,0-37.146,16.535-37.146,36.859c0,8.065,2.629,15.534,7.076,21.61L11.107,79.14l14.275-4.537   c5.865,3.851,12.891,6.097,20.437,6.097c20.481,0,37.146-16.533,37.146-36.857S66.301,6.982,45.818,6.982z M68.129,53.938   c-0.273-0.447-0.994-0.717-2.076-1.254c-1.084-0.537-6.41-3.138-7.4-3.495c-0.993-0.358-1.714-0.538-2.438,0.537   c-0.721,1.076-2.797,3.495-3.43,4.212c-0.632,0.719-1.263,0.809-2.347,0.271c-1.082-0.537-4.571-1.673-8.708-5.333   c-3.219-2.848-5.393-6.364-6.025-7.441c-0.631-1.075-0.066-1.656,0.475-2.191c0.488-0.482,1.084-1.255,1.625-1.882   c0.543-0.628,0.723-1.075,1.082-1.793c0.363-0.717,0.182-1.344-0.09-1.883c-0.27-0.537-2.438-5.825-3.34-8.001   c-0.877-2.129-1.758-1.839-2.438-1.839c-0.631,0-1.354-0.09-2.076-0.09c-0.722,0-1.896,0.269-2.889,1.344   c-0.992,1.076-3.789,3.676-3.789,8.963c0,5.288,3.879,10.397,4.422,11.113c0.541,0.716,7.49,11.381,18.17,15.996   c7.31,3.199,9.75,2.56,11.5,2.379c2.471-0.252,6.41-2.604,7.31-5.187C68.4,55.619,68.4,54.386,68.129,53.938z"
           />
         </svg>
-        <span>Make Order Now</span>
+        <span>Make Order</span>
       </button>
     </div>
 
     <div id="checkout-modal" class="checkout-modal">
       <div class="checkout-container">
-        <div
-          style="
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-          "
-        >
-          <h2 style="margin: 0">Shipping Details</h2>
-          <p style="color: #666; font-size: 0.9rem">
-            Please enter your address to calculate shipping.
-          </p>
+        <div class="checkout-header">
+          <h2>Shipping Details</h2>
+          <p>Please fill in your address to complete the order.</p>
         </div>
+
         <form id="checkout-form">
           <div class="form-group">
-            <label>Full Name *</label
-            ><input type="text" id="cust-name" required />
+            <label>Full Name *</label>
+            <input type="text" id="cust-name" placeholder="John Doe" required />
           </div>
+
           <div class="form-group">
-            <label>Email Address *</label
-            ><input type="email" id="cust-email" required />
+            <label>Email Address *</label>
+            <input
+              type="email"
+              id="cust-email"
+              placeholder="john@example.com"
+              required
+            />
           </div>
+
           <div class="form-group">
-            <label>Street Address *</label
-            ><textarea id="cust-address" rows="2" required></textarea>
+            <label>Detailed Address *</label>
+            <textarea
+              id="cust-address"
+              rows="2"
+              placeholder="Street, Apt, Suite, Unit, etc."
+              required
+            ></textarea>
           </div>
+
           <div style="display: flex; gap: 10px">
             <div class="form-group" style="flex: 1">
-              <label>City *</label><input type="text" id="cust-city" required />
+              <label>City *</label>
+              <input type="text" id="cust-city" required />
             </div>
             <div class="form-group" style="flex: 1">
-              <label>Zip Code *</label
-              ><input type="text" id="cust-zip" required />
+              <label>Zip Code *</label>
+              <input type="text" id="cust-zip" required />
             </div>
           </div>
+
           <div class="checkout-btn-group">
             <button type="button" class="cancel-btn" id="close-checkout">
               Cancel
@@ -527,7 +579,7 @@
     <script>
       // --- Logic ---
       const cartItemsList = document.getElementById("cart-items-list");
-      const captureArea = document.getElementById("capture-area"); // 容器
+      const captureArea = document.getElementById("capture-area");
       const clearCartBtn = document.getElementById("clear-cart-btn");
       const sendWhatsappBtn = document.getElementById("send-whatsapp-btn");
       const cartActions = document.getElementById("cart-actions");
@@ -544,6 +596,7 @@
       const discountTiersContainer = document.getElementById("discount-tiers");
       const cartSummaryContainer = document.getElementById("cart-summary");
 
+      // Modal Elements
       const checkoutModal = document.getElementById("checkout-modal");
       const checkoutForm = document.getElementById("checkout-form");
       const closeCheckoutBtn = document.getElementById("close-checkout");
@@ -597,31 +650,24 @@
         });
       }
 
-      // Smart Layout Adjustment Function (智能布局调整)
+      // Smart Layout Adjustment
       function updateLayoutMode(itemCount) {
         const isPC = window.innerWidth >= 768;
-
-        // 清除所有布局类
         cartItemsList.classList.remove("layout-2col", "layout-3col");
-        captureArea.style.maxWidth = "1100px"; // 默认宽度
+        captureArea.style.maxWidth = "1100px";
 
-        if (!isPC) return; // 手机端保持默认CSS (1列)
+        if (!isPC) return;
 
-        // PC端逻辑：根据产品数量智能切换
         if (itemCount < 5) {
-          // 少于5个：保持单列，但卡片宽一点
           captureArea.style.maxWidth = "800px";
         } else if (itemCount <= 10) {
-          // 5-10个：双列
           cartItemsList.classList.add("layout-2col");
           captureArea.style.maxWidth = "1100px";
         } else {
-          // 10个以上：三列 (如果屏幕够大)
           if (window.innerWidth >= 1200) {
             cartItemsList.classList.add("layout-3col");
-            captureArea.style.maxWidth = "1400px"; // 拓宽容器
+            captureArea.style.maxWidth = "1400px";
           } else {
-            // 屏幕不够大，强制双列
             cartItemsList.classList.add("layout-2col");
           }
         }
@@ -631,7 +677,6 @@
         const cartItems = loadCartFromLocalStorage();
         cartItemsList.innerHTML = "";
 
-        // 调用智能布局
         updateLayoutMode(cartItems.length);
 
         if (cartItems.length === 0) {
@@ -763,12 +808,15 @@
         }
       });
 
+      // --- Make Order Button: Open Modal (Update 1) ---
       sendWhatsappBtn.addEventListener("click", () => {
         const cartItems = loadCartFromLocalStorage();
         if (cartItems.length === 0) {
           alert("Cart is empty.");
           return;
         }
+
+        // Track: Initiate Checkout
         if (typeof fbq !== "undefined") {
           const summary = updateCartSummary();
           fbq("track", "InitiateCheckout", {
@@ -777,24 +825,32 @@
             currency: "USD",
           });
         }
+        // Open Modal
         checkoutModal.classList.add("open");
       });
 
+      // Close Modal
       closeCheckoutBtn.addEventListener("click", () =>
         checkoutModal.classList.remove("open")
       );
 
+      // --- Form Submit: Send to WhatsApp (Update 2) ---
       checkoutForm.addEventListener("submit", (e) => {
         e.preventDefault();
+
+        // 1. Collect User Info
         const name = document.getElementById("cust-name").value;
         const email = document.getElementById("cust-email").value;
         const address = document.getElementById("cust-address").value;
         const city = document.getElementById("cust-city").value;
         const zip = document.getElementById("cust-zip").value;
+
+        // 2. Prepare Cart Data
         const trackerID = localStorage.getItem("ga_client_id") || "Unknown";
         const cartItems = loadCartFromLocalStorage();
         const summary = updateCartSummary();
 
+        // 3. Build Products String
         const messageLines = cartItems.map((item) => {
           let brand = item.brand;
           if (!brand && window.perfumeDB) {
@@ -805,6 +861,7 @@
           return `* ${item.name} - ${brand} (x${item.quantity})`;
         });
 
+        // 4. Construct Full Message
         const message = [
           `*🆕 NEW ORDER REQUEST*`,
           `----------------`,
@@ -828,6 +885,7 @@
           `Please confirm shipping cost and availability.`,
         ].join("%0A");
 
+        // 5. Track Purchase Event
         if (typeof fbq !== "undefined") {
           fbq("track", "Purchase", {
             value: summary.finalTotal,
@@ -849,14 +907,16 @@
           });
         }
 
+        // 6. Redirect to WhatsApp
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
         window.open(whatsappUrl, "_blank");
+
         checkoutModal.classList.remove("open");
       });
 
       window.addEventListener("resize", () => {
         renderCartItems();
-      }); // Resize 触发重新布局
+      });
       document.addEventListener("DOMContentLoaded", renderCartItems);
     </script>
   </body>
