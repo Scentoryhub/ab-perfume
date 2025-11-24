@@ -279,9 +279,11 @@
         background: #fff;
         transition: transform 0.3s ease;
       }
+      /* 关键：隐藏库存为0的商品 */
       .item[data-stock="0"] {
-        display: none;
+        display: none !important;
       }
+
       .item img {
         width: 100%;
         height: 250px;
@@ -376,7 +378,7 @@
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         position: relative;
-        overflow: hidden; /* 防止图片溢出圆角 */
+        overflow: hidden;
       }
       .trust-icon {
         font-size: 2.5rem;
@@ -394,7 +396,7 @@
       }
       .whatsapp-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2); /* Green glow */
+        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
         border: 1px solid #25d366;
       }
 
@@ -405,16 +407,16 @@
         gap: 15px;
         padding: 10px 0;
         scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
-        justify-content: flex-start; /* Align left for scrolling */
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
       }
       .review-carousel::-webkit-scrollbar {
         display: none;
-      } /* Hide scrollbar */
+      }
 
       .trust-review-img {
-        flex: 0 0 180px; /* Fixed width for carousel item */
-        height: 180px; /* Square image */
+        flex: 0 0 180px;
+        height: 180px;
         object-fit: cover;
         border-radius: 8px;
         border: 1px solid #eee;
@@ -443,7 +445,6 @@
         align-items: center;
         justify-content: center;
         padding: 15px;
-        /* 强制覆盖层级 */
         z-index: 2147483647 !important;
         background-color: rgba(0, 0, 0, 0.85) !important;
       }
@@ -451,11 +452,9 @@
         display: flex;
       }
 
-      /* 锁定背景滚动 */
       body.modal-open {
         overflow: hidden !important;
       }
-      /* 隐藏悬浮按钮防止穿透 */
       body.modal-open .back-to-top,
       body.modal-open .cart-button {
         display: none !important;
@@ -480,7 +479,6 @@
         background: #f9f9f9;
       }
 
-      /* 移动端弹窗适配 */
       @media (max-width: 767px) {
         .modal-content img {
           max-height: 35vh !important;
@@ -509,7 +507,6 @@
         text-align: center;
       }
 
-      /* 控制区域布局 */
       .modal-controls {
         padding: 20px;
         display: flex;
@@ -528,9 +525,8 @@
         width: 100%;
         max-width: 250px;
       }
-      /* 默认隐藏数量条 */
       .modal-qty-controls {
-        display: none; /* 默认不显示 */
+        display: none;
         align-items: center;
         gap: 20px;
       }
@@ -613,7 +609,7 @@
         z-index: 1000;
       }
 
-      /* 图片查看器 (Lightbox) */
+      /* === 修复后的大图查看器样式 === */
       .lightbox {
         display: none;
         position: fixed;
@@ -630,9 +626,11 @@
         display: flex;
       }
       .lightbox-img {
-        max-width: 90%;
-        max-height: 90%;
-        border-radius: 5px;
+        width: auto;
+        height: auto;
+        max-width: 100vw; /* 撑满屏幕宽度 */
+        max-height: 85vh; /* 撑满大部分高度 */
+        object-fit: contain;
       }
 
       /* Responsive */
@@ -1134,6 +1132,9 @@
           item.className = "item";
           item.dataset.name = p.id;
           item.dataset.img = p.img;
+          // 关键修复：写入库存数据到 DOM
+          item.dataset.stock = p.stock;
+
           item.innerHTML = `
                 <img src="${p.img}" loading="lazy">
                 <div class="caption">${p.id} - ${p.name}<br><span class="product-size">${p.ml}ml</span><br><strong>$${p.price}</strong></div>
