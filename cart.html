@@ -69,113 +69,124 @@
         margin: 0;
         padding: 0;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        background: #f9f9f9;
+        background: #f4f4f4;
         color: #222;
         -webkit-font-smoothing: antialiased;
-        padding-bottom: 120px;
+        padding-bottom: 140px;
       }
       .page-header {
-        position: relative;
-        text-align: center;
-        padding: 20px 15px;
         background-color: #fff;
+        padding: 20px;
+        text-align: center;
         margin-bottom: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       }
       .page-header h1 {
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: 800;
-        color: #333;
       }
       .back-btn {
         position: absolute;
-        top: 50%;
-        left: 15px;
-        transform: translateY(-50%);
+        top: 22px;
+        left: 20px;
         width: 24px;
         height: 24px;
-        cursor: pointer;
         background-image: url("icon/back.png");
         background-size: contain;
-        background-repeat: no-repeat;
+        cursor: pointer;
       }
 
+      /* 容器宽度适配 */
       #capture-area {
-        max-width: 1000px;
+        max-width: 1100px; /* 默认最大宽度 */
         margin: 0 auto;
-        padding: 15px;
+        padding: 0 15px;
+        transition: max-width 0.3s;
       }
 
+      /* --- Product List Grid Layout --- */
       .cart-items-list {
         list-style: none;
         padding: 0;
         margin: 0;
         display: grid;
+        gap: 12px;
+        /* 默认手机端：单列 */
         grid-template-columns: 1fr;
-        gap: 15px;
       }
+
+      /* 平板/小屏电脑 (>= 768px)：双列 */
       @media (min-width: 768px) {
         .cart-items-list {
           grid-template-columns: 1fr 1fr;
+          gap: 15px;
+        }
+        .cart-item {
+          padding: 12px 15px !important;
+        }
+      }
+
+      /* 大屏电脑 (>= 1200px)：三列 */
+      @media (min-width: 1200px) {
+        #capture-area {
+          max-width: 1400px;
+        } /* 拓宽容器以便放下三列 */
+        .cart-items-list {
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 20px;
         }
       }
 
       .cart-item {
+        background: #fff;
+        border-radius: 10px;
+        padding: 15px;
         display: flex;
         align-items: center;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        padding: 15px;
         gap: 15px;
-        transition: transform 0.2s;
-      }
-      .cart-item:hover {
-        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        position: relative;
       }
 
       .cart-item img {
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
         object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #eee;
         flex-shrink: 0;
-        border-radius: 8px;
-        border: 1px solid #f0f0f0;
       }
 
       .item-details {
-        flex-grow: 1;
+        flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        min-width: 0; /* 防止文字撑破布局 */
       }
 
       .item-details h3 {
         margin: 0 0 4px 0;
         font-size: 1rem;
-        color: #222;
         font-weight: 800;
+        color: #000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* 超长自动省略 */
       }
 
       .item-size {
-        font-size: 0.8rem;
-        color: #888;
+        font-size: 0.75rem;
+        color: #777;
         margin-bottom: 4px;
       }
 
       .item-price {
-        font-size: 0.95rem;
-        color: #222;
+        font-size: 0.9rem;
         font-weight: 700;
-        margin-bottom: 10px;
-      }
-
-      .item-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
+        color: #000;
+        margin-bottom: 8px;
       }
 
       .quantity-control {
@@ -184,182 +195,169 @@
         gap: 8px;
       }
       .quantity-control button {
-        background: #f0f0f0;
-        border: 1px solid #ddd;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
-        width: 28px;
-        height: 28px;
+        border: 1px solid #ccc;
+        background: #fff;
         cursor: pointer;
         font-weight: bold;
         color: #555;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 0;
       }
       .quantity-control span {
-        font-weight: 600;
-        font-size: 1rem;
-        min-width: 20px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        min-width: 15px;
         text-align: center;
       }
 
       .remove-btn {
         padding: 6px 12px;
-        background: #f5f5f5;
+        background: #f0f0f0;
         color: #666;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.8rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.75rem;
         font-weight: 500;
-        transition: background 0.2s;
+        cursor: pointer;
       }
       .remove-btn:hover {
         background: #e0e0e0;
-        color: #333;
       }
 
-      /* Discount Tiers Visualization */
-      .discount-tiers-container {
-        margin: 20px 0;
-        padding: 20px;
+      /* --- Order Summary Section --- */
+      .cart-summary {
         background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+      .cart-summary h2 {
+        text-align: center;
+        margin-top: 0;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        color: #333;
+      }
+      .summary-row.bold {
+        font-weight: 700;
+        margin-top: 5px;
+        margin-bottom: 15px;
+      }
+      .summary-row.discount {
+        color: #28a745;
+      }
+      .summary-row.total {
+        font-size: 1.3rem;
+        font-weight: 800;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+        margin-top: 5px;
+        color: #000;
+      }
+
+      /* --- Discount Tiers --- */
+      .discount-tiers-container {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       }
       .discount-tiers-container h3 {
-        margin: 0 0 15px 0;
         text-align: center;
-        font-size: 1.2rem;
+        margin: 0 0 15px 0;
+        font-size: 1.1rem;
       }
       #tiers-list {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
         gap: 8px;
-        font-size: 0.85rem;
       }
       .tier-item {
-        padding: 8px;
+        background: #f9f9f9;
         border: 1px solid #eee;
-        border-radius: 6px;
-        background-color: #f9f9f9;
+        border-radius: 5px;
+        padding: 8px 5px;
         text-align: center;
+        font-size: 0.8rem;
       }
       .tier-item.current-tier {
-        background-color: #e6fffa;
-        border-color: #38b2ac;
-        color: #2c7a7b;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .tier-qty {
         font-weight: bold;
-      }
-      /* 修复：将优惠字体改为绿色 */
-      .tier-discount {
-        display: block;
-        margin-top: 3px;
-        color: #28a745;
-        font-weight: 800;
-      }
-
-      .cart-summary {
-        margin: 20px 0 0 0;
-        padding: 20px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      }
-      .cart-summary p {
-        display: flex;
-        justify-content: space-between;
-        margin: 8px 0;
-        font-size: 1rem;
         color: #555;
+        display: block;
+        margin-bottom: 2px;
       }
-      .total-count {
+      .tier-off {
         font-weight: 800;
-        font-size: 1.2rem;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid #eee;
-        color: #222;
+        color: #28a745;
+        font-size: 0.9rem;
       }
 
+      /* --- Bottom Actions --- */
       .cart-actions {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        background-color: #fff;
+        background: #fff;
         padding: 15px;
         display: flex;
-        justify-content: center;
         gap: 15px;
-        border-top: 1px solid #eee;
-        box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
         z-index: 100;
+        justify-content: center;
       }
       .cart-actions button {
-        padding: 14px 20px;
+        flex: 1;
+        max-width: 200px;
+        padding: 12px;
+        border-radius: 25px;
         border: none;
-        border-radius: 30px;
-        cursor: pointer;
         font-size: 1rem;
         font-weight: bold;
-        flex-grow: 1;
-        max-width: 200px;
-        transition: transform 0.1s;
-      }
-      .cart-actions button:active {
-        transform: scale(0.98);
+        cursor: pointer;
       }
       .clear-cart-btn {
-        background-color: #f0f0f0;
+        background: #eee;
         color: #555;
-        border: 1px solid #ddd;
       }
       .send-whatsapp-btn {
-        background-color: #25d366;
+        background: #25d366;
         color: white;
-        display: inline-flex;
+        display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
       }
 
-      /* Empty Cart Styles */
-      .empty-cart-container {
-        text-align: center;
-        padding: 60px 20px;
-      }
-      .empty-cart-message {
-        font-size: 1.2rem;
-        color: #777;
-        margin-bottom: 20px;
-      }
-      .continue-shopping-btn {
-        display: inline-block;
-        background-color: #333;
-        color: white;
-        padding: 12px 30px;
-        border-radius: 30px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color 0.3s;
-      }
-      .continue-shopping-btn:hover {
-        background-color: #555;
-      }
-
-      /* Modal Styles */
+      /* --- Modal --- */
       .checkout-modal {
         display: none;
         position: fixed;
-        z-index: 10000;
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 2000;
         align-items: center;
         justify-content: center;
       }
@@ -368,55 +366,63 @@
       }
       .checkout-container {
         background: #fff;
+        padding: 25px;
         width: 90%;
         max-width: 500px;
-        padding: 25px;
         border-radius: 12px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         max-height: 90vh;
         overflow-y: auto;
       }
       .form-group {
         margin-bottom: 15px;
-        text-align: left;
       }
       .form-group label {
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
-        font-size: 0.9rem;
       }
       .form-group input,
       .form-group textarea {
         width: 100%;
-        padding: 12px;
+        padding: 10px;
         border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 1rem;
+        border-radius: 6px;
       }
       .checkout-btn-group {
         display: flex;
         gap: 10px;
         margin-top: 20px;
       }
-      .cancel-btn {
+      .cancel-btn,
+      .confirm-btn {
         flex: 1;
-        background: #eee;
-        border: none;
         padding: 12px;
-        border-radius: 8px;
-        cursor: pointer;
+        border: none;
+        border-radius: 6px;
         font-weight: bold;
+        cursor: pointer;
+      }
+      .cancel-btn {
+        background: #eee;
       }
       .confirm-btn {
-        flex: 2;
         background: #25d366;
         color: white;
-        border: none;
-        padding: 12px;
-        border-radius: 8px;
-        cursor: pointer;
+      }
+
+      .empty-cart-container {
+        text-align: center;
+        padding: 60px 0;
+      }
+      .continue-shopping-btn {
+        display: inline-block;
+        background: #333;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 20px;
+        text-decoration: none;
         font-weight: bold;
+        margin-top: 15px;
       }
     </style>
   </head>
@@ -429,6 +435,38 @@
     <div id="capture-area">
       <ul id="cart-items-list" class="cart-items-list"></ul>
 
+      <div id="cart-summary" class="cart-summary" style="display: none">
+        <h2>Order Summary</h2>
+
+        <div class="summary-row">
+          <span>LV Quantity:</span>
+          <span id="lv-count">0</span>
+        </div>
+        <div class="summary-row">
+          <span>Other Brands Quantity:</span>
+          <span id="other-count">0</span>
+        </div>
+
+        <div class="summary-row bold">
+          <span>Total Quantity:</span>
+          <span id="total-count">0</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Subtotal (Original Price):</span>
+          <span id="subtotal-price">$0.00</span>
+        </div>
+        <div class="summary-row discount">
+          <span>Volume Discount:</span>
+          <span id="discount-amount">-$0.00</span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Total Price:</span>
+          <span id="total-price">$0.00</span>
+        </div>
+      </div>
+
       <div
         id="discount-tiers"
         class="discount-tiers-container"
@@ -437,29 +475,17 @@
         <h3>Volume Discounts</h3>
         <div id="tiers-list"></div>
       </div>
-
-      <div id="cart-summary" class="cart-summary">
-        <h2>Order Summary</h2>
-        <p><span>Total Quantity:</span> <span id="total-count">0</span></p>
-        <p><span>Subtotal:</span> <span id="subtotal-price">$0.00</span></p>
-        <p style="color: #28a745">
-          <span>Volume Discount:</span> <span id="discount-amount">-$0.00</span>
-        </p>
-        <p class="total-count">
-          <span>Total Price:</span> <span id="total-price">$0.00</span>
-        </p>
-      </div>
     </div>
 
-    <div class="cart-actions" id="cart-actions">
+    <div class="cart-actions" id="cart-actions" style="display: none">
       <button id="clear-cart-btn" class="clear-cart-btn">Clear Cart</button>
       <button id="send-whatsapp-btn" class="send-whatsapp-btn">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 90 90"
-          width="20"
-          height="20"
-          style="fill: currentColor"
+          width="18"
+          height="18"
+          fill="currentColor"
         >
           <path
             d="M90,43.841c0,24.213-19.779,43.841-44.182,43.841c-7.747,0-15.025-1.98-21.357-5.455L0,90l7.975-23.522   c-4.023-6.606-6.34-14.354-6.34-22.637C1.635,19.628,21.416,0,45.818,0C70.223,0,90,19.628,90,43.841z M45.818,6.982   c-20.484,0-37.146,16.535-37.146,36.859c0,8.065,2.629,15.534,7.076,21.61L11.107,79.14l14.275-4.537   c5.865,3.851,12.891,6.097,20.437,6.097c20.481,0,37.146-16.533,37.146-36.857S66.301,6.982,45.818,6.982z M68.129,53.938   c-0.273-0.447-0.994-0.717-2.076-1.254c-1.084-0.537-6.41-3.138-7.4-3.495c-0.993-0.358-1.714-0.538-2.438,0.537   c-0.721,1.076-2.797,3.495-3.43,4.212c-0.632,0.719-1.263,0.809-2.347,0.271c-1.082-0.537-4.571-1.673-8.708-5.333   c-3.219-2.848-5.393-6.364-6.025-7.441c-0.631-1.075-0.066-1.656,0.475-2.191c0.488-0.482,1.084-1.255,1.625-1.882   c0.543-0.628,0.723-1.075,1.082-1.793c0.363-0.717,0.182-1.344-0.09-1.883c-0.27-0.537-2.438-5.825-3.34-8.001   c-0.877-2.129-1.758-1.839-2.438-1.839c-0.631,0-1.354-0.09-2.076-0.09c-0.722,0-1.896,0.269-2.889,1.344   c-0.992,1.076-3.789,3.676-3.789,8.963c0,5.288,3.879,10.397,4.422,11.113c0.541,0.716,7.49,11.381,18.17,15.996   c7.31,3.199,9.75,2.56,11.5,2.379c2.471-0.252,6.41-2.604,7.31-5.187C68.4,55.619,68.4,54.386,68.129,53.938z"
@@ -483,13 +509,11 @@
             Please enter your address to calculate shipping.
           </p>
         </div>
-
         <form id="checkout-form">
           <div class="form-group">
             <label>Full Name *</label>
             <input type="text" id="cust-name" placeholder="John Doe" required />
           </div>
-
           <div class="form-group">
             <label>Email Address *</label>
             <input
@@ -499,7 +523,6 @@
               required
             />
           </div>
-
           <div class="form-group">
             <label>Street Address *</label>
             <textarea
@@ -509,7 +532,6 @@
               required
             ></textarea>
           </div>
-
           <div style="display: flex; gap: 10px">
             <div class="form-group" style="flex: 1">
               <label>City *</label>
@@ -520,7 +542,6 @@
               <input type="text" id="cust-zip" required />
             </div>
           </div>
-
           <div class="checkout-btn-group">
             <button type="button" class="cancel-btn" id="close-checkout">
               Cancel
@@ -539,12 +560,17 @@
       const sendWhatsappBtn = document.getElementById("send-whatsapp-btn");
       const cartActions = document.getElementById("cart-actions");
 
+      // Summary Elements
+      const lvCountEl = document.getElementById("lv-count");
+      const otherCountEl = document.getElementById("other-count");
       const totalCountEl = document.getElementById("total-count");
       const subtotalPriceEl = document.getElementById("subtotal-price");
       const discountAmountEl = document.getElementById("discount-amount");
       const totalPriceEl = document.getElementById("total-price");
+
       const tiersListEl = document.getElementById("tiers-list");
       const discountTiersContainer = document.getElementById("discount-tiers");
+      const cartSummaryContainer = document.getElementById("cart-summary");
 
       const checkoutModal = document.getElementById("checkout-modal");
       const checkoutForm = document.getElementById("checkout-form");
@@ -552,7 +578,6 @@
 
       const whatsappNumber = "16232027321";
 
-      // Tiers Definition
       const tiers = [
         { min: 1, max: 1, percent: 0 },
         { min: 2, max: 2, percent: 0.03 },
@@ -599,8 +624,8 @@
           }
 
           tierDiv.innerHTML = `
-              <span style="display:block;">${qtyString}</span>
-              <span class="tier-discount">${(tier.percent * 100).toFixed(
+              <span class="tier-qty">${qtyString}</span>
+              <span class="tier-off">${(tier.percent * 100).toFixed(
                 0
               )}% Off</span>
           `;
@@ -613,20 +638,19 @@
         cartItemsList.innerHTML = "";
 
         if (cartItems.length === 0) {
-          // 修复：空购物车状态，显示继续购物按钮
           cartItemsList.innerHTML = `
             <div class="empty-cart-container">
                 <p class='empty-cart-message'>Your cart is empty.</p>
                 <a href="index.html" class="continue-shopping-btn">Continue Shopping</a>
             </div>
           `;
-          document.getElementById("cart-summary").style.display = "none";
+          cartSummaryContainer.style.display = "none";
           discountTiersContainer.style.display = "none";
-          cartActions.style.display = "none"; // Hide checkout buttons
+          cartActions.style.display = "none";
         } else {
-          document.getElementById("cart-summary").style.display = "block";
+          cartSummaryContainer.style.display = "block";
           discountTiersContainer.style.display = "block";
-          cartActions.style.display = "flex"; // Show checkout buttons
+          cartActions.style.display = "flex";
 
           cartItems.forEach((item, index) => {
             const li = document.createElement("li");
@@ -639,7 +663,6 @@
             }
             if (!displayName) displayName = getShortCaption(item.caption);
 
-            // 构造标题: ID - Brand (如: A01 - Valentino)
             const titleText = `${item.name} - ${displayName}`;
 
             li.innerHTML = `
@@ -656,15 +679,14 @@
                 
                 <div class="item-price">Original Price: $${item.price}</div>
                 
-                <div class="item-actions">
-                    <div class="quantity-control">
-                      <button class="decrease-quantity" data-index="${index}">-</button>
-                      <span>${item.quantity}</span>
-                      <button class="increase-quantity" data-index="${index}">+</button>
-                    </div>
-                    <button class="remove-btn" data-index="${index}">Remove</button>
+                <div class="quantity-control">
+                  <button class="decrease-quantity" data-index="${index}">-</button>
+                  <span>${item.quantity}</span>
+                  <button class="increase-quantity" data-index="${index}">+</button>
                 </div>
               </div>
+              
+              <button class="remove-btn" data-index="${index}">Remove</button>
             `;
             cartItemsList.appendChild(li);
           });
@@ -676,11 +698,29 @@
         let cartItems = loadCartFromLocalStorage();
         let totalCount = 0;
         let subtotal = 0;
+        let lvCount = 0;
 
         cartItems.forEach((item) => {
-          totalCount += item.quantity;
-          subtotal += (item.price || 0) * item.quantity;
+          const qty = item.quantity;
+          totalCount += qty;
+          subtotal += (item.price || 0) * qty;
+
+          let brandName = item.brand || "";
+          if (!brandName && window.perfumeDB) {
+            const dbItem = window.perfumeDB.find((p) => p.id === item.name);
+            if (dbItem) brandName = dbItem.brand || "";
+          }
+          if (!brandName) brandName = item.caption || "";
+
+          if (
+            brandName.toLowerCase().includes("louis vuitton") ||
+            brandName.toLowerCase().includes("lv")
+          ) {
+            lvCount += qty;
+          }
         });
+
+        let otherCount = totalCount - lvCount;
 
         let discountPercent = 0;
         const currentTier = tiers.find(
@@ -691,16 +731,25 @@
         const finalTotal = Math.round(subtotal * (1 - discountPercent));
         const discountAmount = subtotal - finalTotal;
 
+        lvCountEl.textContent = lvCount;
+        otherCountEl.textContent = otherCount;
         totalCountEl.textContent = totalCount;
         subtotalPriceEl.textContent = `$${subtotal.toFixed(2)}`;
         discountAmountEl.textContent = `-$${discountAmount.toFixed(2)} (${(
           discountPercent * 100
-        ).toFixed(0)}%)`;
+        ).toFixed(0)}% off)`;
         totalPriceEl.textContent = `$${finalTotal.toFixed(2)}`;
 
         renderDiscountTiers(totalCount);
 
-        return { totalCount, subtotal, discountAmount, finalTotal };
+        return {
+          totalCount,
+          subtotal,
+          discountAmount,
+          finalTotal,
+          lvCount,
+          otherCount,
+        };
       }
 
       cartItemsList.addEventListener("click", (e) => {
@@ -765,9 +814,15 @@
         const cartItems = loadCartFromLocalStorage();
         const summary = updateCartSummary();
 
-        const messageLines = cartItems.map(
-          (item) => `* ${getShortCaption(item.caption)} (x${item.quantity})`
-        );
+        const messageLines = cartItems.map((item) => {
+          let brand = item.brand;
+          if (!brand && window.perfumeDB) {
+            const dbItem = window.perfumeDB.find((p) => p.id === item.name);
+            if (dbItem) brand = dbItem.brand;
+          }
+          if (!brand) brand = getShortCaption(item.caption);
+          return `* ${item.name} - ${brand} (x${item.quantity})`;
+        });
 
         const message = [
           `*🆕 NEW ORDER REQUEST*`,
@@ -780,7 +835,9 @@
           `*🛒 Order Details:*`,
           ...messageLines,
           `----------------`,
-          `Total Qty: ${summary.totalCount}`,
+          `LV Qty: ${summary.lvCount}`,
+          `Other Brands Qty: ${summary.otherCount}`,
+          `*Total Qty: ${summary.totalCount}*`,
           `Subtotal: $${summary.subtotal.toFixed(2)}`,
           `Discount: -$${summary.discountAmount.toFixed(2)}`,
           `*EST. TOTAL: $${summary.finalTotal.toFixed(2)}*`,
