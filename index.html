@@ -714,6 +714,18 @@
               class="trust-review-img"
               onerror="this.style.display='none'"
             />
+            <img
+              src="images/review4.jpg"
+              alt="Review"
+              class="trust-review-img"
+              onerror="this.style.display='none'"
+            />
+            <img
+              src="images/review5.jpg"
+              alt="Review"
+              class="trust-review-img"
+              onerror="this.style.display='none'"
+            />
           </div>
         </div>
         <div class="trust-item">
@@ -1168,6 +1180,9 @@
 
         loadCartFromLocalStorage();
         updateCartCount();
+
+        // ✅✅✅ 这里就是缺失的关键代码：启动渲染引擎！ ✅✅✅
+        window.renderPerfumes();
       });
     </script>
   </body>
