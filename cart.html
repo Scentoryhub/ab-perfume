@@ -18,7 +18,6 @@
       }
       gtag("js", new Date());
 
-      // 提取 Client ID
       gtag("config", "G-ZKERETN8Y2", {
         custom_map: { dimension1: "client_id" },
       });
@@ -62,7 +61,7 @@
         src="https://www.facebook.com/tr?id=9083739771684521&ev=PageView&noscript=1"
     /></noscript>
     <style>
-      /* Basic Reset */
+      /* Reset and common styles */
       * {
         box-sizing: border-box;
       }
@@ -72,7 +71,8 @@
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         background: #f4f4f4;
         color: #111;
-        padding-bottom: 120px;
+        -webkit-font-smoothing: antialiased;
+        padding-bottom: 120px; /* Space for footer actions */
       }
       .page-header {
         position: relative;
@@ -101,12 +101,12 @@
         background-repeat: no-repeat;
       }
 
-      /* Cart List */
       #capture-area {
         max-width: 1200px;
         margin: 0 auto;
         padding: 15px;
       }
+
       .cart-items-list {
         list-style: none;
         padding: 0;
@@ -120,6 +120,7 @@
           grid-template-columns: 1fr 1fr;
         }
       }
+
       .cart-item {
         display: flex;
         align-items: center;
@@ -145,6 +146,7 @@
         font-size: 1.1rem;
         color: #333;
       }
+
       .quantity-control {
         display: flex;
         align-items: center;
@@ -170,13 +172,52 @@
         margin-left: auto;
       }
 
-      /* Summary */
+      /* Discount Tiers Visualization */
+      .discount-tiers-container {
+        margin: 20px 0;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e0e0e0;
+      }
+      .discount-tiers-container h3 {
+        margin: 0 0 15px 0;
+        text-align: center;
+        font-size: 1.3rem;
+      }
+      #tiers-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 10px;
+        font-size: 0.9rem;
+      }
+      .tier-item {
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+        text-align: center;
+      }
+      .tier-item.current-tier {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .tier-discount {
+        font-weight: bold;
+        color: #28a745;
+        display: block;
+      }
+
       .cart-summary {
         margin: 20px 0 0 0;
         padding: 20px;
         background: #fff;
         border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e0e0e0;
       }
       .cart-summary p {
         display: flex;
@@ -187,9 +228,11 @@
       .total-count {
         font-weight: bold;
         font-size: 1.2rem;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
       }
 
-      /* Footer Actions */
       .cart-actions {
         position: fixed;
         bottom: 0;
@@ -227,7 +270,7 @@
         gap: 8px;
       }
 
-      /* === CHECKOUT MODAL STYLES === */
+      /* Modal Styles */
       .checkout-modal {
         display: none;
         position: fixed;
@@ -252,13 +295,6 @@
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         max-height: 90vh;
         overflow-y: auto;
-        position: relative;
-      }
-      .checkout-header {
-        text-align: center;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
       }
       .form-group {
         margin-bottom: 15px;
@@ -319,6 +355,16 @@
 
     <div id="capture-area">
       <ul id="cart-items-list" class="cart-items-list"></ul>
+
+      <div
+        id="discount-tiers"
+        class="discount-tiers-container"
+        style="display: none"
+      >
+        <h3>Volume Discounts</h3>
+        <div id="tiers-list"></div>
+      </div>
+
       <div id="cart-summary" class="cart-summary">
         <h2>Order Summary</h2>
         <p><span>Total Quantity:</span> <span id="total-count">0</span></p>
@@ -326,7 +372,7 @@
         <p style="color: #28a745">
           <span>Volume Discount:</span> <span id="discount-amount">-$0.00</span>
         </p>
-        <p class="total-count" style="font-size: 1.3rem">
+        <p class="total-count">
           <span>Total Price:</span> <span id="total-price">$0.00</span>
         </p>
       </div>
@@ -352,19 +398,23 @@
 
     <div id="checkout-modal" class="checkout-modal">
       <div class="checkout-container">
-        <div class="checkout-header">
-          <h2>Shipping Details</h2>
-          <p style="font-size: 0.9rem; color: #666">
-            Please fill in your address to calculate shipping.
+        <div
+          style="
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+          "
+        >
+          <h2 style="margin: 0">Shipping Details</h2>
+          <p style="color: #666; font-size: 0.9rem">
+            Please enter your address to calculate shipping.
           </p>
         </div>
-
         <form id="checkout-form">
           <div class="form-group">
             <label>Full Name *</label>
             <input type="text" id="cust-name" placeholder="John Doe" required />
           </div>
-
           <div class="form-group">
             <label>Email Address *</label>
             <input
@@ -374,40 +424,30 @@
               required
             />
           </div>
-
           <div class="form-group">
             <label>Street Address *</label>
             <textarea
               id="cust-address"
               rows="2"
-              placeholder="123 Main St, Apt 4B"
+              placeholder="123 Main St"
               required
             ></textarea>
           </div>
-
           <div style="display: flex; gap: 10px">
             <div class="form-group" style="flex: 1">
               <label>City *</label>
-              <input
-                type="text"
-                id="cust-city"
-                placeholder="New York"
-                required
-              />
+              <input type="text" id="cust-city" required />
             </div>
             <div class="form-group" style="flex: 1">
               <label>Zip Code *</label>
-              <input type="text" id="cust-zip" placeholder="10001" required />
+              <input type="text" id="cust-zip" required />
             </div>
           </div>
-
           <div class="checkout-btn-group">
             <button type="button" class="cancel-btn" id="close-checkout">
               Cancel
             </button>
-            <button type="submit" class="confirm-btn">
-              Confirm & Send (WhatsApp)
-            </button>
+            <button type="submit" class="confirm-btn">Confirm & Send</button>
           </div>
         </form>
       </div>
@@ -415,9 +455,7 @@
 
     <script src="db.js"></script>
     <script>
-      // =================================================================
-      // CART LOGIC
-      // =================================================================
+      // --- Logic ---
       const cartItemsList = document.getElementById("cart-items-list");
       const clearCartBtn = document.getElementById("clear-cart-btn");
       const sendWhatsappBtn = document.getElementById("send-whatsapp-btn");
@@ -426,6 +464,8 @@
       const subtotalPriceEl = document.getElementById("subtotal-price");
       const discountAmountEl = document.getElementById("discount-amount");
       const totalPriceEl = document.getElementById("total-price");
+      const tiersListEl = document.getElementById("tiers-list");
+      const discountTiersContainer = document.getElementById("discount-tiers");
 
       const checkoutModal = document.getElementById("checkout-modal");
       const checkoutForm = document.getElementById("checkout-form");
@@ -433,6 +473,7 @@
 
       const whatsappNumber = "16232027321";
 
+      // Tiers Definition
       const tiers = [
         { min: 1, max: 1, percent: 0 },
         { min: 2, max: 2, percent: 0.03 },
@@ -455,26 +496,65 @@
       }
 
       function getShortCaption(fullCaption) {
-        // Simple Shortener
         return fullCaption.split(" - ").slice(0, 2).join(" - ");
+      }
+
+      // Render Discount Tiers (Green Boxes)
+      function renderDiscountTiers(currentQty) {
+        if (!tiersListEl) return;
+        tiersListEl.innerHTML = "";
+
+        tiers.forEach((tier) => {
+          const tierDiv = document.createElement("div");
+          tierDiv.classList.add("tier-item");
+
+          let qtyString =
+            tier.min === tier.max
+              ? `${tier.min} Item${tier.min > 1 ? "s" : ""}`
+              : tier.max === Infinity
+              ? `${tier.min}+ Items`
+              : `${tier.min}-${tier.max} Items`;
+
+          if (currentQty >= tier.min && currentQty <= tier.max) {
+            tierDiv.classList.add("current-tier");
+          }
+
+          tierDiv.innerHTML = `
+              <span style="display:block; font-weight:bold; color:#555;">${qtyString}</span>
+              <span class="tier-discount">${(tier.percent * 100).toFixed(
+                0
+              )}% Off</span>
+          `;
+          tiersListEl.appendChild(tierDiv);
+        });
       }
 
       function renderCartItems() {
         const cartItems = loadCartFromLocalStorage();
         cartItemsList.innerHTML = "";
+
         if (cartItems.length === 0) {
           cartItemsList.innerHTML =
             "<p class='empty-cart-message'>Your cart is empty.</p>";
           document.getElementById("cart-summary").style.display = "none";
+          discountTiersContainer.style.display = "none";
         } else {
           document.getElementById("cart-summary").style.display = "block";
+          discountTiersContainer.style.display = "block";
+
           cartItems.forEach((item, index) => {
             const li = document.createElement("li");
             li.className = "cart-item";
+            // 修复：在购物车列表也加上 ML / FL.OZ
             li.innerHTML = `
               <img src="${item.img}" alt="${item.name}">
               <div class="item-details">
                 <h3>${getShortCaption(item.caption)}</h3>
+                <div style="font-size: 0.85rem; color: #666; margin-bottom: 4px;">
+                    ${item.ml ? item.ml + "ml" : ""} ${
+              item.floz ? "/ " + item.floz + " FL.OZ" : ""
+            }
+                </div>
                 <p>Price: $${item.price}</p>
                 <div class="quantity-control">
                   <button class="decrease-quantity" data-index="${index}">-</button>
@@ -500,7 +580,6 @@
           subtotal += (item.price || 0) * item.quantity;
         });
 
-        // Calculate Discount
         let discountPercent = 0;
         const currentTier = tiers.find(
           (t) => totalCount >= t.min && totalCount <= t.max
@@ -517,10 +596,12 @@
         ).toFixed(0)}%)`;
         totalPriceEl.textContent = `$${finalTotal.toFixed(2)}`;
 
+        // Update Visual Tiers
+        renderDiscountTiers(totalCount);
+
         return { totalCount, subtotal, discountAmount, finalTotal };
       }
 
-      // Event Listeners for Cart Actions
       cartItemsList.addEventListener("click", (e) => {
         const index = e.target.getAttribute("data-index");
         if (index === null) return;
@@ -548,9 +629,7 @@
         }
       });
 
-      // === NEW CHECKOUT LOGIC ===
-
-      // 1. Open Modal
+      // Modal Logic
       sendWhatsappBtn.addEventListener("click", () => {
         const cartItems = loadCartFromLocalStorage();
         if (cartItems.length === 0) {
@@ -558,7 +637,6 @@
           return;
         }
 
-        // Pixel: InitiateCheckout
         if (typeof fbq !== "undefined") {
           const summary = updateCartSummary();
           fbq("track", "InitiateCheckout", {
@@ -570,12 +648,10 @@
         checkoutModal.classList.add("open");
       });
 
-      // 2. Close Modal
       closeCheckoutBtn.addEventListener("click", () =>
         checkoutModal.classList.remove("open")
       );
 
-      // 3. Submit Form & Send WhatsApp
       checkoutForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -614,7 +690,6 @@
           `Please confirm shipping cost and availability.`,
         ].join("%0A");
 
-        // TRACKING PURCHASE
         if (typeof fbq !== "undefined") {
           fbq("track", "Purchase", {
             value: summary.finalTotal,

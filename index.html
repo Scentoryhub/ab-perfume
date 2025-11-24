@@ -73,7 +73,7 @@
         background: #fff;
         color: #222;
         -webkit-font-smoothing: antialiased;
-        padding-bottom: 80px; /* Space for bottom buttons */
+        padding-bottom: 80px;
       }
       a {
         color: black;
@@ -279,7 +279,6 @@
         background: #fff;
         transition: transform 0.3s ease;
       }
-      /* 关键：隐藏库存为0的商品 */
       .item[data-stock="0"] {
         display: none !important;
       }
@@ -386,7 +385,6 @@
         display: block;
       }
 
-      /* WhatsApp Link Style */
       .whatsapp-card {
         text-decoration: none;
         color: inherit;
@@ -400,7 +398,6 @@
         border: 1px solid #25d366;
       }
 
-      /* Review Carousel Style */
       .review-carousel {
         display: flex;
         overflow-x: auto;
@@ -434,7 +431,7 @@
         line-height: 1.5;
       }
 
-      /* ================= MODALS & BUTTONS ================= */
+      /* ================= MODALS ================= */
       .modal {
         display: none;
         position: fixed;
@@ -609,7 +606,6 @@
         z-index: 1000;
       }
 
-      /* === 修复后的大图查看器样式 === */
       .lightbox {
         display: none;
         position: fixed;
@@ -628,8 +624,8 @@
       .lightbox-img {
         width: auto;
         height: auto;
-        max-width: 100vw; /* 撑满屏幕宽度 */
-        max-height: 85vh; /* 撑满大部分高度 */
+        max-width: 100vw;
+        max-height: 85vh;
         object-fit: contain;
       }
 
@@ -788,7 +784,6 @@
             />
           </div>
         </div>
-
         <div class="trust-item">
           <span class="trust-icon">🛡️</span>
           <div class="trust-text">
@@ -812,7 +807,6 @@
             </button>
           </div>
         </div>
-
         <a
           href="https://wa.me/16232027321"
           target="_blank"
@@ -977,7 +971,6 @@
         setTimeout(() => confirmation.remove(), 1500);
       }
 
-      // --- ADD TO CART FUNCTION ---
       function addItemToCart(productId) {
         const db = window.perfumeDB || [];
         const perfumeData = db.find((p) => p.id === productId);
@@ -1020,7 +1013,6 @@
         }
       }
 
-      // --- MAIN RENDER LOGIC ---
       window.renderPerfumes = function () {
         const db = window.perfumeDB || [];
         if (!gallery) return;
@@ -1132,12 +1124,22 @@
           item.className = "item";
           item.dataset.name = p.id;
           item.dataset.img = p.img;
-          // 关键修复：写入库存数据到 DOM
           item.dataset.stock = p.stock;
 
+          // 修复了这里：增加了 FL.OZ 的显示
           item.innerHTML = `
                 <img src="${p.img}" loading="lazy">
-                <div class="caption">${p.id} - ${p.name}<br><span class="product-size">${p.ml}ml</span><br><strong>$${p.price}</strong></div>
+                <div class="caption">
+                  ${p.id} - ${p.name}
+                  <br>
+                  <span class="product-size">
+                    ${p.ml ? p.ml + "ml" : ""} ${
+            p.floz ? "/ " + p.floz + " FL.OZ" : ""
+          }
+                  </span>
+                  <br>
+                  <strong>$${p.price}</strong>
+                </div>
                 <button class="add-to-cart">🛒 <span class="item-cart-count"></span></button>`;
           gallery.appendChild(item);
         });
@@ -1167,7 +1169,6 @@
         window.filterAndSearch();
       };
 
-      // --- HELPER: Update Modal UI ---
       function updateModalUI(productId) {
         const modalAddBtn = document.querySelector(".modal-add-btn");
         const modalQtyControls = document.querySelector(".modal-qty-controls");
@@ -1176,18 +1177,15 @@
         const itemInCart = cartItems.find((c) => c.name === productId);
 
         if (itemInCart && itemInCart.quantity > 0) {
-          // In Cart: Show Qty Controls, Hide Add Button
           modalAddBtn.style.display = "none";
           modalQtyControls.style.display = "flex";
           modalQtyCount.textContent = itemInCart.quantity;
         } else {
-          // Not in Cart: Show Add Button, Hide Qty Controls
           modalAddBtn.style.display = "block";
           modalQtyControls.style.display = "none";
         }
       }
 
-      // --- Init ---
       document.addEventListener("DOMContentLoaded", () => {
         gallery = document.getElementById("gallery");
         searchInput = document.getElementById("search-input");
@@ -1225,7 +1223,6 @@
           () => (window.location.href = "cart.html")
         );
 
-        // --- GLOBAL VARIABLES FOR MODAL ---
         let currentModalProductId = null;
 
         gallery.addEventListener("click", (e) => {
@@ -1238,7 +1235,7 @@
           } else {
             const item = e.target.closest(".item");
             if (item) {
-              currentModalProductId = item.dataset.name; // Set ID
+              currentModalProductId = item.dataset.name;
               const modal = document.getElementById("modal");
               const img = document.getElementById("modal-img");
               const cap = document.getElementById("modal-caption");
@@ -1247,13 +1244,11 @@
               img.src = item.dataset.img;
               cap.innerHTML = item.querySelector(".caption").innerHTML;
 
-              // Update Button State initially
               updateModalUI(currentModalProductId);
 
-              // Click Add in Modal -> Add to cart, Switch UI
               addBtnModal.onclick = () => {
                 addItemToCart(currentModalProductId);
-                updateModalUI(currentModalProductId); // Switch to Qty controls
+                updateModalUI(currentModalProductId);
               };
 
               modal.classList.add("open");
@@ -1262,7 +1257,6 @@
           }
         });
 
-        // Modal Qty Controls Logic
         document
           .querySelector(".modal-controls")
           .addEventListener("click", (e) => {
@@ -1286,11 +1280,10 @@
               saveCartToLocalStorage();
               updateCartCount();
               renderItemCounts();
-              updateModalUI(currentModalProductId); // Refresh UI
+              updateModalUI(currentModalProductId);
             }
           });
 
-        // Close Modal Logic
         const closeModal = () => {
           document.getElementById("modal").classList.remove("open");
           document.body.classList.remove("modal-open");
@@ -1302,12 +1295,10 @@
         document.getElementById("policy-modal-close").onclick = closeModal;
         document.getElementById("receipt-modal-close").onclick = closeModal;
 
-        // Click Background to Close
         window.onclick = (e) => {
           if (e.target.classList.contains("modal")) closeModal();
         };
 
-        // Lightbox Logic for Reviews
         const lightbox = document.getElementById("lightbox");
         const lightboxImg = document.getElementById("lightbox-img");
 
