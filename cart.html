@@ -149,10 +149,12 @@
         flex-grow: 1;
         padding: 15px 0;
       }
+      /* 品牌名样式优化：加粗、大号 */
       .item-details h3 {
         margin: 0 0 5px 0;
-        font-size: 1.1rem;
-        color: #333;
+        font-size: 1.2rem;
+        color: #222;
+        font-weight: 800;
       }
 
       .quantity-control {
@@ -509,6 +511,7 @@
       }
 
       function getShortCaption(fullCaption) {
+        // Fallback in case brand is missing (legacy data)
         return fullCaption.split(" - ").slice(0, 2).join(" - ");
       }
 
@@ -558,8 +561,8 @@
           cartItems.forEach((item, index) => {
             const li = document.createElement("li");
             li.className = "cart-item";
-            // 修复：只显示 Brand Name
-            // 兼容逻辑：如果 Brand 不存在（旧数据），则显示 Caption
+
+            // 逻辑修复：优先使用 item.brand，如果没有（旧数据），使用 item.caption
             const displayName = item.brand
               ? item.brand
               : getShortCaption(item.caption);
