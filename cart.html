@@ -69,7 +69,7 @@
         margin: 0;
         padding: 0;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        background: #f9f9f9; /* 稍微灰一点的背景，突出白色卡片 */
+        background: #f9f9f9;
         color: #222;
         -webkit-font-smoothing: antialiased;
         padding-bottom: 120px;
@@ -107,7 +107,6 @@
         padding: 15px;
       }
 
-      /* --- 购物车列表布局 (1:1复刻部分) --- */
       .cart-items-list {
         list-style: none;
         padding: 0;
@@ -126,9 +125,9 @@
         display: flex;
         align-items: center;
         background: #fff;
-        border-radius: 12px; /* 圆角 */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 阴影 */
-        padding: 15px; /* 内边距 */
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 15px;
         gap: 15px;
         transition: transform 0.2s;
       }
@@ -152,7 +151,6 @@
         justify-content: center;
       }
 
-      /* 标题样式: A01 - Valentino */
       .item-details h3 {
         margin: 0 0 4px 0;
         font-size: 1rem;
@@ -160,14 +158,12 @@
         font-weight: 800;
       }
 
-      /* 规格样式: 100ml ... */
       .item-size {
         font-size: 0.8rem;
         color: #888;
         margin-bottom: 4px;
       }
 
-      /* 价格样式: Original Price... */
       .item-price {
         font-size: 0.95rem;
         color: #222;
@@ -175,7 +171,6 @@
         margin-bottom: 10px;
       }
 
-      /* 底部操作栏: 左边数量，右边删除 */
       .item-actions {
         display: flex;
         justify-content: space-between;
@@ -224,7 +219,7 @@
         color: #333;
       }
 
-      /* --- 底部统计区 --- */
+      /* Discount Tiers Visualization */
       .discount-tiers-container {
         margin: 20px 0;
         padding: 20px;
@@ -257,10 +252,11 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         font-weight: bold;
       }
+      /* 修复：将优惠字体改为绿色 */
       .tier-discount {
         display: block;
         margin-top: 3px;
-        color: #e53e3e;
+        color: #28a745;
         font-weight: 800;
       }
 
@@ -328,6 +324,30 @@
         justify-content: center;
         gap: 8px;
         box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      }
+
+      /* Empty Cart Styles */
+      .empty-cart-container {
+        text-align: center;
+        padding: 60px 20px;
+      }
+      .empty-cart-message {
+        font-size: 1.2rem;
+        color: #777;
+        margin-bottom: 20px;
+      }
+      .continue-shopping-btn {
+        display: inline-block;
+        background-color: #333;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+      .continue-shopping-btn:hover {
+        background-color: #555;
       }
 
       /* Modal Styles */
@@ -398,13 +418,6 @@
         cursor: pointer;
         font-weight: bold;
       }
-
-      .empty-cart-message {
-        text-align: center;
-        color: #999;
-        font-size: 1.1rem;
-        padding: 60px 0;
-      }
     </style>
   </head>
   <body>
@@ -438,7 +451,7 @@
       </div>
     </div>
 
-    <div class="cart-actions">
+    <div class="cart-actions" id="cart-actions">
       <button id="clear-cart-btn" class="clear-cart-btn">Clear Cart</button>
       <button id="send-whatsapp-btn" class="send-whatsapp-btn">
         <svg
@@ -524,6 +537,7 @@
       const cartItemsList = document.getElementById("cart-items-list");
       const clearCartBtn = document.getElementById("clear-cart-btn");
       const sendWhatsappBtn = document.getElementById("send-whatsapp-btn");
+      const cartActions = document.getElementById("cart-actions");
 
       const totalCountEl = document.getElementById("total-count");
       const subtotalPriceEl = document.getElementById("subtotal-price");
@@ -599,25 +613,30 @@
         cartItemsList.innerHTML = "";
 
         if (cartItems.length === 0) {
-          cartItemsList.innerHTML =
-            "<p class='empty-cart-message'>Your cart is empty.</p>";
+          // 修复：空购物车状态，显示继续购物按钮
+          cartItemsList.innerHTML = `
+            <div class="empty-cart-container">
+                <p class='empty-cart-message'>Your cart is empty.</p>
+                <a href="index.html" class="continue-shopping-btn">Continue Shopping</a>
+            </div>
+          `;
           document.getElementById("cart-summary").style.display = "none";
           discountTiersContainer.style.display = "none";
+          cartActions.style.display = "none"; // Hide checkout buttons
         } else {
           document.getElementById("cart-summary").style.display = "block";
           discountTiersContainer.style.display = "block";
+          cartActions.style.display = "flex"; // Show checkout buttons
 
           cartItems.forEach((item, index) => {
             const li = document.createElement("li");
             li.className = "cart-item";
 
-            // 逻辑修复：优先使用 item.brand，如果没有，尝试从 db.js 查找
             let displayName = item.brand;
             if (!displayName && window.perfumeDB) {
               const dbItem = window.perfumeDB.find((p) => p.id === item.name);
               if (dbItem && dbItem.brand) displayName = dbItem.brand;
             }
-            // 兜底：还是没有就显示截断的 caption
             if (!displayName) displayName = getShortCaption(item.caption);
 
             // 构造标题: ID - Brand (如: A01 - Valentino)
@@ -679,7 +698,6 @@
         ).toFixed(0)}%)`;
         totalPriceEl.textContent = `$${finalTotal.toFixed(2)}`;
 
-        // Update Visual Tiers
         renderDiscountTiers(totalCount);
 
         return { totalCount, subtotal, discountAmount, finalTotal };
@@ -712,7 +730,6 @@
         }
       });
 
-      // Modal Logic
       sendWhatsappBtn.addEventListener("click", () => {
         const cartItems = loadCartFromLocalStorage();
         if (cartItems.length === 0) {
