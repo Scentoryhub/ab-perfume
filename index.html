@@ -549,6 +549,36 @@
         font-size: 1.5rem;
         z-index: 1000;
       }
+      /* === 移动端 Bug 修复补丁 === */
+
+      /* 1. 强制提升弹窗层级，确保它盖住所有按钮 */
+      .modal {
+        z-index: 2147483647 !important; /* 这是一个巨大的数字，保证在最顶层 */
+        background-color: rgba(0, 0, 0, 0.85) !important; /* 强制背景变暗 */
+      }
+
+      /* 2. 弹窗打开时，隐藏“回到顶部”和“购物车”悬浮按钮，防止穿透 */
+      body.modal-open .back-to-top,
+      body.modal-open .cart-button {
+        display: none !important;
+      }
+
+      /* 3. 弹窗打开时，禁止背景页面滚动 */
+      body.modal-open {
+        overflow: hidden !important;
+      }
+
+      /* 4. 优化移动端弹窗内图片大小，防止把按钮挤出屏幕 */
+      @media (max-width: 767px) {
+        .modal-content img {
+          max-height: 35vh !important; /* 限制图片高度 */
+          margin-bottom: 10px;
+        }
+        .modal-caption {
+          font-size: 1rem !important; /* 调整字体大小 */
+          padding: 5px 15px !important;
+        }
+      }
 
       /* Responsive */
       @media (min-width: 768px) {
