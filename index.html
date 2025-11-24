@@ -476,19 +476,18 @@
         position: relative;
       }
 
-      /* !!! CHANGED: MODAL IMAGE STYLES TO FILL SPACE !!! */
       .modal-content img {
         width: 100%;
-        max-height: 65vh; /* Slightly increased max height */
-        object-fit: cover; /* This ensures the image fills the space, cutting off excess */
+        max-height: 65vh;
+        object-fit: cover;
         background: #f9f9f9;
-        border-top-left-radius: 12px; /* Rounded corners for top of image */
+        border-top-left-radius: 12px;
         border-top-right-radius: 12px;
       }
 
       @media (max-width: 767px) {
         .modal-content img {
-          max-height: 50vh !important; /* Increased mobile height allowed */
+          max-height: 50vh !important;
           margin-bottom: 10px;
         }
         .modal-caption {
@@ -1024,45 +1023,69 @@
         }
       }
 
-      // --- AUTO SCROLL LOGIC FOR CAROUSELS ---
-      function startInfiniteScroll(containerId, speed = 1) {
+      // --- NEW AUTO SCROLL LOGIC: STEP-BY-STEP & MANUAL FRIENDLY ---
+      function startAutoSlide(containerId, intervalTime = 3000) {
         const container = document.getElementById(containerId);
         if (!container || container.children.length === 0) return;
 
-        // Clone children to create infinite illusion
+        // 1. Clone items for infinite look
         const originalContent = Array.from(container.children);
         originalContent.forEach((child) => {
           const clone = child.cloneNode(true);
-          // Ensure clone keeps event listeners by re-binding if needed,
-          // but for basic click/display, simple clone is fine.
-          // For best sellers click:
           if (child.onclick) clone.onclick = child.onclick;
           container.appendChild(clone);
         });
 
-        let scrollPos = 0;
-        let isPaused = false;
+        let slideTimer;
 
-        function step() {
-          if (!isPaused) {
-            scrollPos += speed;
-            // If we scrolled past the first set of items, reset to 0
-            // (container.scrollWidth / 2 is approximate check point)
-            if (scrollPos >= container.scrollWidth / 2) {
-              scrollPos = 0;
-            }
-            container.scrollLeft = scrollPos;
+        // 2. Function to scroll one "step"
+        function stepScroll() {
+          // Calculate width of one item + gap dynamically
+          const firstChild =
+            container.querySelector("div") || container.querySelector("img");
+          if (!firstChild) return;
+
+          const style = window.getComputedStyle(firstChild);
+          const itemWidth =
+            firstChild.offsetWidth +
+            parseInt(style.marginLeft || 0) +
+            parseInt(style.marginRight || 0);
+          const containerStyle = window.getComputedStyle(container);
+          const gap = parseInt(
+            containerStyle.columnGap || containerStyle.gap || 0
+          );
+          const step = itemWidth + gap;
+
+          // Check if we need to reset seamlessly
+          // If scrolled past half the total width (the cloned part), snap back
+          if (container.scrollLeft >= container.scrollWidth / 2) {
+            container.scrollLeft -= container.scrollWidth / 2;
           }
-          requestAnimationFrame(step);
+
+          // Smooth scroll to next item
+          container.scrollBy({
+            left: step,
+            behavior: "smooth",
+          });
         }
 
-        // Pause on interaction
-        container.addEventListener("mouseenter", () => (isPaused = true));
-        container.addEventListener("mouseleave", () => (isPaused = false));
-        container.addEventListener("touchstart", () => (isPaused = true));
-        container.addEventListener("touchend", () => (isPaused = false));
+        function start() {
+          if (slideTimer) clearInterval(slideTimer);
+          slideTimer = setInterval(stepScroll, intervalTime);
+        }
 
-        requestAnimationFrame(step);
+        function stop() {
+          if (slideTimer) clearInterval(slideTimer);
+        }
+
+        // 3. Event Listeners: Pause on interaction
+        container.addEventListener("mouseenter", stop);
+        container.addEventListener("mouseleave", start);
+        container.addEventListener("touchstart", stop, { passive: true });
+        container.addEventListener("touchend", start);
+
+        // Start initial timer
+        start();
       }
 
       // --- MAIN RENDER LOGIC ---
@@ -1091,8 +1114,9 @@
                    <div class="top-info"><div class="top-name">${p.name}</div><div class="top-price">$${p.price}</div></div>`;
             topGallery.appendChild(el);
           });
-          // Start Carousel for Best Sellers (LOWER SPEED)
-          startInfiniteScroll("top-gallery", 0.3);
+
+          // Start Step Carousel (3 seconds)
+          startAutoSlide("top-gallery", 3000);
         }
         window.applyLastState();
       };
@@ -1376,8 +1400,8 @@
         updateCartCount();
         window.renderPerfumes();
 
-        // Start Carousel for Happy Customers (Reviews) (LOWER SPEED)
-        startInfiniteScroll("review-carousel", 0.2);
+        // Start Step Carousel for Happy Customers (3.5 seconds)
+        startAutoSlide("review-carousel", 3500);
       });
     </script>
   </body>
