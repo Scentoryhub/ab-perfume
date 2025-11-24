@@ -6,9 +6,66 @@
     <title>Perfume List</title>
     <link rel="icon" type="image/png" href="icon/32.png" />
     <link rel="apple-touch-icon" href="icon/180.png" />
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ZKERETN8Y2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      // 配置并提取 Client ID 用于 WhatsApp 回传
+      gtag("config", "G-ZKERETN8Y2", {
+        custom_map: { dimension1: "client_id" },
+      });
+
+      gtag("get", "G-ZKERETN8Y2", "client_id", (clientID) => {
+        localStorage.setItem("ga_client_id", clientID);
+        gtag("set", "user_properties", { client_id: clientID });
+      });
+    </script>
+
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js"
+      );
+      fbq("init", "9083739771684521");
+      fbq("track", "PageView");
+    </script>
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=9083739771684521&ev=PageView&noscript=1"
+    /></noscript>
     <style>
       /* =========================================
-         1. GLOBAL RESET & BASIC STYLES
+         GLOBAL STYLES
          ========================================= */
       * {
         box-sizing: border-box;
@@ -20,7 +77,6 @@
         background: #fff;
         color: #222;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
       }
       a {
         color: black;
@@ -29,7 +85,7 @@
       }
 
       /* =========================================
-         2. HEADER & SEARCH BAR
+         HEADER & SEARCH
          ========================================= */
       .price-info {
         max-width: 600px;
@@ -60,11 +116,7 @@
         font-size: 1rem;
         padding: 5px;
       }
-      .info-button:hover {
-        color: #000;
-      }
 
-      /* Search Bar (No Sticky) */
       .search-container {
         max-width: 600px;
         margin: 20px auto;
@@ -77,13 +129,8 @@
         font-size: 1.1rem;
         border: 1px solid #ccc;
         border-radius: 25px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         outline: none;
-        transition: border-color 0.3s, box-shadow 0.3s;
-      }
-      #search-input:focus {
-        border-color: #333;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       }
       #search-clear-btn {
         position: absolute;
@@ -97,19 +144,10 @@
         width: 22px;
         height: 22px;
         cursor: pointer;
-        font-weight: bold;
-        font-size: 16px;
         display: none;
         align-items: center;
         justify-content: center;
-        line-height: 22px;
-        transition: background-color 0.2s;
       }
-      #search-clear-btn:hover {
-        background: #999;
-      }
-
-      /* Sort Dropdown */
       .sort-container {
         max-width: 900px;
         margin: 0 auto 15px auto;
@@ -129,51 +167,31 @@
         border: 1px solid #ccc;
         border-radius: 8px;
         background-color: #f9f9f9;
-        cursor: pointer;
       }
 
       /* =========================================
-         3. BRAND NAVBAR (STICKY & SCROLLABLE)
+         BRAND NAVBAR
          ========================================= */
       .navbar {
-        /* Layout */
         display: flex;
         justify-content: flex-start;
-        flex-wrap: nowrap;
         overflow-x: auto;
         gap: 10px;
-
-        /* Sticky Positioning */
         position: sticky;
         top: 0;
         z-index: 100;
-        margin-top: 0;
-
-        /* Visuals */
         padding: 12px 15px;
         background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
         border-bottom: 1px solid #eee;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-
-        /* Scrolling UX */
+        backdrop-filter: blur(10px);
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        cursor: grab;
-      }
-      .navbar:active {
-        cursor: grabbing;
       }
       .navbar::-webkit-scrollbar {
         display: none;
       }
-
-      /* Navbar Buttons */
       .navbar button {
         flex: 0 0 auto;
-        margin: 0;
-        white-space: nowrap;
-
         background: #f8f8f8;
         border: 1px solid #e0e0e0;
         padding: 8px 18px;
@@ -184,28 +202,20 @@
         color: #555;
         transition: all 0.2s ease;
       }
-      .navbar button:hover {
-        background: #eee;
-        border-color: #ccc;
-        transform: translateY(-1px);
-      }
       .navbar button.active {
         background: #222;
         color: #fff;
         border-color: #222;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       }
 
       /* =========================================
-         4. TOP PICKS (HERO SECTION)
+         TOP PICKS & GALLERY
          ========================================= */
       #top-picks-container {
         display: none;
         max-width: 1200px;
         margin: 0 auto;
       }
-
-      /* Scroll Wrapper (Mobile Default: Horizontal Scroll) */
       .top-scroll-wrapper {
         display: flex;
         overflow-x: auto;
@@ -217,10 +227,8 @@
       .top-scroll-wrapper::-webkit-scrollbar {
         display: none;
       }
-
-      /* Top Card Style */
       .top-card {
-        flex: 0 0 140px; /* Mobile Fixed Width */
+        flex: 0 0 140px;
         background: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -228,17 +236,11 @@
         position: relative;
         border: 1px solid #f0f0f0;
         cursor: pointer;
-        transition: transform 0.2s;
-      }
-      .top-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       }
       .top-card img {
         width: 100%;
         height: 140px;
         object-fit: cover;
-        background: #f9f9f9;
       }
       .top-card .top-info {
         padding: 10px;
@@ -248,7 +250,6 @@
         font-size: 0.85rem;
         font-weight: bold;
         margin-bottom: 5px;
-        color: #333;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -268,98 +269,46 @@
         padding: 3px 8px;
         border-radius: 6px;
         font-weight: 800;
-        z-index: 2;
-        box-shadow: 0 2px 5px rgba(255, 59, 48, 0.4);
       }
 
-      /* =========================================
-         5. MAIN GALLERY (PRODUCT LIST)
-         ========================================= */
       .gallery {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 10px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 15px; /* Mobile Gap */
+        gap: 15px;
         min-height: 300px;
       }
-
-      /* Item Card */
       .item {
         position: relative;
         overflow: hidden;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         background: #fff;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        animation: fadeIn 0.5s ease-out;
+        transition: transform 0.3s ease;
       }
-      .item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: scale(0.98);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      /* Hide Out of Stock Items */
       .item[data-stock="0"] {
         display: none;
       }
-      /* Fallback for Admin View (Optional) */
-      .item[data-stock="0"]::after {
-        content: "Out of Stock";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 8px 15px;
-        border-radius: 8px;
-        font-weight: bold;
-        z-index: 2;
-      }
-
       .item img {
-        display: block;
         width: 100%;
         height: 250px;
         object-fit: cover;
-        border-radius: 12px 12px 0 0;
       }
       .caption {
-        background: #fff;
-        color: #333;
         padding: 16px;
         font-size: 1rem;
         font-weight: 600;
         text-align: center;
         border-top: 1px solid #eee;
-        min-height: 90px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
       }
-
-      /* Capacity Text Style */
       .product-size {
         font-size: 0.85rem;
-        color: #888; /* Light Grey */
+        color: #888;
         margin: 4px 0;
         font-weight: normal;
       }
-
-      /* Add to Cart Button (on card) */
       .item .add-to-cart {
         position: absolute;
         top: 10px;
@@ -375,11 +324,7 @@
         justify-content: center;
         cursor: pointer;
         font-size: 1.2rem;
-        transition: background 0.3s ease;
         z-index: 3;
-      }
-      .item .add-to-cart:hover {
-        background: rgba(0, 0, 0, 0.9);
       }
       .item-cart-count {
         position: absolute;
@@ -390,8 +335,6 @@
         border-radius: 50%;
         padding: 2px 6px;
         font-size: 0.8rem;
-        min-width: 1.2em;
-        text-align: center;
         display: none;
       }
       .add-to-cart-confirmation {
@@ -406,7 +349,7 @@
         font-size: 0.9rem;
         font-weight: bold;
         opacity: 0;
-        transition: opacity 0.5s ease, transform 0.5s ease;
+        transition: all 0.5s ease;
         z-index: 10;
         pointer-events: none;
       }
@@ -415,77 +358,150 @@
         transform: translate(-50%, -100%);
       }
 
-      /* Loading Spinner */
-      .gallery-loader {
-        grid-column: 1 / -1;
-        margin: 80px auto;
-        border: 6px solid #f3f3f3;
-        border-top: 6px solid #333;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite;
+      /* === WHY BUY FROM US SECTION === */
+      .trust-section {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 30px 20px;
+        background: #fdfdfd;
+        border-top: 1px solid #eee;
       }
-      .no-results-message {
-        grid-column: 1 / -1;
+      .trust-title {
         text-align: center;
-        padding: 40px 15px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #222;
+      }
+      .trust-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .trust-item {
+        text-align: center;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+      .trust-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        display: block;
+      }
+      .trust-img-container {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 15px;
+        overflow-x: auto;
+      }
+      .trust-review-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #eee;
+      }
+      .trust-text h4 {
+        margin: 10px 0;
         font-size: 1.1rem;
-        color: #777;
+      }
+      .trust-text p {
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.5;
       }
 
       /* =========================================
-         6. FLOATING BUTTONS (CART & BACK TO TOP)
+         MODALS & BUTTONS
          ========================================= */
-      /* Back to Top - Fixed Bottom Left */
-      .back-to-top {
+      .modal {
         display: none;
         position: fixed;
-        bottom: 30px;
-        left: 30px; /* Fixed Left */
-        right: auto;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.85);
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+      }
+      .modal.open {
+        display: flex;
+      }
+      .modal-content {
+        max-width: 600px;
+        width: 90vw;
+        max-height: 90vh;
+        border-radius: 12px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        text-align: center;
+        position: relative;
+      }
+      .modal-content img {
+        width: 100%;
+        max-height: 60vh;
+        object-fit: contain;
+        background: #f9f9f9;
+      }
+      .modal-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 2rem;
+        color: #fff;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+      .modal-controls {
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+      }
+      .modal-add-btn {
         background-color: #333;
         color: white;
         border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-        line-height: 50px;
-        text-align: center;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border-radius: 25px;
         cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s;
-        z-index: 1000;
-        opacity: 0.8;
       }
-      .back-to-top:hover {
-        background-color: #555;
-        opacity: 1;
-        transform: scale(1.1);
+      .modal-qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .modal-qty-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        background: #f0f0f0;
+        border: 1px solid #ccc;
       }
 
-      /* Cart Button - Fixed Bottom Right */
       .cart-button {
         position: fixed;
         bottom: 30px;
-        right: 20px; /* Fixed Right */
-        left: auto;
+        right: 20px;
         background-color: #ffffff;
         color: white;
         border: none;
         border-radius: 50%;
         width: 60px;
         height: 60px;
-        font-size: 1rem;
-        text-align: center;
-        cursor: pointer;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         z-index: 1000;
-        transition: background-color 0.3s;
-      }
-      .cart-button:hover {
-        background-color: #555;
+        cursor: pointer;
       }
       .cart-button.added {
         animation: cart-pulse 0.6s ease-out;
@@ -516,210 +532,31 @@
         height: 32px;
       }
 
-      /* =========================================
-         7. MODAL STYLES
-         ========================================= */
-      .modal {
+      .back-to-top {
         display: none;
         position: fixed;
-        z-index: 9999;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.85);
-        justify-content: center;
-        align-items: center;
-        padding: 15px;
-      }
-      .modal.open {
-        display: flex;
-      }
-      /* --- Modal Styles (修复版) --- */
-      .modal-content {
-        max-width: 600px; /* 限制最大宽度，防止电脑上太宽 */
-        width: 90vw;
-        max-height: 90vh; /* 最大高度 */
-        border-radius: 12px;
-
-        /* 关键修改 1: 允许垂直滚动，防止内容被切掉 */
-        overflow-y: auto;
-        /* 关键修改 2: 使用 Flex 布局，确保布局稳固 */
-        display: flex;
-        flex-direction: column;
-
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
-        background: #fff;
-        text-align: center;
-        position: relative; /* 确保关闭按钮定位准确 */
-      }
-
-      .modal-content img {
-        width: 100%;
-        /* 关键修改 3: 降低图片最大高度，给按钮留空间 */
-        max-height: 60vh;
-        object-fit: contain; /* 保持图片比例完整显示 */
-        background-color: #f9f9f9;
-        flex-shrink: 0; /* 防止图片被压缩没了 */
-      }
-
-      /* 优化滚动条样式 (可选) */
-      .modal-content::-webkit-scrollbar {
-        width: 6px;
-      }
-      .modal-content::-webkit-scrollbar-thumb {
-        background-color: #ccc;
-        border-radius: 3px;
-      }
-      .modal-caption {
-        padding: 12px 20px;
-        font-weight: 700;
-        font-size: 1.2rem;
-        color: #222;
-      }
-      .modal-close {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 2rem;
-        color: #fff;
-        cursor: pointer;
-        user-select: none;
-        transition: transform 0.3s ease;
-      }
-      .modal-close:hover {
-        transform: rotate(90deg);
-      }
-
-      /* Modal Controls */
-      .modal-controls {
-        padding: 10px 20px 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .modal-add-btn {
+        bottom: 30px;
+        left: 30px;
         background-color: #333;
         color: white;
         border: none;
-        padding: 12px 24px;
-        font-size: 1rem;
-        font-weight: bold;
-        border-radius: 25px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-      .modal-add-btn:hover {
-        background-color: #555;
-      }
-      .modal-qty-controls {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
-      .modal-qty-btn {
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        width: 40px;
-        height: 40px;
         border-radius: 50%;
-        font-size: 1.5rem;
-        font-weight: bold;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
         cursor: pointer;
-        transition: background-color 0.2s;
-      }
-      .modal-qty-btn:hover {
-        background-color: #e0e0e0;
-      }
-      .modal-qty-count {
         font-size: 1.5rem;
-        font-weight: bold;
-        min-width: 30px;
-        text-align: center;
+        z-index: 1000;
       }
 
-      /* Footer */
-      .contact-info {
-        text-align: center;
-        padding: 30px 15px;
-        background: #fff;
-        margin-top: 20px;
-        border-top: 1px solid #eee;
-      }
-      .contact-info p {
-        margin: 5px 0;
-        font-size: 1.1rem;
-        color: #555;
-      }
-
-      /* =========================================
-         8. RESPONSIVE ADJUSTMENTS (MEDIA QUERIES)
-         ========================================= */
-
-      /* --- Mobile Only Adjustments (< 768px) --- */
-      @media (max-width: 767px) {
-        /* Modal Bottom Sheet Animation */
-        .modal {
-          align-items: flex-end;
-          padding: 0;
-        }
-        .modal-content {
-          width: 100%;
-          max-width: 100%;
-          border-radius: 20px 20px 0 0;
-          margin: 0;
-          max-height: 85vh;
-          animation: slideUp 0.3s ease-out;
-          padding-bottom: 30px;
-        }
-        .modal-content img {
-          max-height: 50vh;
-          width: 100%;
-          object-fit: contain;
-          background: #f9f9f9;
-        }
-        @keyframes slideUp {
-          from {
-            transform: translateY(100%);
-          }
-          to {
-            transform: translateY(0);
-          }
-        }
-        .modal-close {
-          top: 10px;
-          right: 15px;
-          color: #333;
-          background: rgba(255, 255, 255, 0.8);
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          text-align: center;
-          line-height: 30px;
-        }
-
-        /* Button Position Tweak */
-        .back-to-top {
-          bottom: 35px;
-          left: 20px;
-          width: 45px;
-          height: 45px;
-          line-height: 45px;
-          font-size: 1.2rem;
-          opacity: 0.7;
-        }
-      }
-
-      /* --- Desktop Adjustments (>= 768px) --- */
+      /* Responsive */
       @media (min-width: 768px) {
-        /* Gallery Grid Expansion */
         .gallery {
           grid-template-columns: repeat(4, 1fr);
           gap: 40px;
           padding: 0 20px;
         }
-
-        /* Top Picks Grid Layout (Disable Scroll) */
         .top-scroll-wrapper {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -728,17 +565,34 @@
           padding: 20px;
         }
         .top-card {
-          flex: unset;
           width: auto;
         }
         .top-card img {
           height: 200px;
         }
-        .top-card .top-name {
-          font-size: 1rem;
+        .trust-grid {
+          grid-template-columns: repeat(3, 1fr);
         }
-        .top-card .top-price {
-          font-size: 1.1rem;
+      }
+      @media (max-width: 767px) {
+        .modal {
+          align-items: flex-end;
+          padding: 0;
+        }
+        .modal-content {
+          width: 100%;
+          border-radius: 20px 20px 0 0;
+          padding-bottom: 30px;
+        }
+        .modal-close {
+          color: #333;
+          background: rgba(255, 255, 255, 0.8);
+          width: 30px;
+          height: 30px;
+          line-height: 30px;
+          border-radius: 50%;
+          top: 10px;
+          right: 15px;
         }
       }
     </style>
@@ -748,7 +602,7 @@
 
     <div class="price-info">
       <div>
-        <p style="font-size: 1.1rem; font-weight: 700">Perfuems: From $30</p>
+        <p style="font-size: 1.1rem; font-weight: 700">Perfumes: From $30</p>
         <p style="font-size: 1.1rem; font-weight: 600">
           Free Shipping | Buy more save more !
         </p>
@@ -758,7 +612,6 @@
         </p>
       </div>
       <hr class="info-divider" />
-
       <div style="margin-top: 15px">
         <button id="policy-btn" class="info-button" style="color: #f44">
           Compensation Policy
@@ -786,58 +639,40 @@
     </div>
 
     <div class="navbar" id="brand-navbar">
-      <button data-brand="All" class="active" aria-pressed="true">
-        All Brands
-      </button>
-
-      <button data-brand="Giorgio Armani" aria-pressed="false">Armani</button>
-      <button data-brand="Azzaro" aria-pressed="false">Azzaro</button>
-      <button data-brand="Burberry" aria-pressed="false">Burberry</button>
-      <button data-brand="BVLGARI" aria-pressed="false">BVLGARI</button>
-      <button data-brand="Carolina Herrera" aria-pressed="false">
-        Carolina Herrera
-      </button>
-      <button data-brand="Chanel" aria-pressed="false">Chanel</button>
-      <button data-brand="Creed" aria-pressed="false">Creed</button>
-      <button data-brand="Dior" aria-pressed="false">Dior</button>
-      <button data-brand="Givenchy" aria-pressed="false">Givenchy</button>
-      <button data-brand="Gucci" aria-pressed="false">Gucci</button>
-      <button data-brand="Initio" aria-pressed="false">Initio</button>
-      <button data-brand="Jean Paul Gaultier" aria-pressed="false">
-        Jean Paul Gaultier
-      </button>
-      <button data-brand="Kayali" aria-pressed="false">Kayali</button>
-      <button data-brand="Kilian" aria-pressed="false">Kilian</button>
-      <button data-brand="Lancôme" aria-pressed="false">Lancôme</button>
-      <button data-brand="Lattafa" aria-pressed="false">Lattafa</button>
-      <button data-brand="Louis Vuitton" aria-pressed="false">
-        Louis Vuitton
-      </button>
-      <button data-brand="Maison Francis Kurkdjian" aria-pressed="false">
+      <button data-brand="All" class="active">All Brands</button>
+      <button data-brand="Giorgio Armani">Armani</button>
+      <button data-brand="Azzaro">Azzaro</button>
+      <button data-brand="Burberry">Burberry</button>
+      <button data-brand="BVLGARI">BVLGARI</button>
+      <button data-brand="Carolina Herrera">Carolina Herrera</button>
+      <button data-brand="Chanel">Chanel</button>
+      <button data-brand="Creed">Creed</button>
+      <button data-brand="Dior">Dior</button>
+      <button data-brand="Givenchy">Givenchy</button>
+      <button data-brand="Gucci">Gucci</button>
+      <button data-brand="Initio">Initio</button>
+      <button data-brand="Jean Paul Gaultier">Jean Paul Gaultier</button>
+      <button data-brand="Kayali">Kayali</button>
+      <button data-brand="Kilian">Kilian</button>
+      <button data-brand="Lancôme">Lancôme</button>
+      <button data-brand="Lattafa">Lattafa</button>
+      <button data-brand="Louis Vuitton">Louis Vuitton</button>
+      <button data-brand="Maison Francis Kurkdjian">
         Maison Francis Kurkdjian
       </button>
-      <button data-brand="Paco Rabanne" aria-pressed="false">
-        Paco Rabanne
-      </button>
-      <button data-brand="Parfums de Marly" aria-pressed="false">
-        Parfums de Marly
-      </button>
-      <button data-brand="Prada" aria-pressed="false">Prada</button>
-      <button data-brand="Ralph Lauren" aria-pressed="false">
-        Ralph Lauren
-      </button>
-      <button data-brand="Tom Ford" aria-pressed="false">Tom Ford</button>
-      <button data-brand="Valentino" aria-pressed="false">Valentino</button>
-      <button data-brand="Versace" aria-pressed="false">Versace</button>
-      <button data-brand="Xerjoff" aria-pressed="false">Xerjoff</button>
-      <button data-brand="Yves Saint Laurent" aria-pressed="false">
-        Yves Saint Laurent
-      </button>
-
-      <button data-brand="Other" aria-pressed="false">Other Brands</button>
+      <button data-brand="Paco Rabanne">Paco Rabanne</button>
+      <button data-brand="Parfums de Marly">Parfums de Marly</button>
+      <button data-brand="Prada">Prada</button>
+      <button data-brand="Ralph Lauren">Ralph Lauren</button>
+      <button data-brand="Tom Ford">Tom Ford</button>
+      <button data-brand="Valentino">Valentino</button>
+      <button data-brand="Versace">Versace</button>
+      <button data-brand="Xerjoff">Xerjoff</button>
+      <button data-brand="Yves Saint Laurent">Yves Saint Laurent</button>
+      <button data-brand="Other">Other Brands</button>
     </div>
 
-    <div id="top-picks-container" style="display: none">
+    <div id="top-picks-container">
       <h3 style="padding: 0 15px; margin-bottom: 10px; font-size: 1.1rem">
         🔥 Best Sellers
       </h3>
@@ -849,16 +684,76 @@
       <div class="gallery-loader"></div>
     </div>
 
-    <div
-      class="modal"
-      id="modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-caption"
-    >
-      <div class="modal-close" id="modal-close" aria-label="Close modal">
-        &times;
+    <div class="trust-section">
+      <h2 class="trust-title">Why Buy From Us?</h2>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <span class="trust-icon">⭐⭐⭐⭐⭐</span>
+          <div class="trust-text">
+            <h4>Happy Customers</h4>
+            <p>
+              Join thousands of satisfied customers. Check out our real reviews!
+            </p>
+          </div>
+          <div class="trust-img-container">
+            <img
+              src="images/review1.jpg"
+              alt="Review"
+              class="trust-review-img"
+              onerror="this.style.display='none'"
+            />
+            <img
+              src="images/review2.jpg"
+              alt="Review"
+              class="trust-review-img"
+              onerror="this.style.display='none'"
+            />
+            <img
+              src="images/review3.jpg"
+              alt="Review"
+              class="trust-review-img"
+              onerror="this.style.display='none'"
+            />
+          </div>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🛡️</span>
+          <div class="trust-text">
+            <h4>Broken? We Reship!</h4>
+            <p>
+              Don't worry about shipping damage. If it arrives broken or leaked,
+              show us a photo and we will reship for <strong>FREE</strong>.
+            </p>
+            <button
+              onclick="document.getElementById('policy-modal').classList.add('open')"
+              style="
+                margin-top: 10px;
+                background: none;
+                border: none;
+                text-decoration: underline;
+                cursor: pointer;
+                color: #007bff;
+              "
+            >
+              See Policy
+            </button>
+          </div>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">💬</span>
+          <div class="trust-text">
+            <h4>24/7 WhatsApp Support</h4>
+            <p>
+              We are always online. Get instant quotes, track your order, and
+              get expert recommendations anytime.
+            </p>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="modal" id="modal">
+      <div class="modal-close" id="modal-close">&times;</div>
       <div class="modal-content">
         <img src="" alt="" id="modal-img" />
         <div class="modal-caption" id="modal-caption"></div>
@@ -873,116 +768,59 @@
       </div>
     </div>
 
-    <div
-      class="modal"
-      id="policy-modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="policy-modal-caption"
-    >
-      <div class="modal-close" id="policy-modal-close" aria-label="Close modal">
-        &times;
-      </div>
+    <div class="modal" id="policy-modal">
+      <div class="modal-close" id="policy-modal-close">&times;</div>
       <div
         class="modal-content"
-        style="
-          max-width: 500px;
-          text-align: left;
-          padding: 25px;
-          box-sizing: border-box;
-        "
+        style="max-width: 500px; text-align: left; padding: 25px"
       >
-        <h3
-          id="policy-modal-caption"
-          style="text-align: center; margin-top: 0; font-size: 1.4rem"
-        >
+        <h3 style="text-align: center; margin-top: 0; font-size: 1.4rem">
           Compensation Policy
         </h3>
-        <p style="font-size: 1rem; color: #333">
+        <p>
           Please check your items upon delivery. If you have any issues, follow
           these steps for a free reshipment:
         </p>
-        <ul style="padding-left: 20px; font-size: 1rem">
-          <li style="margin-bottom: 15px">
-            <strong>1. Leaked or Damaged:</strong>
-            <p style="margin-top: 5px; margin-bottom: 0">
-              Provide photos of:
-              <strong>Outer Packaging + Shipping Label + Damaged Goods</strong>.
-            </p>
+        <ul style="padding-left: 20px">
+          <li>
+            <strong>1. Leaked or Damaged:</strong> Provide photos of: Outer
+            Packaging + Shipping Label + Damaged Goods.
           </li>
           <li>
-            <strong>2. Wrong Product Sent:</strong>
-            <p style="margin-top: 5px; margin-bottom: 0">
-              Provide photos of:
-              <strong>Shipping Label + Incorrect Goods</strong>.
-            </p>
+            <strong>2. Wrong Product Sent:</strong> Provide photos of: Shipping
+            Label + Incorrect Goods.
           </li>
         </ul>
         <p
           style="
             font-weight: bold;
             text-align: center;
-            margin-top: 25px;
-            font-size: 1rem;
             background-color: #f9f9f9;
             padding: 10px;
             border-radius: 8px;
           "
         >
           Important: Please keep all shipping packaging until you've checked
-          that everything is okay with your order. An unboxing video is highly
-          recommended.
+          everything.
         </p>
       </div>
     </div>
 
-    <div
-      class="modal"
-      id="receipt-modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="receipt-modal-caption"
-    >
-      <div
-        class="modal-close"
-        id="receipt-modal-close"
-        aria-label="Close modal"
-      >
-        &times;
-      </div>
+    <div class="modal" id="receipt-modal">
+      <div class="modal-close" id="receipt-modal-close">&times;</div>
       <div
         class="modal-content"
-        style="
-          max-width: 600px;
-          text-align: center;
-          padding: 0;
-          overflow: hidden;
-          background: #fff;
-        "
+        style="max-width: 600px; padding: 0; overflow: hidden"
       >
         <img
           src="images/receipt.webp"
           alt="Receipt Example"
-          style="
-            max-width: 100%;
-            height: auto;
-            display: block;
-            max-height: 85vh;
-          "
+          style="max-height: 85vh"
         />
-        <div
-          id="receipt-modal-caption"
-          style="
-            padding: 12px;
-            font-weight: bold;
-            background: #fff;
-            color: #222;
-          "
-        >
-          Example Receipt
-        </div>
+        <div style="padding: 12px; font-weight: bold">Example Receipt</div>
       </div>
     </div>
+
     <footer>
       <div class="contact-info">
         <a href="https://wa.me/16232027321"
@@ -992,681 +830,345 @@
       </div>
     </footer>
 
-    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-      &#x25B2;
-    </button>
+    <button id="back-to-top" class="back-to-top">&#x25B2;</button>
 
-    <button
-      class="cart-button"
-      id="cart-button"
-      title="View Your Order"
-      aria-label="View Shopping Cart"
-    >
+    <button class="cart-button" id="cart-button">
       <img src="icon/order.png" alt="Cart" class="cart-icon" />
       <span id="cart-count" class="cart-count">0</span>
     </button>
 
+    <script src="db.js"></script>
     <script>
       // =================================================================
-      // GLOBAL VARIABLES & DOM ELEMENTS
+      // CORE LOGIC & TRACKING
       // =================================================================
-      let currentBrandFilter = "all";
-      let currentSupplierFilter = "all";
-      let searchTerm = "";
+
       let cartItems = [];
+      let gallery,
+        searchInput,
+        searchClearBtn,
+        cartButton,
+        cartCount,
+        brandNavbar;
 
-      // DOM elements will be assigned in DOMContentLoaded
-      let perfumeList, searchInput, searchClearBtn, cartButton, cartCount;
-      let brandNavbar, allBrandButtons, showAllButton, supplierButtons, gallery;
-      let sortBy;
+      function loadCartFromLocalStorage() {
+        const storedCart = localStorage.getItem("perfumeCart");
+        cartItems = storedCart ? JSON.parse(storedCart) : [];
+      }
+      function saveCartToLocalStorage() {
+        localStorage.setItem("perfumeCart", JSON.stringify(cartItems));
+      }
+      function updateCartCount() {
+        const count = cartItems.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        if (cartCount) cartCount.textContent = count;
+      }
+      function renderItemCounts() {
+        if (!gallery) return;
+        const currentItems = gallery.querySelectorAll(".item");
+        currentItems.forEach((item) => {
+          const itemName = item.dataset.name;
+          const badge = item.querySelector(".item-cart-count");
+          const itemInCart = cartItems.find((c) => c.name === itemName);
+          if (itemInCart && itemInCart.quantity > 0) {
+            badge.textContent = itemInCart.quantity;
+            badge.style.display = "block";
+          } else {
+            badge.style.display = "none";
+          }
+        });
+      }
+      function pulseCartButton() {
+        cartButton.classList.add("added");
+        setTimeout(() => cartButton.classList.remove("added"), 600);
+      }
+      function showConfirmation(button) {
+        const confirmation = document.createElement("div");
+        confirmation.textContent = "Added!";
+        confirmation.className = "add-to-cart-confirmation";
+        const itemElement = button.closest(".item");
+        itemElement.appendChild(confirmation);
+        setTimeout(() => confirmation.classList.add("show"), 10);
+        setTimeout(() => confirmation.remove(), 1500);
+      }
 
-      // =================================================================
-      // 1. GLOBAL RENDER FUNCTION (Called by db.js)
-      // =================================================================
+      // --- ADD TO CART FUNCTION (With Tracking) ---
+      function addItemToCart(productId) {
+        const db = window.perfumeDB || [];
+        const perfumeData = db.find((p) => p.id === productId);
+        if (!perfumeData) return;
+
+        // 1. Logic
+        const existingItem = cartItems.find((c) => c.name === productId);
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cartItems.push({
+            name: productId,
+            caption: `${productId} - ${perfumeData.name}`,
+            img: perfumeData.img,
+            quantity: 1,
+            price: Number(perfumeData.price),
+            tier: perfumeData.tier,
+            ml: perfumeData.ml,
+            floz: perfumeData.floz,
+          });
+        }
+        saveCartToLocalStorage();
+        updateCartCount();
+        renderItemCounts();
+        pulseCartButton();
+
+        // 2. TRACKING (Pixel + GA4)
+        if (typeof fbq !== "undefined") {
+          fbq("track", "AddToCart", {
+            content_ids: [productId],
+            content_type: "product",
+            value: perfumeData.price,
+            currency: "USD",
+          });
+        }
+        if (typeof gtag !== "undefined") {
+          gtag("event", "add_to_cart", {
+            currency: "USD",
+            value: perfumeData.price,
+            items: [{ item_id: productId, item_name: perfumeData.name }],
+          });
+        }
+      }
+
+      // --- Render & Filter Logic ---
       window.renderPerfumes = function () {
         const db = window.perfumeDB || [];
         if (!gallery) return;
 
-        // --- Render Top Picks (Best Sellers) ---
+        // Render Top Picks
         const topContainer = document.getElementById("top-picks-container");
         const topGallery = document.getElementById("top-gallery");
         const topItems = db.filter((p) => p.top == 1);
-
-        if (topContainer && topGallery) {
-          if (topItems.length > 0) {
-            topGallery.innerHTML = "";
-
-            topItems.forEach((p) => {
-              const el = document.createElement("div");
-              el.className = "top-card";
-              el.onclick = (e) => {
-                // Simulate click on main item to open modal
-                const mainItem = document.querySelector(
-                  `.item[data-name="${p.id}"]`
-                );
-                if (mainItem) mainItem.click();
-              };
-
-              el.innerHTML = `
+        if (topContainer && topGallery && topItems.length > 0) {
+          topGallery.innerHTML = "";
+          topItems.forEach((p) => {
+            const el = document.createElement("div");
+            el.className = "top-card";
+            el.onclick = () => {
+              const mainItem = document.querySelector(
+                `.item[data-name="${p.id}"]`
+              );
+              if (mainItem) mainItem.click();
+            };
+            el.innerHTML = `
                    <div class="hot-badge">HOT</div>
                    <img src="${p.img}" loading="lazy">
-                   <div class="top-info">
-                     <div class="top-name">${p.name}</div>
-                     <div class="top-price">$${p.price}</div>
-                   </div>
-                 `;
-              topGallery.appendChild(el);
-            });
-          }
+                   <div class="top-info"><div class="top-name">${p.name}</div><div class="top-price">$${p.price}</div></div>`;
+            topGallery.appendChild(el);
+          });
         }
-
-        // --- Render Main List ---
-        if (typeof window.applyLastState === "function") {
-          window.applyLastState();
-        } else if (typeof window.filterAndSearch === "function") {
-          window.filterAndSearch();
-        }
+        window.applyLastState();
       };
 
+      window.filterAndSearch = function () {
+        const db = window.perfumeDB || [];
+        if (db.length === 0) return;
+        const activeBrandBtn = brandNavbar.querySelector("button.active");
+        const selectedBrand = activeBrandBtn
+          ? activeBrandBtn.dataset.brand
+          : "All";
+        const selectedSort = document.getElementById("sort-by").value;
+        const term = searchInput.value.toLowerCase().trim();
+
+        // Top Picks Visibility
+        const topContainer = document.getElementById("top-picks-container");
+        if (topContainer) {
+          const hasTop = db.some((p) => p.top == 1);
+          topContainer.style.display =
+            selectedBrand === "All" && !term && hasTop ? "block" : "none";
+        }
+
+        let filtered = db.filter((p) => {
+          let brandMatch =
+            selectedBrand === "All"
+              ? true
+              : selectedBrand === "Other"
+              ? ![
+                  "Dior",
+                  "Chanel",
+                  "Gucci",
+                  "Tom Ford",
+                  "Versace",
+                  "YSL",
+                  "Creed",
+                  "Armani",
+                  "Prada",
+                  "Valentino",
+                ].includes(p.brand)
+              : p.brand === selectedBrand;
+          if (selectedBrand === "Other") {
+            const majors = [
+              "Dior",
+              "Chanel",
+              "Gucci",
+              "Tom Ford",
+              "Versace",
+              "YSL",
+              "Creed",
+              "Armani",
+              "Prada",
+              "Valentino",
+            ];
+            brandMatch = !majors.some((b) => p.brand.includes(b));
+          }
+          let searchMatch = true;
+          if (term)
+            searchMatch =
+              p.name.toLowerCase().includes(term) ||
+              p.id.toLowerCase().includes(term) ||
+              p.brand.toLowerCase().includes(term);
+          return brandMatch && searchMatch;
+        });
+
+        // Sort
+        if (selectedSort === "price-asc")
+          filtered.sort((a, b) => a.price - b.price);
+        else if (selectedSort === "price-desc")
+          filtered.sort((a, b) => b.price - a.price);
+        else if (selectedSort === "newest") filtered.reverse();
+        else
+          filtered.sort((a, b) =>
+            a.id.localeCompare(b.id, undefined, {
+              numeric: true,
+              sensitivity: "base",
+            })
+          );
+
+        // Render
+        gallery.innerHTML = "";
+        if (filtered.length === 0) {
+          gallery.innerHTML =
+            '<div class="no-results-message">No items found.</div>';
+          return;
+        }
+        filtered.forEach((p) => {
+          const item = document.createElement("div");
+          item.className = "item";
+          item.dataset.name = p.id;
+          item.dataset.img = p.img;
+          item.innerHTML = `
+                <img src="${p.img}" loading="lazy">
+                <div class="caption">${p.id} - ${p.name}<br><span class="product-size">${p.ml}ml</span><br><strong>$${p.price}</strong></div>
+                <button class="add-to-cart">🛒 <span class="item-cart-count"></span></button>`;
+          gallery.appendChild(item);
+        });
+        renderItemCounts();
+
+        localStorage.setItem("lastFilterBrand", selectedBrand);
+        localStorage.setItem("lastSearchTerm", term);
+        localStorage.setItem("lastSort", selectedSort);
+      };
+
+      window.applyLastState = function () {
+        const lastBrand = localStorage.getItem("lastFilterBrand") || "All";
+        const lastSearch = localStorage.getItem("lastSearchTerm") || "";
+        const lastSort = localStorage.getItem("lastSort") || "default";
+
+        document.getElementById("sort-by").value = lastSort;
+        searchInput.value = lastSearch;
+
+        const btns = document.querySelectorAll(".navbar button");
+        btns.forEach((b) => {
+          if (b.dataset.brand === lastBrand) b.classList.add("active");
+          else b.classList.remove("active");
+        });
+
+        if (lastSearch)
+          document.getElementById("search-clear-btn").style.display = "flex";
+        window.filterAndSearch();
+      };
+
+      // --- Init ---
       document.addEventListener("DOMContentLoaded", () => {
-        // --- Init DOM Elements ---
-        perfumeList = document.getElementById("gallery");
         gallery = document.getElementById("gallery");
         searchInput = document.getElementById("search-input");
         searchClearBtn = document.getElementById("search-clear-btn");
         cartButton = document.getElementById("cart-button");
         cartCount = document.getElementById("cart-count");
         brandNavbar = document.getElementById("brand-navbar");
-        sortBy = document.getElementById("sort-by");
 
-        allBrandButtons = document.querySelectorAll(
-          ".navbar button[data-brand]"
-        );
-        showAllButton = document.querySelector(
-          ".navbar button[data-brand='All']"
-        );
-        supplierButtons = document.querySelectorAll(".supplier-btn");
-
-        // --- Auto Scroll Hint & Drag Scroll ---
-        if (brandNavbar) {
-          setTimeout(() => {
-            brandNavbar.scrollTo({ left: 60, behavior: "smooth" });
-            setTimeout(() => {
-              brandNavbar.scrollTo({ left: 0, behavior: "smooth" });
-            }, 800);
-          }, 1000);
-
-          // PC Mouse Drag Support
-          let isDown = false;
-          let startX;
-          let scrollLeft;
-
-          brandNavbar.addEventListener("mousedown", (e) => {
-            isDown = true;
-            brandNavbar.classList.add("active");
-            startX = e.pageX - brandNavbar.offsetLeft;
-            scrollLeft = brandNavbar.scrollLeft;
-            e.preventDefault();
-          });
-          brandNavbar.addEventListener("mouseleave", () => {
-            isDown = false;
-          });
-          brandNavbar.addEventListener("mouseup", () => {
-            isDown = false;
-          });
-          brandNavbar.addEventListener("mousemove", (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - brandNavbar.offsetLeft;
-            const walk = (x - startX) * 2;
-            brandNavbar.scrollLeft = scrollLeft - walk;
-          });
-        }
-
-        const config = {
-          whatsappNumber: "16232027321",
-          brandAliases: {
-            ysl: "yves saint laurent",
-            lv: "Louis Vuitton",
-            tf: "tom ford",
-            jpg: "jean paul gaultier",
-            mfk: "maison francis kurkdjian",
-            pdm: "parfums de marly",
-            ch: "carolina herrera",
-            ga: "giorgio armani",
-          },
-        };
-
-        const { whatsappNumber, brandAliases } = config;
-
-        // --- Modal Elements ---
-        const modal = document.getElementById("modal");
-        const modalImg = document.getElementById("modal-img");
-        const modalCaption = document.getElementById("modal-caption");
-        const modalClose = document.getElementById("modal-close");
-        const backToTopButton = document.getElementById("back-to-top");
-
-        const modalControls = document.querySelector(".modal-controls");
-        const modalAddBtn = document.querySelector(".modal-add-btn");
-        const modalQtyControls = document.querySelector(".modal-qty-controls");
-        const modalQtyCount = document.querySelector(".modal-qty-count");
-        let currentModalProductId = null;
-
-        // --- Policy & Receipt Modals ---
-        const policyBtn = document.getElementById("policy-btn");
-        const policyModal = document.getElementById("policy-modal");
-        const policyModalClose = document.getElementById("policy-modal-close");
-        const receiptBtn = document.getElementById("receipt-btn");
-        const receiptModal = document.getElementById("receipt-modal");
-        const receiptModalClose = document.getElementById(
-          "receipt-modal-close"
-        );
-
-        // =================================================================
-        // CORE LOGIC
-        // =================================================================
-
-        // Render Gallery
-        function renderGallery(perfumeListToRender) {
-          gallery.innerHTML = "";
-          const db = window.perfumeDB || [];
-
-          if (db.length === 0) {
-            gallery.innerHTML = '<div class="gallery-loader"></div>';
-            return;
-          }
-
-          if (perfumeListToRender.length === 0) {
-            handleNoResults();
-            return;
-          }
-
-          perfumeListToRender.forEach((perfume) => {
-            const item = document.createElement("div");
-            item.className = "item";
-            item.tabIndex = 0;
-            item.dataset.name = perfume.id;
-            item.dataset.img = perfume.img;
-            item.dataset.brand = perfume.brand;
-
-            const stockVal = Number(perfume.stock);
-            item.dataset.stock = stockVal;
-
-            let tierBadge = "";
-            let displayName = perfume.name;
-
-            if (perfume.tier === "Premium") {
-              tierBadge = '<span class="premium-badge">★ Premium</span>';
-              displayName = displayName.replace(
-                "Premium (Luxe)",
-                '<span class="premium-text">Premium (Luxe)</span>'
-              );
-            }
-
-            item.innerHTML = `
-                        ${tierBadge}
-                        <img src="${perfume.img}" alt="${perfume.id} - ${
-              perfume.name
-            }" loading="lazy" decoding="async"/>
-                        <div class="caption">
-                          ${perfume.id} - ${displayName}
-                          
-                          <div class="product-size">
-                            ${perfume.ml ? perfume.ml + "ml" : ""} 
-                            ${
-                              perfume.floz ? "/ " + perfume.floz + " FL.OZ" : ""
-                            }
-                          </div>
-
-                          <strong style="display: block; color: #333; font-size: 1.1rem; margin-top: 5px;">
-                            $${perfume.price}
-                          </strong>
-                        </div>
-                        <button class="add-to-cart" title="Add to Cart" aria-label="Add ${
-                          perfume.id
-                        } to cart">
-                          🛒 <span class="item-cart-count"></span>
-                        </button>
-                    `;
-            gallery.appendChild(item);
-          });
-
-          items = Array.from(gallery.querySelectorAll(".item"));
-          renderItemCounts();
-        }
-
-        // Filter & Search Function
-        window.filterAndSearch = function () {
-          const db = window.perfumeDB || [];
-          if (db.length === 0) {
-            renderGallery([]);
-            return;
-          }
-
-          const activeBrandBtn = brandNavbar.querySelector("button.active");
-          const selectedBrand = activeBrandBtn
-            ? activeBrandBtn.dataset.brand
-            : "All";
-          const selectedSort = sortBy ? sortBy.value : "default";
-
-          // --- Control Top Picks Visibility ---
-          const topContainer = document.getElementById("top-picks-container");
-          if (topContainer) {
-            const isSearching = searchInput.value.trim().length > 0;
-            // Show only if "All Brands" and NOT searching
-            const hasTopItems = db.some((p) => p.top == 1);
-
-            if (selectedBrand === "All" && !isSearching && hasTopItems) {
-              topContainer.style.display = "block";
-            } else {
-              topContainer.style.display = "none";
-            }
-          }
-
-          let term = searchInput.value.toLowerCase().trim();
-          if (brandAliases[term]) {
-            term = brandAliases[term];
-          }
-
-          const dedicatedBrands = [
-            "Dior",
-            "Chanel",
-            "Yves Saint Laurent",
-            "Louis Vuitton",
-            "Tom Ford",
-            "Gucci",
-            "Valentino",
-            "Prada",
-            "Versace",
-            "Creed",
-            "Xerjoff",
-            "Kayali",
-            "Initio",
-            "Jean Paul Gaultier",
-            "Maison Francis Kurkdjian",
-            "Parfums de Marly",
-            "Giorgio Armani",
-            "Carolina Herrera",
-            "Lattafa",
-            "Azzaro",
-            "Paco Rabanne",
-          ];
-
-          let filteredList = db.filter((p) => {
-            let brandMatch = true;
-            if (selectedBrand !== "All") {
-              if (selectedBrand === "Other") {
-                brandMatch = !dedicatedBrands.includes(p.brand);
-              } else {
-                brandMatch = p.brand === selectedBrand;
-              }
-            }
-
-            let searchMatch = true;
-            if (term) {
-              const nameStr = p.name ? String(p.name).toLowerCase() : "";
-              const idStr = p.id ? String(p.id).toLowerCase() : "";
-              const brandStr = p.brand ? String(p.brand).toLowerCase() : "";
-              searchMatch =
-                nameStr.includes(term) ||
-                idStr.includes(term) ||
-                brandStr.includes(term);
-            }
-
-            return brandMatch && searchMatch;
-          });
-
-          // Sorting Logic
-          filteredList = filteredList.slice();
-          if (selectedSort === "price-asc") {
-            filteredList.sort((a, b) => Number(a.price) - Number(b.price));
-          } else if (selectedSort === "price-desc") {
-            filteredList.sort((a, b) => Number(b.price) - Number(a.price));
-          } else if (selectedSort === "newest") {
-            filteredList.reverse();
-          } else {
-            // Default Sort: ID only (A01, A02...)
-            // Keeps list stable regardless of brand selection
-            filteredList.sort((a, b) => {
-              const idA = a.id || "";
-              const idB = b.id || "";
-              return idA.localeCompare(idB, undefined, {
-                numeric: true,
-                sensitivity: "base",
-              });
-            });
-          }
-
-          renderGallery(filteredList);
-
-          localStorage.setItem("lastFilterBrand", selectedBrand);
-          localStorage.setItem("lastSearchTerm", searchInput.value.trim());
-          localStorage.setItem("lastSort", selectedSort);
-        };
-
-        // Restore State
-        window.applyLastState = function () {
-          const lastBrand = localStorage.getItem("lastFilterBrand") || "All";
-          const lastSearch = localStorage.getItem("lastSearchTerm") || "";
-          const lastSort = localStorage.getItem("lastSort") || "default";
-
-          if (sortBy) sortBy.value = lastSort;
-
-          if (lastSearch) {
-            searchInput.value = lastSearch;
-            if (searchClearBtn) searchClearBtn.style.display = "flex";
-          } else {
+        brandNavbar.addEventListener("click", (e) => {
+          if (e.target.tagName === "BUTTON") {
+            brandNavbar
+              .querySelectorAll("button")
+              .forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
             searchInput.value = "";
-            if (searchClearBtn) searchClearBtn.style.display = "none";
-
-            let brandApplied = false;
-            if (allBrandButtons) {
-              allBrandButtons.forEach((btn) => {
-                const isMatch = btn.dataset.brand === lastBrand;
-                btn.classList.toggle("active", isMatch);
-                btn.setAttribute("aria-pressed", isMatch);
-                if (isMatch) brandApplied = true;
-              });
-            }
-            if (!brandApplied && showAllButton) {
-              showAllButton.classList.add("active");
-              showAllButton.setAttribute("aria-pressed", "true");
-            }
+            searchClearBtn.style.display = "none";
+            window.filterAndSearch();
           }
+        });
 
+        searchInput.addEventListener("input", () => {
+          searchClearBtn.style.display = searchInput.value ? "flex" : "none";
           window.filterAndSearch();
-        };
+        });
+        searchClearBtn.addEventListener("click", () => {
+          searchInput.value = "";
+          searchInput.dispatchEvent(new Event("input"));
+        });
+        document
+          .getElementById("sort-by")
+          .addEventListener("change", window.filterAndSearch);
 
-        // --- Cart Functions ---
-        function loadCartFromLocalStorage() {
-          const storedCart = localStorage.getItem("perfumeCart");
-          cartItems = storedCart ? JSON.parse(storedCart) : [];
-        }
+        cartButton.addEventListener(
+          "click",
+          () => (window.location.href = "cart.html")
+        );
 
-        function saveCartToLocalStorage() {
-          localStorage.setItem("perfumeCart", JSON.stringify(cartItems));
-        }
-
-        function updateCartCount() {
-          const count = cartItems.reduce(
-            (total, item) => total + item.quantity,
-            0
-          );
-          cartCount.textContent = count;
-        }
-
-        function renderItemCounts() {
-          const currentItems = gallery.querySelectorAll(".item");
-          currentItems.forEach((item) => {
-            const itemName = item.dataset.name;
-            const itemCartCountBadge = item.querySelector(".item-cart-count");
-            const itemInCart = cartItems.find(
-              (cartItem) => cartItem.name === itemName
-            );
-            if (itemInCart && itemInCart.quantity > 0) {
-              itemCartCountBadge.textContent = itemInCart.quantity;
-              itemCartCountBadge.style.display = "block";
-            } else {
-              itemCartCountBadge.style.display = "none";
-            }
-          });
-        }
-
-        function addItemToCart(productId) {
-          const db = window.perfumeDB || [];
-          const perfumeData = db.find((p) => p.id === productId);
-          if (!perfumeData) return;
-
-          const { id, name, img, price, tier, sku, supplier, ml, floz } =
-            perfumeData;
-          const existingItem = cartItems.find(
-            (cartItem) => cartItem.name === id
-          );
-
-          if (existingItem) {
-            existingItem.quantity++;
+        gallery.addEventListener("click", (e) => {
+          const addBtn = e.target.closest(".add-to-cart");
+          if (addBtn) {
+            e.stopPropagation();
+            const item = addBtn.closest(".item");
+            addItemToCart(item.dataset.name);
+            showConfirmation(addBtn);
           } else {
-            cartItems.push({
-              name: id,
-              caption: `${id} - ${name}`,
-              img,
-              quantity: 1,
-              price: Number(price),
-              tier: tier,
-              sku: sku,
-              supplier: supplier,
-              ml: ml,
-              floz: floz,
-            });
-          }
-          saveCartToLocalStorage();
-          updateCartCount();
-          renderItemCounts();
-          pulseCartButton();
-        }
-
-        // --- Helper Functions ---
-        function handleNoResults() {
-          let messageEl = gallery.querySelector(".no-results-message");
-          if (!messageEl) {
-            messageEl = document.createElement("div");
-            messageEl.className = "no-results-message";
-            gallery.appendChild(messageEl);
-          }
-          let searchTerm = searchInput.value;
-          messageEl.innerHTML = searchTerm
-            ? `<p>No results found for "<strong>${searchTerm}</strong>".</p><p>Try another keyword.</p>`
-            : `<p>No items found for this filter.</p>`;
-        }
-
-        function pulseCartButton() {
-          cartButton.classList.add("added");
-          setTimeout(() => cartButton.classList.remove("added"), 600);
-        }
-
-        function showConfirmation(button) {
-          const confirmation = document.createElement("div");
-          confirmation.textContent = "Added!";
-          confirmation.className = "add-to-cart-confirmation";
-          const itemElement = button.closest(".item");
-          itemElement.appendChild(confirmation);
-          setTimeout(() => confirmation.classList.add("show"), 10);
-          setTimeout(() => confirmation.remove(), 1500);
-        }
-
-        // --- Event Listeners ---
-        if (brandNavbar) {
-          brandNavbar.addEventListener("click", (e) => {
-            const button = e.target.closest("button[data-brand]");
-            if (!button) return;
-
-            if (allBrandButtons) {
-              allBrandButtons.forEach((btn) => {
-                btn.classList.remove("active");
-                btn.setAttribute("aria-pressed", "false");
-              });
-            }
-            button.classList.add("active");
-            button.setAttribute("aria-pressed", "true");
-
-            const scrollLeft = button.offsetLeft - 15;
-            brandNavbar.scrollTo({
-              left: scrollLeft,
-              behavior: "smooth",
-            });
-
-            searchInput.value = "";
-            if (searchClearBtn) searchClearBtn.style.display = "none";
-            window.filterAndSearch();
-          });
-        }
-
-        if (searchInput) {
-          searchInput.addEventListener("input", () => {
-            if (allBrandButtons) {
-              allBrandButtons.forEach((btn) => {
-                const isAll = btn.dataset.brand === "All";
-                btn.classList.toggle("active", isAll);
-                btn.setAttribute("aria-pressed", isAll);
-              });
-            }
-            if (searchClearBtn)
-              searchClearBtn.style.display = searchInput.value
-                ? "flex"
-                : "none";
-            window.filterAndSearch();
-          });
-        }
-
-        if (searchClearBtn) {
-          searchClearBtn.addEventListener("click", () => {
-            searchInput.value = "";
-            searchInput.dispatchEvent(new Event("input"));
-          });
-        }
-
-        if (sortBy) {
-          sortBy.addEventListener("change", window.filterAndSearch);
-        }
-
-        if (cartButton) {
-          cartButton.addEventListener("click", () => {
-            window.location.href = "cart.html";
-          });
-        }
-
-        if (gallery) {
-          gallery.addEventListener("click", function (e) {
-            const addToCartBtn = e.target.closest(".add-to-cart");
-            if (addToCartBtn) {
-              e.stopPropagation();
-              const item = addToCartBtn.closest(".item");
-              addItemToCart(item.dataset.name);
-              showConfirmation(addToCartBtn);
-              return;
-            }
-
             const item = e.target.closest(".item");
             if (item) {
-              currentModalProductId = item.dataset.name;
-              modalImg.src = item.dataset.img;
-              modalImg.alt = item.querySelector(".caption").textContent;
-              modalCaption.innerHTML = item.querySelector(".caption").innerHTML;
-              updateModalControls(currentModalProductId);
+              const modal = document.getElementById("modal");
+              const img = document.getElementById("modal-img");
+              const cap = document.getElementById("modal-caption");
+              const addBtnModal = document.querySelector(".modal-add-btn");
+
+              img.src = item.dataset.img;
+              cap.innerHTML = item.querySelector(".caption").innerHTML;
+
+              addBtnModal.onclick = () => {
+                addItemToCart(item.dataset.name);
+                modal.classList.remove("open");
+              };
               modal.classList.add("open");
             }
-          });
-        }
-
-        function updateModalControls(productId) {
-          const itemInCart = cartItems.find(
-            (cartItem) => cartItem.name === productId
-          );
-          if (itemInCart && itemInCart.quantity > 0) {
-            modalAddBtn.style.display = "none";
-            modalQtyControls.style.display = "flex";
-            modalQtyCount.textContent = itemInCart.quantity;
-          } else {
-            modalAddBtn.style.display = "block";
-            modalQtyControls.style.display = "none";
-          }
-        }
-
-        if (modalControls) {
-          modalControls.addEventListener("click", (e) => {
-            const target = e.target;
-            if (target.matches(".modal-add-btn")) {
-              addItemToCart(currentModalProductId);
-              updateModalControls(currentModalProductId);
-            }
-            const button = target.closest(".modal-qty-btn");
-            if (button) {
-              const action = button.dataset.action;
-              const itemInCart = cartItems.find(
-                (item) => item.name === currentModalProductId
-              );
-              if (!itemInCart) return;
-
-              if (action === "increase") itemInCart.quantity++;
-              else if (action === "decrease") itemInCart.quantity--;
-
-              if (itemInCart.quantity <= 0) {
-                const idx = cartItems.findIndex(
-                  (item) => item.name === currentModalProductId
-                );
-                if (idx > -1) cartItems.splice(idx, 1);
-              }
-              saveCartToLocalStorage();
-              updateCartCount();
-              renderItemCounts();
-              updateModalControls(currentModalProductId);
-              pulseCartButton();
-            }
-          });
-        }
-
-        if (modalClose)
-          modalClose.addEventListener("click", () =>
-            modal.classList.remove("open")
-          );
-        if (modal) {
-          modal.addEventListener("click", (e) => {
-            if (e.target === modal) modal.classList.remove("open");
-          });
-        }
-
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") {
-            if (modal) modal.classList.remove("open");
-            if (policyModal) policyModal.classList.remove("open");
-            if (receiptModal) receiptModal.classList.remove("open");
           }
         });
 
-        if (policyBtn && policyModal && policyModalClose) {
-          policyBtn.addEventListener("click", () =>
-            policyModal.classList.add("open")
-          );
-          policyModalClose.addEventListener("click", () =>
-            policyModal.classList.remove("open")
-          );
-          policyModal.addEventListener("click", (e) => {
-            if (e.target === policyModal) policyModal.classList.remove("open");
-          });
-        }
-        if (receiptBtn && receiptModal && receiptModalClose) {
-          receiptBtn.addEventListener("click", () =>
-            receiptModal.classList.add("open")
-          );
-          receiptModalClose.addEventListener("click", () =>
-            receiptModal.classList.remove("open")
-          );
-          receiptModal.addEventListener("click", (e) => {
-            if (e.target === receiptModal)
-              receiptModal.classList.remove("open");
-          });
-        }
+        document.getElementById("modal-close").onclick = () =>
+          document.getElementById("modal").classList.remove("open");
+        document.getElementById("policy-modal-close").onclick = () =>
+          document.getElementById("policy-modal").classList.remove("open");
+        document.getElementById("receipt-modal-close").onclick = () =>
+          document.getElementById("receipt-modal").classList.remove("open");
 
+        const backToTop = document.getElementById("back-to-top");
         window.addEventListener("scroll", () => {
-          if (window.pageYOffset > 300) {
-            if (backToTopButton) backToTopButton.style.display = "block";
-          } else {
-            if (backToTopButton) backToTopButton.style.display = "none";
-          }
+          backToTop.style.display = window.pageYOffset > 300 ? "block" : "none";
         });
-        if (backToTopButton) {
-          backToTopButton.addEventListener("click", () => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          });
-        }
+        backToTop.onclick = () =>
+          window.scrollTo({ top: 0, behavior: "smooth" });
 
-        // --- Initialize ---
         loadCartFromLocalStorage();
         updateCartCount();
-
-        window.applyLastState();
       });
     </script>
-    <script src="db.js"></script>
   </body>
 </html>
