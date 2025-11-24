@@ -971,6 +971,7 @@
         setTimeout(() => confirmation.remove(), 1500);
       }
 
+      // --- ADD TO CART FUNCTION ---
       function addItemToCart(productId) {
         const db = window.perfumeDB || [];
         const perfumeData = db.find((p) => p.id === productId);
@@ -989,6 +990,8 @@
             tier: perfumeData.tier,
             ml: perfumeData.ml,
             floz: perfumeData.floz,
+            // 重点：保存品牌
+            brand: perfumeData.brand,
           });
         }
         saveCartToLocalStorage();
@@ -1013,6 +1016,7 @@
         }
       }
 
+      // --- MAIN RENDER LOGIC ---
       window.renderPerfumes = function () {
         const db = window.perfumeDB || [];
         if (!gallery) return;

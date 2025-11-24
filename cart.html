@@ -511,7 +511,6 @@
       }
 
       function getShortCaption(fullCaption) {
-        // Fallback in case brand is missing (legacy data)
         return fullCaption.split(" - ").slice(0, 2).join(" - ");
       }
 
@@ -562,10 +561,22 @@
             const li = document.createElement("li");
             li.className = "cart-item";
 
-            // 逻辑修复：优先使用 item.brand，如果没有（旧数据），使用 item.caption
-            const displayName = item.brand
-              ? item.brand
-              : getShortCaption(item.caption);
+            // 核心逻辑：展示品牌名
+            // 1. 尝试使用 item.brand (如果 index.html 保存了)
+            // 2. 如果没有，尝试去全局 db.js 里根据 ID 查找
+            let displayName = item.brand;
+
+            if (!displayName && window.perfumeDB) {
+              const dbItem = window.perfumeDB.find((p) => p.id === item.name);
+              if (dbItem && dbItem.brand) {
+                displayName = dbItem.brand;
+              }
+            }
+
+            // 3. 最后的兜底：如果还是找不到，就只显示 ID 后的第一段
+            if (!displayName) {
+              displayName = getShortCaption(item.caption);
+            }
 
             li.innerHTML = `
               <img src="${item.img}" alt="${item.name}">
