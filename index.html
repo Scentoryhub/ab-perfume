@@ -73,6 +73,7 @@
         background: #fff;
         color: #222;
         -webkit-font-smoothing: antialiased;
+        padding-bottom: 80px; /* Space for bottom buttons */
       }
       a {
         color: black;
@@ -374,27 +375,53 @@
         background: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden; /* 防止图片溢出圆角 */
       }
       .trust-icon {
         font-size: 2.5rem;
         margin-bottom: 15px;
         display: block;
       }
-      .trust-img-container {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        margin-top: 15px;
-        overflow-x: auto;
+
+      /* WhatsApp Link Style */
+      .whatsapp-card {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+        border: 1px solid transparent;
       }
+      .whatsapp-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2); /* Green glow */
+        border: 1px solid #25d366;
+      }
+
+      /* Review Carousel Style */
+      .review-carousel {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 10px 0;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+        justify-content: flex-start; /* Align left for scrolling */
+      }
+      .review-carousel::-webkit-scrollbar {
+        display: none;
+      } /* Hide scrollbar */
+
       .trust-review-img {
-        width: 80px;
-        height: 80px;
+        flex: 0 0 180px; /* Fixed width for carousel item */
+        height: 180px; /* Square image */
         object-fit: cover;
         border-radius: 8px;
         border: 1px solid #eee;
-        cursor: zoom-in; /* 提示可点击放大 */
+        cursor: zoom-in;
+        scroll-snap-align: center;
       }
+
       .trust-text h4 {
         margin: 10px 0;
         font-size: 1.1rem;
@@ -503,7 +530,7 @@
       }
       /* 默认隐藏数量条 */
       .modal-qty-controls {
-        display: none; /* 关键修复：默认不显示，JS控制显示 */
+        display: none; /* 默认不显示 */
         align-items: center;
         gap: 20px;
       }
@@ -728,31 +755,42 @@
           <span class="trust-icon">⭐⭐⭐⭐⭐</span>
           <div class="trust-text">
             <h4>Happy Customers</h4>
-            <p>
-              Join thousands of satisfied customers. Check out our real reviews!
-            </p>
+            <p>Swipe to see real reviews from our customers!</p>
           </div>
-          <div class="trust-img-container">
+          <div class="review-carousel">
             <img
               src="images/review1.jpg"
-              alt="Review"
+              alt="Review 1"
               class="trust-review-img lightbox-trigger"
               onerror="this.style.display='none'"
             />
             <img
               src="images/review2.jpg"
-              alt="Review"
+              alt="Review 2"
               class="trust-review-img lightbox-trigger"
               onerror="this.style.display='none'"
             />
             <img
               src="images/review3.jpg"
-              alt="Review"
+              alt="Review 3"
+              class="trust-review-img lightbox-trigger"
+              onerror="this.style.display='none'"
+            />
+            <img
+              src="images/review4.jpg"
+              alt="Review 4"
+              class="trust-review-img lightbox-trigger"
+              onerror="this.style.display='none'"
+            />
+            <img
+              src="images/review5.jpg"
+              alt="Review 5"
               class="trust-review-img lightbox-trigger"
               onerror="this.style.display='none'"
             />
           </div>
         </div>
+
         <div class="trust-item">
           <span class="trust-icon">🛡️</span>
           <div class="trust-text">
@@ -776,7 +814,12 @@
             </button>
           </div>
         </div>
-        <div class="trust-item">
+
+        <a
+          href="https://wa.me/16232027321"
+          target="_blank"
+          class="trust-item whatsapp-card"
+        >
           <span class="trust-icon">💬</span>
           <div class="trust-text">
             <h4>24/7 WhatsApp Support</h4>
@@ -784,8 +827,18 @@
               We are always online. Get instant quotes, track your order, and
               get expert recommendations anytime.
             </p>
+            <span
+              style="
+                display: inline-block;
+                margin-top: 10px;
+                color: #25d366;
+                font-weight: bold;
+                text-decoration: underline;
+              "
+              >Click to Chat &rarr;</span
+            >
           </div>
-        </div>
+        </a>
       </div>
     </div>
 
@@ -861,15 +914,6 @@
         <div style="padding: 12px; font-weight: bold">Example Receipt</div>
       </div>
     </div>
-
-    <footer>
-      <div class="contact-info">
-        <a href="https://wa.me/16232027321"
-          >Need help? Contact us on WhatsApp</a
-        >
-        <p>We are available 24/7</p>
-      </div>
-    </footer>
 
     <button id="back-to-top" class="back-to-top">&#x25B2;</button>
 
