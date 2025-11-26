@@ -447,7 +447,7 @@
         color: #aaa;
       }
 
-      /* ================= 6. 信任与评论 (Trust) ================= */
+      /* ================= 6. 信任与评论 (Trust) - 优化后的轮播样式 ================= */
       .trust-section {
         background: #fff;
         margin-top: 20px;
@@ -474,28 +474,30 @@
         margin: 0;
       }
 
-      /* 轮播样式优化 */
+      /* 轮播容器 */
       .review-carousel {
         display: flex;
-        gap: 15px;
+        gap: 12px;
         overflow-x: auto;
         margin-top: 15px;
         padding-bottom: 10px;
         scrollbar-width: none;
-        scroll-snap-type: x mandatory; /* 增加滑动吸附感 */
+        scroll-behavior: smooth; /* 平滑滚动 */
+        justify-content: flex-start; /* 确保从左开始 */
       }
       .review-carousel::-webkit-scrollbar {
         display: none;
       }
+
+      /* 图片样式 */
       .trust-review-img {
-        flex: 0 0 140px;
+        flex: 0 0 130px; /* 固定宽度，确保在手机上能显示出一张半，引导滑动 */
         height: 180px;
         object-fit: cover;
         border-radius: 8px;
-        scroll-snap-align: start;
-        cursor: zoom-in; /* 鼠标变为放大镜 */
-        transition: transform 0.2s;
+        cursor: zoom-in;
         border: 1px solid #eee;
+        transition: transform 0.2s;
       }
       .trust-review-img:hover {
         transform: scale(1.02);
@@ -554,7 +556,7 @@
         text-transform: uppercase;
       }
 
-      /* Lightbox for Reviews (图片放大) */
+      /* Lightbox (评论图片放大) */
       .lightbox {
         display: none;
         position: fixed;
@@ -581,7 +583,7 @@
         cursor: pointer;
       }
 
-      /* Toast Notification (加购提示) */
+      /* Toast Notification (自动消失提示) */
       #toast {
         visibility: hidden;
         min-width: 250px;
@@ -759,10 +761,10 @@
     <div class="trust-section">
       <div class="trust-grid">
         <div class="trust-item">
-          <div style="font-size: 2rem">⭐</div>
-          <h4>Happy Customers</h4>
-          <p>Tap to zoom</p>
-          <div class="review-carousel">
+          <div style="font-size: 2rem; color: #f39c12">⭐</div>
+          <h4 style="margin-top: 5px">Happy Customers</h4>
+          <p style="font-size: 0.8rem">Tap images to zoom</p>
+          <div class="review-carousel" id="review-carousel">
             <img
               src="images/review1.jpg"
               class="trust-review-img"
@@ -796,7 +798,7 @@
           </div>
         </div>
         <div class="trust-item">
-          <div style="font-size: 2rem">🛡️</div>
+          <div style="font-size: 2rem; color: #3498db">🛡️</div>
           <h4>Broken? We Reship!</h4>
           <p>Full replacement if damaged.</p>
           <a
@@ -806,7 +808,7 @@
           >
         </div>
         <div class="trust-item">
-          <div style="font-size: 2rem">💬</div>
+          <div style="font-size: 2rem; color: #2ecc71">💬</div>
           <h4>WhatsApp Support</h4>
           <p>24/7 Service.</p>
           <a
@@ -921,6 +923,7 @@
         setupMenu();
         renderHome();
         setupEventListeners();
+        startReviewCarousel(); // 启动买家秀自动轮播
       });
 
       // 1. 首页渲染
@@ -1206,7 +1209,26 @@
         document.getElementById("header-cart-count").textContent = count;
       }
 
-      // 5. Lightbox Functions
+      // 5. 自动轮播功能 (Happy Customers)
+      function startReviewCarousel() {
+        const carousel = document.getElementById("review-carousel");
+        if (!carousel) return;
+
+        // 每 3 秒自动向右滑动 142px (图片宽度+gap)
+        setInterval(() => {
+          // 如果快滑到底了，就回到开头
+          if (
+            carousel.scrollLeft + carousel.clientWidth >=
+            carousel.scrollWidth - 10
+          ) {
+            carousel.scrollTo({ left: 0, behavior: "smooth" });
+          } else {
+            carousel.scrollBy({ left: 142, behavior: "smooth" });
+          }
+        }, 3000);
+      }
+
+      // 6. Lightbox Functions
       window.openLightbox = function (src) {
         document.getElementById("lightbox-content").src = src;
         document.getElementById("lightbox").classList.add("open");
@@ -1215,7 +1237,7 @@
         document.getElementById("lightbox").classList.remove("open");
       };
 
-      // 6. Modal Functions
+      // 7. Modal Functions
       window.openModal = function (product) {
         document.getElementById("modal-img").src = product.img;
         document.getElementById("modal-title").textContent = product.name;
