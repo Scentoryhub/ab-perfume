@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Perfume List</title>
+    <title>Top Outlet Perfume</title>
     <link rel="icon" type="image/png" href="icon/32.png" />
     <link rel="apple-touch-icon" href="icon/180.png" />
 
@@ -17,7 +17,6 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-ZKERETN8Y2", {
         custom_map: { dimension1: "client_id" },
       });
@@ -26,1369 +25,819 @@
         gtag("set", "user_properties", { client_id: clientID });
       });
     </script>
-
-    <script>
-      !(function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = "2.0";
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
-      );
-      fbq("init", "9083739771684521");
-      fbq("track", "PageView");
-    </script>
-    <noscript
-      ><img
-        height="1"
-        width="1"
-        style="display: none"
-        src="https://www.facebook.com/tr?id=9083739771684521&ev=PageView&noscript=1"
-    /></noscript>
     <style>
-      /* ================= GLOBAL RESET ================= */
+      /* ================= 基础设置 ================= */
+      :root {
+        --primary-color: #000;
+        --secondary-color: #d9534f; /* 价格/促销色 */
+        --bg-color: #fff;
+        --gray-bg: #f9f9f9;
+        --border-color: #eee;
+        --font-main: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
       * {
         box-sizing: border-box;
       }
+
       body {
         margin: 0;
         padding: 0;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        background: #fff;
-        color: #222;
+        font-family: var(--font-main);
+        background: var(--bg-color);
+        color: #333;
         -webkit-font-smoothing: antialiased;
-        padding-bottom: 80px;
+        padding-bottom: 80px; /* 给底部购物车按钮留空间 */
       }
+
       a {
-        color: black;
-        font-weight: bold;
         text-decoration: none;
+        color: inherit;
+      }
+      button {
+        outline: none;
       }
 
-      /* ================= HEADER & SEARCH ================= */
-      .price-info {
-        max-width: 600px;
-        margin: 0 auto 20px auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border: 1px solid #e0e0e0;
-        border-radius: 12px;
+      /* ================= 顶部公告栏 ================= */
+      .top-banner {
+        background-color: var(--gray-bg);
         text-align: center;
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.9rem;
       }
-      .price-info p {
-        margin: 8px 0;
-        font-size: 1rem;
-        color: #333;
-        font-weight: 500;
-      }
-      .TOP {
-        text-align: center;
-        margin-top: 20px;
-      }
-      .info-button {
-        background: none;
-        border: none;
-        color: #333;
+      .top-banner strong {
         font-weight: 700;
-        text-decoration: underline;
-        cursor: pointer;
-        font-size: 1rem;
-        padding: 5px;
+        color: #000;
+      }
+      .top-banner span {
+        color: #555;
+        display: block;
+        margin-top: 4px;
+        font-size: 0.85rem;
       }
 
-      .search-container {
-        max-width: 600px;
+      /* ================= 搜索与排序 ================= */
+      .controls-container {
+        max-width: 800px;
         margin: 20px auto;
         padding: 0 15px;
-        position: relative;
-      }
-      #search-input {
-        width: 100%;
-        padding: 12px 40px 12px 20px;
-        font-size: 1.1rem;
-        border: 1px solid #ccc;
-        border-radius: 25px;
-        outline: none;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      }
-      #search-clear-btn {
-        position: absolute;
-        top: 50%;
-        right: 30px;
-        transform: translateY(-50%);
-        background: #ccc;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 22px;
-        height: 22px;
-        cursor: pointer;
-        display: none;
-        align-items: center;
-        justify-content: center;
-      }
-      .sort-container {
-        max-width: 900px;
-        margin: 0 auto 15px auto;
-        padding: 0 20px;
         display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .sort-container label {
-        margin-right: 10px;
-        font-weight: 600;
-        color: #555;
-      }
-      #sort-by {
-        padding: 8px 12px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #f9f9f9;
+        flex-direction: column;
+        gap: 15px;
       }
 
-      /* ================= NAVBAR ================= */
-      .navbar {
+      .search-box {
+        position: relative;
+        width: 100%;
+      }
+      .search-box input {
+        width: 100%;
+        padding: 12px 45px 12px 20px;
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        font-size: 1rem;
+        transition: border 0.3s;
+      }
+      .search-box input:focus {
+        border-color: #000;
+      }
+      .search-clear {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #ccc;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        display: none; /* JS控制显示 */
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+
+      .sort-box {
         display: flex;
-        justify-content: flex-start;
-        overflow-x: auto;
+        align-items: center;
+        justify-content: flex-end;
         gap: 10px;
+        font-size: 0.9rem;
+      }
+      .sort-box select {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        background: #fff;
+      }
+
+      /* ================= 品牌导航栏 (水平滑动) ================= */
+      .navbar-wrapper {
         position: sticky;
         top: 0;
         z-index: 100;
-        padding: 12px 15px;
         background: rgba(255, 255, 255, 0.95);
-        border-bottom: 1px solid #eee;
-        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        backdrop-filter: blur(5px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      }
+      .navbar {
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        padding: 15px;
+        scrollbar-width: none; /* Firefox */
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
       }
       .navbar::-webkit-scrollbar {
         display: none;
-      }
+      } /* Chrome/Safari */
+
       .navbar button {
         flex: 0 0 auto;
-        background: #f8f8f8;
-        border: 1px solid #e0e0e0;
-        padding: 8px 18px;
-        cursor: pointer;
+        background: var(--gray-bg);
+        border: 1px solid var(--border-color);
+        padding: 8px 20px;
         font-size: 0.95rem;
-        font-weight: 500;
-        border-radius: 25px;
+        border-radius: 20px;
+        cursor: pointer;
         color: #555;
-        transition: all 0.2s ease;
+        transition: all 0.2s;
+        font-weight: 500;
       }
       .navbar button.active {
-        background: #222;
+        background: #000;
         color: #fff;
-        border-color: #222;
+        border-color: #000;
+        transform: scale(1.02);
       }
 
-      /* ================= GALLERY (Top Picks) ================= */
+      /* ================= 顶部热销区 ================= */
       #top-picks-container {
-        display: none;
-        max-width: 100%;
-        margin: 0 auto;
-        overflow: hidden;
+        display: none; /* JS控制 */
+        margin-top: 20px;
+      }
+      .section-title {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        letter-spacing: 0.5px;
       }
       .top-scroll-wrapper {
         display: flex;
         overflow-x: auto;
         gap: 15px;
-        padding: 10px 15px;
-        -webkit-overflow-scrolling: touch;
+        padding: 0 15px 20px 15px;
         scrollbar-width: none;
       }
       .top-scroll-wrapper::-webkit-scrollbar {
         display: none;
       }
+
       .top-card {
-        flex: 0 0 140px;
+        flex: 0 0 150px;
         background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
         overflow: hidden;
+        border: 1px solid #eee;
         position: relative;
         cursor: pointer;
-        padding: 0;
       }
       .top-card img {
         width: 100%;
-        height: 140px;
+        height: 150px;
         object-fit: cover;
-        display: block;
       }
-      .top-card .top-info {
-        padding: 8px 5px;
+      .top-card .info {
+        padding: 8px;
         text-align: center;
-        background: #fff;
       }
-      .top-card .top-name {
-        font-size: 0.85rem;
-        font-weight: bold;
-        margin-bottom: 3px;
-        white-space: nowrap;
+      .top-card .name {
+        font-size: 0.8rem;
+        height: 32px;
         overflow: hidden;
-        text-overflow: ellipsis;
+        font-weight: 600;
       }
-      .top-card .top-price {
-        color: #d9534f;
-        font-weight: 800;
-        font-size: 0.95rem;
+      .top-card .price {
+        color: var(--secondary-color);
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-top: 4px;
       }
       .hot-badge {
         position: absolute;
         top: 0;
         left: 0;
-        background: linear-gradient(135deg, #ff6b6b, #ff3b30);
+        background: #ff3b30;
         color: white;
         font-size: 0.7rem;
-        padding: 3px 8px;
+        padding: 4px 8px;
         border-bottom-right-radius: 8px;
         font-weight: 800;
-        z-index: 2;
       }
 
-      /* ================= MAIN GALLERY ================= */
+      /* ================= 产品列表 (网格) ================= */
       .gallery {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 10px;
+        margin: 20px auto;
+        padding: 0 15px;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* 手机端两列 */
         gap: 15px;
-        min-height: 300px;
       }
+      @media (min-width: 768px) {
+        .gallery {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 30px;
+        }
+      }
+
       .item {
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         background: #fff;
-        transition: transform 0.3s ease;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.2s, box-shadow 0.2s;
       }
-      .item[data-stock="0"] {
-        display: none !important;
+      .item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
       }
 
       .item img {
         width: 100%;
-        height: 250px;
+        height: 220px; /* 固定高度 */
         object-fit: cover;
+        display: block;
+        background: #f8f8f8;
       }
-      .caption {
-        padding: 16px;
-        font-size: 1rem;
-        font-weight: 600;
+      .item .caption {
+        padding: 12px;
         text-align: center;
-        border-top: 1px solid #eee;
       }
-      .product-size {
-        font-size: 0.85rem;
+      .item-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 2.6em; /* 限制两行文字高度 */
+      }
+      .item-sub {
+        font-size: 0.8rem;
         color: #888;
-        margin: 4px 0;
-        font-weight: normal;
+        margin-bottom: 8px;
       }
-      .item .add-to-cart {
+      .item-price {
+        font-size: 1.1rem;
+        color: #000;
+        font-weight: 700;
+      }
+
+      .add-to-cart-btn {
         position: absolute;
-        top: 10px;
+        bottom: 110px; /* 图片上方 */
         right: 10px;
-        background: rgba(0, 0, 0, 0.7);
-        color: #fff;
-        border: none;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
-        width: 36px;
-        height: 36px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         font-size: 1.2rem;
-        z-index: 3;
+        transition: background 0.2s;
       }
-      .item-cart-count {
+      .add-to-cart-btn:hover {
+        background: #000;
+        color: #fff;
+      }
+      .cart-badge-on-item {
         position: absolute;
         top: -5px;
         right: -5px;
-        background-color: #f44;
+        background: red;
         color: white;
-        border-radius: 50%;
-        padding: 2px 6px;
-        font-size: 0.8rem;
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 10px;
         display: none;
       }
-      .add-to-cart-confirmation {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #28a745;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 15px;
-        font-size: 0.9rem;
-        font-weight: bold;
-        opacity: 0;
-        transition: all 0.5s ease;
-        z-index: 10;
-        pointer-events: none;
-      }
-      .add-to-cart-confirmation.show {
-        opacity: 1;
-        transform: translate(-50%, -100%);
-      }
 
-      /* ================= WHY BUY FROM US ================= */
-      .trust-section {
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 30px 20px;
-        background: #fdfdfd;
-        border-top: 1px solid #eee;
-      }
-      .trust-title {
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 30px;
-        color: #222;
-      }
-      .trust-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-      .trust-item {
-        text-align: center;
-        padding: 20px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        position: relative;
-        overflow: hidden;
-      }
-      .trust-icon {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-        display: block;
-      }
-
-      .whatsapp-card {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-        transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
-        border: 1px solid transparent;
-      }
-      .whatsapp-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
-        border: 1px solid #25d366;
-      }
-
-      .review-carousel {
+      /* ================= 分页控件 ================= */
+      .pagination-container {
         display: flex;
-        overflow-x: auto;
-        gap: 0;
-        padding: 10px 0;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-        justify-content: flex-start;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin: 40px 0;
       }
-      .review-carousel::-webkit-scrollbar {
-        display: none;
-      }
-
-      .trust-review-img {
-        flex: 0 0 100%;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 8px;
+      .page-btn {
+        padding: 10px 25px;
+        background-color: #000;
+        color: #fff;
         border: none;
-        cursor: zoom-in;
-        display: block;
-        margin-right: 10px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .page-btn:disabled {
+        background-color: #eee;
+        color: #aaa;
+        cursor: not-allowed;
       }
 
-      .trust-text h4 {
-        margin: 10px 0;
-        font-size: 1.1rem;
+      /* ================= 悬浮购物车按钮 ================= */
+      .float-cart-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background: #000;
+        color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 999;
       }
-      .trust-text p {
-        font-size: 0.95rem;
-        color: #666;
-        line-height: 1.5;
+      .float-cart-count {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #d9534f;
+        color: #fff;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        font-size: 0.75rem;
+        text-align: center;
+        line-height: 22px;
+        font-weight: bold;
       }
 
-      /* ================= MODALS ================= */
+      /* ================= 弹窗 (Modal) ================= */
       .modal {
         display: none;
         position: fixed;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 2000;
         align-items: center;
         justify-content: center;
-        padding: 15px;
-        z-index: 2147483647 !important;
-        background-color: rgba(0, 0, 0, 0.85) !important;
       }
       .modal.open {
         display: flex;
       }
-
-      body.modal-open {
-        overflow: hidden !important;
-      }
-      body.modal-open .back-to-top,
-      body.modal-open .cart-button {
-        display: none !important;
-      }
-
       .modal-content {
-        max-width: 600px;
-        width: 90vw;
-        max-height: 90vh;
-        border-radius: 12px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
         background: #fff;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 15px;
+        overflow: hidden;
         text-align: center;
-        position: relative;
+        padding-bottom: 20px;
       }
-
-      .modal-content img {
+      .modal-img {
         width: 100%;
-        max-height: 65vh;
+        height: 300px;
         object-fit: cover;
         background: #f9f9f9;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
       }
-
-      @media (max-width: 767px) {
-        .modal-content img {
-          max-height: 50vh !important;
-          margin-bottom: 10px;
-        }
-        .modal-caption {
-          font-size: 1rem !important;
-          padding: 5px 15px !important;
-        }
-      }
-
-      .modal-close {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 2rem;
-        color: #fff;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-        z-index: 10;
-        background: rgba(0, 0, 0, 0.3);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        line-height: 38px;
-        text-align: center;
-      }
-
-      .modal-controls {
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80px;
+      .modal-info {
+        padding: 15px;
       }
       .modal-add-btn {
-        background-color: #333;
-        color: white;
+        background: #000;
+        color: #fff;
+        width: 80%;
+        padding: 12px;
         border: none;
-        padding: 12px 30px;
-        font-size: 1.1rem;
         border-radius: 30px;
+        font-size: 1rem;
         cursor: pointer;
-        width: 100%;
-        max-width: 250px;
-      }
-      .modal-qty-controls {
-        display: none;
-        align-items: center;
-        gap: 20px;
-      }
-      .modal-qty-btn {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        font-size: 1.5rem;
-        cursor: pointer;
-        background: #f0f0f0;
-        border: 1px solid #ccc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .modal-qty-count {
-        font-size: 1.5rem;
-        font-weight: bold;
-        min-width: 30px;
-      }
-
-      .cart-button {
-        position: fixed;
-        bottom: 30px;
-        right: 20px;
-        background-color: #ffffff;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        cursor: pointer;
-      }
-      .cart-button.added {
-        animation: cart-pulse 0.6s ease-out;
-      }
-      @keyframes cart-pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.15);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-      .cart-count {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        background-color: #f44;
-        color: white;
-        border-radius: 50%;
-        padding: 2px 6px;
-        font-size: 0.8rem;
-      }
-      .cart-icon {
-        width: 32px;
-        height: 32px;
-      }
-
-      .back-to-top {
-        display: none;
-        position: fixed;
-        bottom: 30px;
-        left: 30px;
-        background-color: #333;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        text-align: center;
-        line-height: 50px;
-        cursor: pointer;
-        font-size: 1.5rem;
-        z-index: 1000;
-      }
-
-      .lightbox {
-        display: none;
-        position: fixed;
-        z-index: 2147483647;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-      }
-      .lightbox.open {
-        display: flex;
-      }
-      .lightbox-img {
-        width: auto;
-        height: auto;
-        max-width: 100vw;
-        max-height: 85vh;
-        object-fit: contain;
-      }
-
-      /* Responsive */
-      @media (min-width: 768px) {
-        .gallery {
-          grid-template-columns: repeat(4, 1fr);
-          gap: 40px;
-          padding: 0 20px;
-        }
-        .top-scroll-wrapper {
-          display: flex;
-          gap: 20px;
-          padding: 20px;
-          overflow-x: auto;
-        }
-        .top-card {
-          flex: 0 0 180px;
-        }
-        .top-card img {
-          height: 180px;
-        }
-        .trust-grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
+        margin-top: 10px;
       }
     </style>
   </head>
   <body>
-    <div class="price-info">
-      <div>
-        <p style="font-size: 1.1rem; font-weight: 700">Perfumes: From $30</p>
-        <p style="font-size: 1.1rem; font-weight: 600">
-          Free Shipping | Buy more save more !
-        </p>
-        <p style="font-size: 1.1rem; font-weight: 700">USA WAREHOUSE</p>
-        <p style="font-size: 0.9rem; color: #555">
-          (Exact price is shown on each product)
-        </p>
+    <div class="top-banner">
+      <strong>TOP OUTLET PERFUME</strong>
+      <span>Free Shipping | USA Warehouse | Wholesale Prices</span>
+    </div>
+
+    <div class="controls-container">
+      <div class="search-box">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search brands (e.g. Dior, Gucci)..."
+        />
+        <button id="search-clear" class="search-clear">&times;</button>
+      </div>
+      <div class="sort-box">
+        <label>Sort:</label>
+        <select id="sort-by">
+          <option value="default">Default</option>
+          <option value="newest">Newest</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
       </div>
     </div>
 
-    <div class="search-container">
-      <input
-        type="search"
-        id="search-input"
-        placeholder="Search by name, brand or number..."
-      />
-      <button id="search-clear-btn" title="Clear search">&times;</button>
-    </div>
-
-    <div class="sort-container">
-      <label for="sort-by">Sort By:</label>
-      <select id="sort-by">
-        <option value="default">Default (A-Z)</option>
-        <option value="newest">Newest First</option>
-        <option value="price-asc">Price: Low to High</option>
-        <option value="price-desc">Price: High to Low</option>
-      </select>
-    </div>
-
-    <div class="navbar" id="brand-navbar">
-      <button data-brand="All" class="active">All Brands</button>
-      <button data-brand="Giorgio Armani">Armani</button>
-      <button data-brand="Azzaro">Azzaro</button>
-      <button data-brand="Bond No. 9">Bond No. 9</button>
-      <button data-brand="Carolina Herrera">Carolina Herrera</button>
-      <button data-brand="Chanel">Chanel</button>
-      <button data-brand="Creed">Creed</button>
-      <button data-brand="Dior">Dior</button>
-      <button data-brand="Gucci">Gucci</button>
-      <button data-brand="Initio">Initio</button>
-      <button data-brand="Jean Paul Gaultier">Jean Paul Gaultier</button>
-      <button data-brand="Lattafa">Lattafa</button>
-      <button data-brand="Louis Vuitton">Louis Vuitton</button>
-      <button data-brand="Maison Francis Kurkdjian">
-        Maison Francis Kurkdjian
-      </button>
-      <button data-brand="Paco Rabanne">Paco Rabanne</button>
-      <button data-brand="Parfums de Marly">Parfums de Marly</button>
-      <button data-brand="Prada">Prada</button>
-      <button data-brand="Tom Ford">Tom Ford</button>
-      <button data-brand="Valentino">Valentino</button>
-      <button data-brand="Versace">Versace</button>
-      <button data-brand="Xerjoff">Xerjoff</button>
-      <button data-brand="Yves Saint Laurent">Yves Saint Laurent</button>
-      <button data-brand="Other">Other Brands</button>
+    <div class="navbar-wrapper">
+      <div class="navbar" id="brand-navbar">
+        <button data-brand="All" class="active">All Brands</button>
+        <button data-brand="Giorgio Armani">Armani</button>
+        <button data-brand="Burberry">Burberry</button>
+        <button data-brand="Chanel">Chanel</button>
+        <button data-brand="Creed">Creed</button>
+        <button data-brand="Dior">Dior</button>
+        <button data-brand="Gucci">Gucci</button>
+        <button data-brand="Louis Vuitton">Louis Vuitton</button>
+        <button data-brand="Tom Ford">Tom Ford</button>
+        <button data-brand="Versace">Versace</button>
+        <button data-brand="YSL">YSL</button>
+        <button data-brand="Other">Other Brands</button>
+      </div>
     </div>
 
     <div id="top-picks-container">
-      <h3 style="padding: 0 15px; margin-bottom: 10px; font-size: 1.1rem">
-        🔥 Best Sellers
-      </h3>
+      <div class="section-title">🔥 Best Sellers</div>
       <div class="top-scroll-wrapper" id="top-gallery"></div>
-      <hr style="margin: 20px 15px; border: 0; border-top: 1px solid #eee" />
     </div>
 
-    <div class="gallery" id="gallery">
-      <div class="gallery-loader"></div>
+    <div class="gallery" id="gallery"></div>
+
+    <div
+      id="pagination-controls"
+      class="pagination-container"
+      style="display: none"
+    >
+      <button id="prev-page" class="page-btn">Previous</button>
+      <span id="page-info" style="font-weight: bold">Page 1</span>
+      <button id="next-page" class="page-btn">Next</button>
     </div>
 
-    <div class="trust-section">
-      <h2 class="trust-title">Why Buy From Us?</h2>
-      <div class="trust-grid">
-        <div class="trust-item">
-          <span class="trust-icon">⭐⭐⭐⭐⭐</span>
-          <div class="trust-text">
-            <h4>Happy Customers</h4>
-            <p>Swipe to see real reviews from our customers!</p>
-          </div>
-          <div class="review-carousel" id="review-carousel">
-            <img
-              src="images/review1.jpg"
-              alt="Review 1"
-              class="trust-review-img lightbox-trigger"
-              onerror="this.style.display='none'"
-            />
-            <img
-              src="images/review2.jpg"
-              alt="Review 2"
-              class="trust-review-img lightbox-trigger"
-              onerror="this.style.display='none'"
-            />
-            <img
-              src="images/review3.jpg"
-              alt="Review 3"
-              class="trust-review-img lightbox-trigger"
-              onerror="this.style.display='none'"
-            />
-            <img
-              src="images/review4.jpg"
-              alt="Review 4"
-              class="trust-review-img lightbox-trigger"
-              onerror="this.style.display='none'"
-            />
-            <img
-              src="images/review5.jpg"
-              alt="Review 5"
-              class="trust-review-img lightbox-trigger"
-              onerror="this.style.display='none'"
-            />
-          </div>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">🛡️</span>
-          <div class="trust-text">
-            <h4>Broken? We Reship!</h4>
-            <p>
-              Don't worry about shipping damage. If it arrives broken or leaked,
-              show us a photo and we will reship for <strong>FREE</strong>.
-            </p>
-            <button
-              onclick="document.getElementById('policy-modal').classList.add('open'); document.body.classList.add('modal-open');"
-              style="
-                margin-top: 10px;
-                background: none;
-                border: none;
-                text-decoration: underline;
-                cursor: pointer;
-                color: #007bff;
-              "
-            >
-              See Policy
-            </button>
-          </div>
-        </div>
-        <a
-          href="https://wa.me/16232027321"
-          target="_blank"
-          class="trust-item whatsapp-card"
-        >
-          <span class="trust-icon">💬</span>
-          <div class="trust-text">
-            <h4>24/7 WhatsApp Support</h4>
-            <p>
-              We are always online. Get instant quotes, track your order, and
-              get expert recommendations anytime.
-            </p>
-            <span
-              style="
-                display: inline-block;
-                margin-top: 10px;
-                color: #25d366;
-                font-weight: bold;
-                text-decoration: underline;
-              "
-              >Click to Chat &rarr;</span
-            >
-          </div>
-        </a>
-      </div>
+    <div class="float-cart-btn" onclick="window.location.href='cart.html'">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path
+          d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+        ></path>
+      </svg>
+      <span id="cart-count" class="float-cart-count">0</span>
     </div>
 
-    <div class="modal" id="modal">
-      <div class="modal-close" id="modal-close">&times;</div>
+    <div id="modal" class="modal">
       <div class="modal-content">
-        <img src="" alt="" id="modal-img" />
-        <div class="modal-caption" id="modal-caption"></div>
-        <div class="modal-controls">
-          <button class="modal-add-btn">Add to Cart</button>
-          <div class="modal-qty-controls">
-            <button class="modal-qty-btn" data-action="decrease">-</button>
-            <span class="modal-qty-count">1</span>
-            <button class="modal-qty-btn" data-action="increase">+</button>
-          </div>
+        <div
+          style="text-align: right; padding: 10px; cursor: pointer"
+          onclick="document.getElementById('modal').classList.remove('open')"
+        >
+          &times;
+        </div>
+        <img id="modal-img" class="modal-img" src="" />
+        <div class="modal-info">
+          <h3 id="modal-title" style="margin: 0 0 10px 0"></h3>
+          <div
+            id="modal-price"
+            style="
+              font-weight: bold;
+              color: #d9534f;
+              font-size: 1.2rem;
+              margin-bottom: 15px;
+            "
+          ></div>
+          <button id="modal-add-btn" class="modal-add-btn">Add to Cart</button>
         </div>
       </div>
     </div>
-
-    <div class="lightbox" id="lightbox">
-      <img src="" class="lightbox-img" id="lightbox-img" />
-    </div>
-
-    <div class="modal" id="policy-modal">
-      <div class="modal-close" id="policy-modal-close">&times;</div>
-      <div
-        class="modal-content"
-        style="max-width: 500px; text-align: left; padding: 25px"
-      >
-        <h3 style="text-align: center; margin-top: 0; font-size: 1.4rem">
-          Compensation Policy
-        </h3>
-        <p>
-          Please check your items upon delivery. If you have any issues, follow
-          these steps for a free reshipment:
-        </p>
-        <ul style="padding-left: 20px">
-          <li>
-            <strong>1. Leaked or Damaged:</strong> Provide photos of: Outer
-            Packaging + Shipping Label + Damaged Goods.
-          </li>
-          <li>
-            <strong>2. Wrong Product Sent:</strong> Provide photos of: Shipping
-            Label + Incorrect Goods.
-          </li>
-        </ul>
-        <p
-          style="
-            font-weight: bold;
-            text-align: center;
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-radius: 8px;
-          "
-        >
-          Important: Please keep all shipping packaging until you've checked
-          everything.
-        </p>
-      </div>
-    </div>
-
-    <div class="modal" id="receipt-modal">
-      <div class="modal-close" id="receipt-modal-close">&times;</div>
-      <div
-        class="modal-content"
-        style="max-width: 600px; padding: 0; overflow: hidden"
-      >
-        <img
-          src="images/receipt.webp"
-          alt="Receipt Example"
-          style="max-height: 85vh"
-        />
-        <div style="padding: 12px; font-weight: bold">Example Receipt</div>
-      </div>
-    </div>
-
-    <button id="back-to-top" class="back-to-top">&#x25B2;</button>
-
-    <button class="cart-button" id="cart-button">
-      <img src="icon/order.png" alt="Cart" class="cart-icon" />
-      <span id="cart-count" class="cart-count">0</span>
-    </button>
 
     <script src="db.js"></script>
     <script>
-      // =================================================================
-      // CORE LOGIC & TRACKING
-      // =================================================================
-
+      // ================= 核心逻辑 =================
       let cartItems = [];
-      let gallery,
-        searchInput,
-        searchClearBtn,
-        cartButton,
-        cartCount,
-        brandNavbar;
+      let currentPage = 1;
+      const itemsPerPage = 20; // 每页显示数量
+      let currentFilteredData = [];
 
-      function loadCartFromLocalStorage() {
-        const storedCart = localStorage.getItem("perfumeCart");
-        cartItems = storedCart ? JSON.parse(storedCart) : [];
+      // 1. 初始化
+      document.addEventListener("DOMContentLoaded", () => {
+        loadCart();
+        renderPerfumes(); // 首次渲染
+        setupEventListeners();
+      });
+
+      // 2. 购物车读取
+      function loadCart() {
+        const saved = localStorage.getItem("perfumeCart");
+        cartItems = saved ? JSON.parse(saved) : [];
+        updateCartCount();
       }
-      function saveCartToLocalStorage() {
+      function saveCart() {
         localStorage.setItem("perfumeCart", JSON.stringify(cartItems));
+        updateCartCount();
       }
       function updateCartCount() {
-        const count = cartItems.reduce(
-          (total, item) => total + item.quantity,
-          0
-        );
-        if (cartCount) cartCount.textContent = count;
-      }
-      function renderItemCounts() {
-        if (!gallery) return;
-        const currentItems = gallery.querySelectorAll(".item");
-        currentItems.forEach((item) => {
-          const itemName = item.dataset.name;
-          const badge = item.querySelector(".item-cart-count");
-          const itemInCart = cartItems.find((c) => c.name === itemName);
-          if (itemInCart && itemInCart.quantity > 0) {
-            badge.textContent = itemInCart.quantity;
+        const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        document.getElementById("cart-count").textContent = count;
+
+        // 更新所有商品卡片上的角标
+        document.querySelectorAll(".item").forEach((item) => {
+          const id = item.dataset.id;
+          const inCart = cartItems.find((c) => c.name === id);
+          const badge = item.querySelector(".cart-badge-on-item");
+          if (inCart && inCart.quantity > 0) {
+            badge.textContent = inCart.quantity;
             badge.style.display = "block";
           } else {
             badge.style.display = "none";
           }
         });
       }
-      function pulseCartButton() {
-        cartButton.classList.add("added");
-        setTimeout(() => cartButton.classList.remove("added"), 600);
-      }
-      function showConfirmation(button) {
-        const confirmation = document.createElement("div");
-        confirmation.textContent = "Added!";
-        confirmation.className = "add-to-cart-confirmation";
-        const itemElement = button.closest(".item");
-        itemElement.appendChild(confirmation);
-        setTimeout(() => confirmation.classList.add("show"), 10);
-        setTimeout(() => confirmation.remove(), 1500);
-      }
 
-      // --- ADD TO CART FUNCTION ---
-      function addItemToCart(productId) {
+      // 3. 渲染主函数
+      function renderPerfumes() {
         const db = window.perfumeDB || [];
-        const perfumeData = db.find((p) => p.id === productId);
-        if (!perfumeData) return;
 
-        const existingItem = cartItems.find((c) => c.name === productId);
-        if (existingItem) {
-          existingItem.quantity++;
-        } else {
-          cartItems.push({
-            name: productId,
-            caption: `${productId} - ${perfumeData.name}`,
-            img: perfumeData.img,
-            quantity: 1,
-            price: Number(perfumeData.price),
-            tier: perfumeData.tier,
-            ml: perfumeData.ml,
-            floz: perfumeData.floz,
-            brand: perfumeData.brand,
-          });
-        }
-        saveCartToLocalStorage();
-        updateCartCount();
-        renderItemCounts();
-        pulseCartButton();
-
-        if (typeof fbq !== "undefined") {
-          fbq("track", "AddToCart", {
-            content_ids: [productId],
-            content_type: "product",
-            value: perfumeData.price,
-            currency: "USD",
-          });
-        }
-        if (typeof gtag !== "undefined") {
-          gtag("event", "add_to_cart", {
-            currency: "USD",
-            value: perfumeData.price,
-            items: [{ item_id: productId, item_name: perfumeData.name }],
-          });
-        }
-      }
-
-      // --- NEW AUTO SCROLL LOGIC: STEP-BY-STEP & MANUAL FRIENDLY ---
-      function startAutoSlide(containerId, intervalTime = 3000) {
-        const container = document.getElementById(containerId);
-        if (!container || container.children.length === 0) return;
-
-        // 1. Clone items for infinite look
-        const originalContent = Array.from(container.children);
-        originalContent.forEach((child) => {
-          const clone = child.cloneNode(true);
-          if (child.onclick) clone.onclick = child.onclick;
-          container.appendChild(clone);
-        });
-
-        let slideTimer;
-
-        // 2. Function to scroll one "step"
-        function stepScroll() {
-          // Calculate width of one item + gap dynamically
-          const firstChild =
-            container.querySelector("div") || container.querySelector("img");
-          if (!firstChild) return;
-
-          const style = window.getComputedStyle(firstChild);
-          const itemWidth =
-            firstChild.offsetWidth +
-            parseInt(style.marginLeft || 0) +
-            parseInt(style.marginRight || 0);
-          const containerStyle = window.getComputedStyle(container);
-          const gap = parseInt(
-            containerStyle.columnGap || containerStyle.gap || 0
-          );
-          const step = itemWidth + gap;
-
-          // Check if we need to reset seamlessly
-          // If scrolled past half the total width (the cloned part), snap back
-          if (container.scrollLeft >= container.scrollWidth / 2) {
-            container.scrollLeft -= container.scrollWidth / 2;
-          }
-
-          // Smooth scroll to next item
-          container.scrollBy({
-            left: step,
-            behavior: "smooth",
-          });
-        }
-
-        function start() {
-          if (slideTimer) clearInterval(slideTimer);
-          slideTimer = setInterval(stepScroll, intervalTime);
-        }
-
-        function stop() {
-          if (slideTimer) clearInterval(slideTimer);
-        }
-
-        // 3. Event Listeners: Pause on interaction
-        container.addEventListener("mouseenter", stop);
-        container.addEventListener("mouseleave", start);
-        container.addEventListener("touchstart", stop, { passive: true });
-        container.addEventListener("touchend", start);
-
-        // Start initial timer
-        start();
-      }
-
-      // --- MAIN RENDER LOGIC ---
-      window.renderPerfumes = function () {
-        const db = window.perfumeDB || [];
-        if (!gallery) return;
-
-        const topContainer = document.getElementById("top-picks-container");
+        // 渲染顶部推荐
         const topGallery = document.getElementById("top-gallery");
+        const topContainer = document.getElementById("top-picks-container");
         const topItems = db.filter((p) => p.top == 1);
-        if (topContainer && topGallery && topItems.length > 0) {
+
+        if (topItems.length > 0) {
           topGallery.innerHTML = "";
           topItems.forEach((p) => {
-            const el = document.createElement("div");
-            el.className = "top-card";
-            el.onclick = () => {
-              const mainItem = document.querySelector(
-                `.item[data-name="${p.id}"]`
-              );
-              if (mainItem) mainItem.click();
-            };
-            // Modified HTML for No Padding Image
-            el.innerHTML = `
-                   <div class="hot-badge">HOT</div>
-                   <img src="${p.img}" loading="lazy">
-                   <div class="top-info"><div class="top-name">${p.name}</div><div class="top-price">$${p.price}</div></div>`;
-            topGallery.appendChild(el);
+            const div = document.createElement("div");
+            div.className = "top-card";
+            div.onclick = () => openModal(p);
+            div.innerHTML = `
+               <div class="hot-badge">HOT</div>
+               <img src="${p.img}" loading="lazy">
+               <div class="info"><div class="name">${p.name}</div><div class="price">$${p.price}</div></div>
+             `;
+            topGallery.appendChild(div);
           });
-
-          // Start Step Carousel (3 seconds)
-          startAutoSlide("top-gallery", 3000);
+          // 只有在没有搜索/筛选且在第一页时才显示顶部
+          const isDefaultState =
+            !document.getElementById("search-input").value &&
+            document.querySelector(".navbar button.active").dataset.brand ===
+              "All";
+          topContainer.style.display = isDefaultState ? "block" : "none";
         }
-        window.applyLastState();
-      };
 
-      window.filterAndSearch = function () {
+        filterAndSearch(); // 执行筛选和分页
+      }
+
+      // 4. 筛选与搜索
+      function filterAndSearch() {
         const db = window.perfumeDB || [];
-        if (db.length === 0) return;
-        const activeBrandBtn = brandNavbar.querySelector("button.active");
-        const selectedBrand = activeBrandBtn
-          ? activeBrandBtn.dataset.brand
-          : "All";
-        const selectedSort = document.getElementById("sort-by").value;
-        const term = searchInput.value.toLowerCase().trim();
+        const activeBrand = document.querySelector(".navbar button.active")
+          .dataset.brand;
+        const searchTerm = document
+          .getElementById("search-input")
+          .value.toLowerCase()
+          .trim();
+        const sortType = document.getElementById("sort-by").value;
 
+        // 隐藏顶部推荐（如果有搜索）
         const topContainer = document.getElementById("top-picks-container");
-        if (topContainer) {
-          const hasTop = db.some((p) => p.top == 1);
-          topContainer.style.display =
-            selectedBrand === "All" && !term && hasTop ? "block" : "none";
+        if (searchTerm || activeBrand !== "All") {
+          if (topContainer) topContainer.style.display = "none";
+        } else if (topContainer) {
+          topContainer.style.display = "block";
         }
 
+        // 筛选
         let filtered = db.filter((p) => {
-          let brandMatch =
-            selectedBrand === "All"
-              ? true
-              : selectedBrand === "Other"
-              ? ![
-                  "Dior",
-                  "Chanel",
-                  "Gucci",
-                  "Tom Ford",
-                  "Versace",
-                  "YSL",
-                  "Creed",
-                  "Armani",
-                  "Prada",
-                  "Valentino",
-                ].includes(p.brand)
-              : p.brand === selectedBrand;
-          if (selectedBrand === "Other") {
-            const majors = [
-              "Dior",
-              "Chanel",
-              "Gucci",
-              "Tom Ford",
-              "Versace",
-              "YSL",
-              "Creed",
-              "Armani",
-              "Prada",
-              "Valentino",
-            ];
-            brandMatch = !majors.some((b) => p.brand.includes(b));
+          let brandMatch = true;
+          if (activeBrand !== "All") {
+            if (activeBrand === "Other") {
+              const majors = [
+                "Dior",
+                "Chanel",
+                "Gucci",
+                "Tom Ford",
+                "Versace",
+                "YSL",
+                "Louis Vuitton",
+                "Creed",
+                "Armani",
+                "Burberry",
+              ];
+              brandMatch = !majors.some((b) => p.brand.includes(b));
+            } else {
+              brandMatch = p.brand.includes(activeBrand); // 模糊匹配，防止 "Dior" 不匹配 "Christian Dior"
+            }
           }
           let searchMatch = true;
-          if (term)
+          if (searchTerm) {
             searchMatch =
-              p.name.toLowerCase().includes(term) ||
-              p.id.toLowerCase().includes(term) ||
-              p.brand.toLowerCase().includes(term);
+              p.name.toLowerCase().includes(searchTerm) ||
+              p.id.toLowerCase().includes(searchTerm) ||
+              p.brand.toLowerCase().includes(searchTerm);
+          }
           return brandMatch && searchMatch;
         });
 
-        if (selectedSort === "price-asc")
+        // 排序
+        if (sortType === "price-asc")
           filtered.sort((a, b) => a.price - b.price);
-        else if (selectedSort === "price-desc")
+        else if (sortType === "price-desc")
           filtered.sort((a, b) => b.price - a.price);
-        else if (selectedSort === "newest") filtered.reverse();
-        else
-          filtered.sort((a, b) =>
-            a.id.localeCompare(b.id, undefined, {
-              numeric: true,
-              sensitivity: "base",
-            })
-          );
+        else if (sortType === "newest") filtered.reverse();
 
+        currentFilteredData = filtered;
+        currentPage = 1; // 重置页码
+        renderCurrentPage();
+      }
+
+      // 5. 分页渲染 (核心新功能)
+      function renderCurrentPage() {
+        const gallery = document.getElementById("gallery");
         gallery.innerHTML = "";
-        if (filtered.length === 0) {
+
+        const controls = document.getElementById("pagination-controls");
+
+        if (currentFilteredData.length === 0) {
           gallery.innerHTML =
-            '<div class="no-results-message">No items found.</div>';
+            "<div style='grid-column:1/-1;text-align:center;padding:40px;'>No perfumes found.</div>";
+          controls.style.display = "none";
           return;
         }
-        filtered.forEach((p) => {
-          const item = document.createElement("div");
-          item.className = "item";
-          item.dataset.name = p.id;
-          item.dataset.img = p.img;
-          item.dataset.stock = p.stock;
 
-          item.innerHTML = `
-                <img src="${p.img}" loading="lazy">
-                <div class="caption">
-                  ${p.id} - ${p.name}
-                  <br>
-                  <span class="product-size">
-                    ${p.ml ? p.ml + "ml" : ""} ${
-            p.floz ? "/ " + p.floz + " FL.OZ" : ""
-          }
-                  </span>
-                  <br>
-                  <strong>$${p.price}</strong>
-                </div>
-                <button class="add-to-cart">🛒 <span class="item-cart-count"></span></button>`;
-          gallery.appendChild(item);
-        });
-        renderItemCounts();
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = currentFilteredData.slice(start, end);
 
-        localStorage.setItem("lastFilterBrand", selectedBrand);
-        localStorage.setItem("lastSearchTerm", term);
-        localStorage.setItem("lastSort", selectedSort);
-      };
-
-      window.applyLastState = function () {
-        const lastBrand = localStorage.getItem("lastFilterBrand") || "All";
-        const lastSearch = localStorage.getItem("lastSearchTerm") || "";
-        const lastSort = localStorage.getItem("lastSort") || "default";
-
-        document.getElementById("sort-by").value = lastSort;
-        searchInput.value = lastSearch;
-
-        const btns = document.querySelectorAll(".navbar button");
-        btns.forEach((b) => {
-          if (b.dataset.brand === lastBrand) b.classList.add("active");
-          else b.classList.remove("active");
+        pageItems.forEach((p) => {
+          const div = document.createElement("div");
+          div.className = "item";
+          div.dataset.id = p.id; // 用于更新角标
+          div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}" loading="lazy" onclick="openModalById('${p.id}')">
+            <button class="add-to-cart-btn" onclick="addToCart('${p.id}')">
+              🛒 <span class="cart-badge-on-item"></span>
+            </button>
+            <div class="caption">
+              <div class="item-title">${p.id} - ${p.name}</div>
+              <div class="item-sub">${p.ml}ml / ${p.brand}</div>
+              <div class="item-price">$${p.price}</div>
+            </div>
+          `;
+          gallery.appendChild(div);
         });
 
-        if (lastSearch)
-          document.getElementById("search-clear-btn").style.display = "flex";
-        window.filterAndSearch();
-      };
+        updateCartCount(); // 重新显示角标
 
-      function updateModalUI(productId) {
-        const modalAddBtn = document.querySelector(".modal-add-btn");
-        const modalQtyControls = document.querySelector(".modal-qty-controls");
-        const modalQtyCount = document.querySelector(".modal-qty-count");
-
-        const itemInCart = cartItems.find((c) => c.name === productId);
-
-        if (itemInCart && itemInCart.quantity > 0) {
-          modalAddBtn.style.display = "none";
-          modalQtyControls.style.display = "flex";
-          modalQtyCount.textContent = itemInCart.quantity;
+        // 更新分页按钮
+        const totalPages = Math.ceil(currentFilteredData.length / itemsPerPage);
+        if (totalPages > 1) {
+          controls.style.display = "flex";
+          document.getElementById(
+            "page-info"
+          ).textContent = `Page ${currentPage} of ${totalPages}`;
+          document.getElementById("prev-page").disabled = currentPage === 1;
+          document.getElementById("next-page").disabled =
+            currentPage === totalPages;
         } else {
-          modalAddBtn.style.display = "block";
-          modalQtyControls.style.display = "none";
+          controls.style.display = "none";
         }
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        gallery = document.getElementById("gallery");
-        searchInput = document.getElementById("search-input");
-        searchClearBtn = document.getElementById("search-clear-btn");
-        cartButton = document.getElementById("cart-button");
-        cartCount = document.getElementById("cart-count");
-        brandNavbar = document.getElementById("brand-navbar");
+      // 6. 翻页事件
+      document.getElementById("prev-page").onclick = () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderCurrentPage();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+      document.getElementById("next-page").onclick = () => {
+        const totalPages = Math.ceil(currentFilteredData.length / itemsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderCurrentPage();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
 
-        brandNavbar.addEventListener("click", (e) => {
-          if (e.target.tagName === "BUTTON") {
-            brandNavbar
-              .querySelectorAll("button")
-              .forEach((b) => b.classList.remove("active"));
-            e.target.classList.add("active");
-            searchInput.value = "";
-            searchClearBtn.style.display = "none";
-            window.filterAndSearch();
-          }
-        });
+      // 7. 加入购物车
+      window.addToCart = function (id) {
+        const db = window.perfumeDB;
+        const product = db.find((p) => p.id === id);
+        if (!product) return;
 
-        searchInput.addEventListener("input", () => {
-          searchClearBtn.style.display = searchInput.value ? "flex" : "none";
-          window.filterAndSearch();
-        });
-        searchClearBtn.addEventListener("click", () => {
-          searchInput.value = "";
-          searchInput.dispatchEvent(new Event("input"));
-        });
+        const existing = cartItems.find((c) => c.name === id);
+        if (existing) {
+          existing.quantity++;
+        } else {
+          cartItems.push({
+            name: id,
+            caption: `${id} - ${product.name}`,
+            img: product.img,
+            price: Number(product.price),
+            brand: product.brand,
+            ml: product.ml,
+            quantity: 1,
+          });
+        }
+        saveCart();
+
+        // 简单的动画反馈
+        const btn = document.querySelector(
+          `.item[data-id="${id}"] .add-to-cart-btn`
+        );
+        if (btn) {
+          const originalColor = btn.style.background;
+          btn.style.background = "#28a745"; // 绿色
+          btn.style.color = "#fff";
+          setTimeout(() => {
+            btn.style.background = "";
+            btn.style.color = "";
+          }, 500);
+        }
+      };
+
+      // 8. 弹窗逻辑
+      function openModal(product) {
+        document.getElementById("modal-img").src = product.img;
+        document.getElementById("modal-title").textContent =
+          product.id + " - " + product.name;
+        document.getElementById("modal-price").textContent =
+          "$" + product.price;
+        document.getElementById("modal-add-btn").onclick = () => {
+          addToCart(product.id);
+          document.getElementById("modal").classList.remove("open");
+        };
+        document.getElementById("modal").classList.add("open");
+      }
+      window.openModalById = function (id) {
+        const p = window.perfumeDB.find((x) => x.id === id);
+        if (p) openModal(p);
+      };
+
+      // 9. 事件监听汇总
+      function setupEventListeners() {
+        // 搜索
+        document
+          .getElementById("search-input")
+          .addEventListener("input", (e) => {
+            document.getElementById("search-clear").style.display = e.target
+              .value
+              ? "flex"
+              : "none";
+            filterAndSearch();
+          });
+        document.getElementById("search-clear").onclick = () => {
+          document.getElementById("search-input").value = "";
+          document.getElementById("search-clear").style.display = "none";
+          filterAndSearch();
+        };
+        // 排序
         document
           .getElementById("sort-by")
-          .addEventListener("change", window.filterAndSearch);
-
-        cartButton.addEventListener(
-          "click",
-          () => (window.location.href = "cart.html")
-        );
-
-        let currentModalProductId = null;
-
-        gallery.addEventListener("click", (e) => {
-          const addBtn = e.target.closest(".add-to-cart");
-          if (addBtn) {
-            e.stopPropagation();
-            const item = addBtn.closest(".item");
-            addItemToCart(item.dataset.name);
-            showConfirmation(addBtn);
-          } else {
-            const item = e.target.closest(".item");
-            if (item) {
-              currentModalProductId = item.dataset.name;
-              const modal = document.getElementById("modal");
-              const img = document.getElementById("modal-img");
-              const cap = document.getElementById("modal-caption");
-              const addBtnModal = document.querySelector(".modal-add-btn");
-
-              img.src = item.dataset.img;
-              cap.innerHTML = item.querySelector(".caption").innerHTML;
-
-              updateModalUI(currentModalProductId);
-
-              addBtnModal.onclick = () => {
-                addItemToCart(currentModalProductId);
-                updateModalUI(currentModalProductId);
-              };
-
-              modal.classList.add("open");
-              document.body.classList.add("modal-open");
-            }
-          }
-        });
-
+          .addEventListener("change", filterAndSearch);
+        // 品牌点击
         document
-          .querySelector(".modal-controls")
+          .getElementById("brand-navbar")
           .addEventListener("click", (e) => {
-            const btn = e.target.closest(".modal-qty-btn");
-            if (!btn || !currentModalProductId) return;
-
-            const action = btn.dataset.action;
-            const itemIndex = cartItems.findIndex(
-              (c) => c.name === currentModalProductId
-            );
-
-            if (itemIndex > -1) {
-              if (action === "increase") {
-                cartItems[itemIndex].quantity++;
-              } else if (action === "decrease") {
-                cartItems[itemIndex].quantity--;
-                if (cartItems[itemIndex].quantity <= 0) {
-                  cartItems.splice(itemIndex, 1);
-                }
-              }
-              saveCartToLocalStorage();
-              updateCartCount();
-              renderItemCounts();
-              updateModalUI(currentModalProductId);
+            if (e.target.tagName === "BUTTON") {
+              document
+                .querySelectorAll(".navbar button")
+                .forEach((b) => b.classList.remove("active"));
+              e.target.classList.add("active");
+              document.getElementById("search-input").value = ""; // 切换品牌时清空搜索
+              filterAndSearch();
             }
           });
-
-        const closeModal = () => {
-          document.getElementById("modal").classList.remove("open");
-          document.body.classList.remove("modal-open");
-          document.getElementById("policy-modal").classList.remove("open");
-          document.getElementById("receipt-modal").classList.remove("open");
-        };
-
-        document.getElementById("modal-close").onclick = closeModal;
-        document.getElementById("policy-modal-close").onclick = closeModal;
-        document.getElementById("receipt-modal-close").onclick = closeModal;
-
-        window.onclick = (e) => {
-          if (e.target.classList.contains("modal")) closeModal();
-        };
-
-        const lightbox = document.getElementById("lightbox");
-        const lightboxImg = document.getElementById("lightbox-img");
-
-        document.body.addEventListener("click", (e) => {
-          if (e.target.classList.contains("lightbox-trigger")) {
-            lightboxImg.src = e.target.src;
-            lightbox.classList.add("open");
-          }
-        });
-        lightbox.onclick = () => lightbox.classList.remove("open");
-
-        const backToTop = document.getElementById("back-to-top");
-        window.addEventListener("scroll", () => {
-          backToTop.style.display = window.pageYOffset > 300 ? "block" : "none";
-        });
-        backToTop.onclick = () =>
-          window.scrollTo({ top: 0, behavior: "smooth" });
-
-        loadCartFromLocalStorage();
-        updateCartCount();
-        window.renderPerfumes();
-
-        // Start Step Carousel for Happy Customers (3.5 seconds)
-        startAutoSlide("review-carousel", 3500);
-      });
+      }
     </script>
   </body>
 </html>
