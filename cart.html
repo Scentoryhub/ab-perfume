@@ -43,49 +43,115 @@
     <link rel="apple-touch-icon" href="icon/180.png" />
     <style>
       /* ================= RESET & GLOBAL ================= */
+      :root {
+        --header-height: 50px; /* 稍微调小头部高度 */
+        --accent-color: #b28900;
+        --sidebar-width: 280px;
+      }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
         padding: 0;
+        padding-top: var(--header-height);
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         background: #f4f4f4;
         color: #333;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
         padding-bottom: 120px; /* Footer space */
       }
 
       /* ================= HEADER ================= */
-      .page-header {
-        position: relative;
-        text-align: center;
-        padding: 15px;
+      .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--header-height);
         background-color: #000;
         color: #fff;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
-      .page-header h1 {
-        margin: 0;
+
+      .header-left,
+      .header-right {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+      .hamburger-icon {
+        font-size: 1.4rem;
+        line-height: 1;
+      }
+      .home-icon {
         font-size: 1.2rem;
+      }
+
+      .header-title {
+        font-size: 1.1rem;
         font-weight: 500;
         letter-spacing: 1px;
         text-transform: uppercase;
       }
-      .back-btn {
-        position: absolute;
-        top: 50%;
-        left: 15px;
-        transform: translateY(-50%);
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.5rem;
-        line-height: 1;
+
+      /* ================= SIDEBAR (复用样式) ================= */
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1001;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+      }
+      .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
       }
 
-      /* ================= CART LIST (THE CARD DESIGN) ================= */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 85%;
+        max-width: var(--sidebar-width);
+        background: #fff;
+        z-index: 1002;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+      }
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .menu-link {
+        display: block;
+        padding: 15px 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      /* ================= CART LIST (COMPACT CARD DESIGN) ================= */
       #capture-area {
         max-width: 800px;
         margin: 0 auto;
@@ -98,32 +164,35 @@
         margin: 0;
       }
 
-      /* The Card Container */
+      /* Compact Card Container */
       .cart-item {
         background: #fff;
-        margin-bottom: 15px;
-        padding: 20px;
+        margin-bottom: 10px; /* Reduced margin */
+        padding: 12px; /* Reduced padding (was 20px) */
         display: flex;
         align-items: flex-start;
-        border-radius: 4px; /* Slight roundness, can be 0 for sharp edges */
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         position: relative;
       }
 
       /* Product Image */
       .cart-item-img {
-        width: 100px;
-        height: 120px;
-        object-fit: contain; /* Ensure bottle shows fully */
+        width: 80px; /* Smaller image (was 100px) */
+        height: 90px;
+        object-fit: contain;
         flex-shrink: 0;
-        margin-right: 20px;
-        align-self: center;
+        margin-right: 15px;
+        align-self: flex-start;
+        background: #f9f9f9;
+        border-radius: 4px;
       }
 
       /* Right Side Content */
       .item-content {
         flex-grow: 1;
         width: 100%;
+        font-size: 0.9rem; /* Smaller base font */
       }
 
       /* Row 1: Title & Remove Icon */
@@ -131,25 +200,26 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 15px;
+        margin-bottom: 8px; /* Tighter spacing */
       }
       .item-title {
-        font-family: "Times New Roman", serif; /* Elegant font per image */
-        font-size: 1.1rem;
-        color: #0c3e6d; /* Dark Blueish tone per image */
+        font-family: "Times New Roman", serif;
+        font-size: 1rem;
+        color: #0c3e6d;
         margin: 0;
-        padding-right: 15px;
-        line-height: 1.3;
+        padding-right: 10px;
+        line-height: 1.2;
         font-weight: 400;
       }
       .remove-btn-icon {
         background: none;
         border: none;
-        color: #999;
-        font-size: 1.5rem;
+        color: #ccc;
+        font-size: 1.4rem;
         cursor: pointer;
         padding: 0;
         line-height: 0.8;
+        margin-left: 5px;
       }
       .remove-btn-icon:hover {
         color: #d9534f;
@@ -160,39 +230,36 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 0;
-        border-top: 1px dashed #e0e0e0;
-        font-size: 1rem;
-        color: #666;
+        padding: 6px 0; /* Tighter padding (was 10px) */
+        border-top: 1px dashed #eee;
+        font-size: 0.9rem;
+        color: #555;
       }
       .info-row:last-child {
         border-bottom: none;
+        padding-bottom: 0;
       }
+
       .info-label {
         font-family: "Times New Roman", serif;
         font-style: italic;
-        color: #777;
-        font-size: 1.1rem;
+        color: #888;
+        font-size: 0.95rem;
       }
 
-      /* Price Value */
-      .price-val {
-        color: #555;
-      }
-
-      /* Quantity Control (The Box Style) */
+      /* Quantity Control (Compact) */
       .qty-wrapper {
         display: flex;
         border: 1px solid #ddd;
         border-radius: 2px;
         overflow: hidden;
+        height: 26px; /* Compact height */
       }
       .qty-btn {
         background: #fdfdfd;
         border: none;
-        width: 30px;
-        height: 30px;
-        font-size: 1.2rem;
+        width: 26px;
+        font-size: 1rem;
         cursor: pointer;
         color: #555;
         display: flex;
@@ -204,52 +271,48 @@
         border-right: none;
         border-left: 1px solid #ddd;
       }
-      .qty-btn:active {
-        background: #eee;
-      }
       .qty-display {
-        width: 35px;
+        width: 30px;
         text-align: center;
-        line-height: 30px;
-        font-size: 1rem;
-        color: #333;
+        line-height: 26px;
+        font-size: 0.9rem;
         background: #fff;
       }
 
-      /* Subtotal Gold Color */
       .subtotal-val {
-        color: #b28900; /* Gold/Brown */
+        color: #b28900;
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
       /* ================= SUMMARY & FOOTER ================= */
       .cart-summary {
         background: #fff;
-        padding: 20px;
-        margin-top: 20px;
+        padding: 15px;
+        margin-top: 15px;
         border-top: 1px solid #eee;
         border-bottom: 1px solid #eee;
       }
       .cart-summary h2 {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         margin-top: 0;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         text-align: center;
+        text-transform: uppercase;
       }
       .summary-row {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 8px;
-        font-size: 1rem;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
         color: #555;
       }
       .summary-total {
-        margin-top: 15px;
-        padding-top: 15px;
+        margin-top: 10px;
+        padding-top: 10px;
         border-top: 1px solid #ddd;
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         color: #000;
       }
       .discount-text {
@@ -263,7 +326,7 @@
         left: 0;
         width: 100%;
         background: #fff;
-        padding: 15px;
+        padding: 12px;
         display: flex;
         gap: 10px;
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
@@ -271,10 +334,10 @@
       }
       .action-btn {
         flex: 1;
-        padding: 14px;
+        padding: 12px;
         border: none;
         border-radius: 4px;
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: bold;
         cursor: pointer;
         text-transform: uppercase;
@@ -292,6 +355,34 @@
         gap: 8px;
       }
 
+      /* Discount Tiers */
+      .tiers-container {
+        margin-top: 15px;
+        background: #fff;
+        padding: 12px;
+        text-align: center;
+      }
+      .tiers-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: center;
+        margin-top: 8px;
+      }
+      .tier-badge {
+        font-size: 0.75rem;
+        padding: 4px 6px;
+        background: #eee;
+        border-radius: 3px;
+        color: #555;
+      }
+      .tier-badge.active {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        font-weight: bold;
+      }
+
       /* Empty State */
       .empty-state {
         text-align: center;
@@ -307,41 +398,13 @@
         border-radius: 4px;
       }
 
-      /* Discount Tiers */
-      .tiers-container {
-        margin-top: 20px;
-        background: #fff;
-        padding: 15px;
-        text-align: center;
-      }
-      .tiers-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        justify-content: center;
-        margin-top: 10px;
-      }
-      .tier-badge {
-        font-size: 0.8rem;
-        padding: 5px 8px;
-        background: #eee;
-        border-radius: 3px;
-        color: #555;
-      }
-      .tier-badge.active {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-        font-weight: bold;
-      }
-
       /* Modal */
       .modal {
         display: none;
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.6);
-        z-index: 200;
+        z-index: 2000;
         align-items: center;
         justify-content: center;
         padding: 20px;
@@ -354,19 +417,20 @@
         border-radius: 8px;
       }
       .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 12px;
       }
       .form-group label {
         display: block;
         margin-bottom: 5px;
         font-weight: bold;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
       }
       .form-group input {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
+        font-size: 1rem;
       }
       .modal-btns {
         display: flex;
@@ -376,10 +440,44 @@
     </style>
   </head>
   <body>
-    <header class="page-header">
-      <a href="index.html" class="back-btn">&#8592;</a>
-      <h1>Shopping Cart</h1>
+    <header class="site-header">
+      <div class="header-left" id="menu-trigger" onclick="toggleSidebar()">
+        <span class="hamburger-icon">☰</span>
+        <span style="margin-left: 5px">MENU</span>
+      </div>
+
+      <div class="header-title">SHOPPING CART</div>
+
+      <div class="header-right" onclick="window.location.href='index.html'">
+        <span class="home-icon">🏠</span>
+        <span>HOME</span>
+      </div>
     </header>
+
+    <div
+      class="sidebar-overlay"
+      id="sidebar-overlay"
+      onclick="toggleSidebar()"
+    ></div>
+    <div class="sidebar" id="sidebar">
+      <div
+        style="
+          font-weight: 700;
+          padding-bottom: 15px;
+          border-bottom: 2px solid #000;
+          margin-bottom: 10px;
+        "
+      >
+        MENU
+      </div>
+      <nav>
+        <a class="menu-link" href="index.html">Home</a>
+        <a class="menu-link" href="index.html">Shop All</a>
+        <a class="menu-link" href="https://wa.me/16232027321" target="_blank"
+          >Contact Us</a
+        >
+      </nav>
+    </div>
 
     <div id="capture-area">
       <ul id="cart-items-list" class="cart-items-list"></ul>
@@ -387,11 +485,11 @@
       <div id="cart-summary" class="cart-summary" style="display: none">
         <h2>Order Summary</h2>
         <div class="summary-row">
-          <span>LV Items</span>
+          <span>LV Quantity</span>
           <span id="lv-count">0</span>
         </div>
         <div class="summary-row">
-          <span>Other Items</span>
+          <span>Other Quantity</span>
           <span id="other-brands-count">0</span>
         </div>
         <div
@@ -414,10 +512,10 @@
           id="upsell-message"
           style="
             margin-top: 15px;
-            padding: 10px;
+            padding: 8px;
             background: #e7f3ff;
             color: #0056b3;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: center;
             display: none;
             border-radius: 4px;
@@ -426,7 +524,7 @@
       </div>
 
       <div id="discount-tiers" class="tiers-container" style="display: none">
-        <h3 style="margin: 0; font-size: 1rem; color: #777">
+        <h3 style="margin: 0; font-size: 0.9rem; color: #777">
           Volume Discounts
         </h3>
         <div id="tiers-list" class="tiers-grid"></div>
@@ -478,7 +576,13 @@
 
     <script src="db.js"></script>
     <script>
-      // Elements
+      // ================= UI Logic =================
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+        document.getElementById("sidebar-overlay").classList.toggle("active");
+      }
+
+      // ================= Cart Logic =================
       const cartItemsList = document.getElementById("cart-items-list");
       const clearCartBtn = document.getElementById("clear-cart-btn");
       const makeOrderBtn = document.getElementById("make-order-btn");
@@ -530,7 +634,6 @@
       }
 
       function getCleanName(caption) {
-        // Simple formatter: remove ID prefix if present
         if (caption.includes(" - ")) {
           return caption.split(" - ").slice(1).join(" - ");
         }
@@ -544,7 +647,7 @@
         if (cart.length === 0) {
           cartItemsList.innerHTML = `
             <div class="empty-state">
-                <p style="color:#999; font-size:1.2rem;">Your cart is empty.</p>
+                <p style="color:#999; font-size:1.1rem;">Your cart is empty.</p>
                 <a href="index.html" class="btn-continue">Continue Shopping</a>
             </div>
           `;
@@ -574,7 +677,7 @@
                     
                     <div class="info-row">
                         <span class="info-label">Price</span>
-                        <span class="price-val">$${price.toFixed(2)}</span>
+                        <span>$${price.toFixed(2)}</span>
                     </div>
 
                     <div class="info-row">
@@ -631,7 +734,6 @@
         // Upsell Logic
         const nextTier = tiers.find((t) => t.min > totalQty);
         if (nextTier && totalQty >= 5) {
-          // Only upsell if they have a decent amount
           const needed = nextTier.min - totalQty;
           if (needed <= 5) {
             summaryEls.upsell.style.display = "block";
@@ -664,7 +766,7 @@
         const cart = loadCart();
         if (cart[index]) {
           cart[index].quantity += change;
-          if (cart[index].quantity < 1) cart[index].quantity = 1; // Don't remove on minus, keep 1
+          if (cart[index].quantity < 1) cart[index].quantity = 1;
           saveCart(cart);
           renderCart();
         }
@@ -716,7 +818,6 @@
           msg += `- ${item.caption} (x${item.quantity})%0A`;
         });
 
-        // Add totals from DOM to avoid recalc
         msg += `%0A*Total:* ${summaryEls.total.textContent}`;
 
         window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, "_blank");
