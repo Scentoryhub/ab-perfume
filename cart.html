@@ -44,7 +44,7 @@
     <style>
       /* ================= RESET & GLOBAL ================= */
       :root {
-        --header-height: 50px; /* 稍微调小头部高度 */
+        --header-height: 50px;
         --accent-color: #b28900;
         --sidebar-width: 280px;
       }
@@ -103,7 +103,7 @@
         text-transform: uppercase;
       }
 
-      /* ================= SIDEBAR (复用样式) ================= */
+      /* ================= SIDEBAR ================= */
       .sidebar-overlay {
         position: fixed;
         top: 0;
@@ -151,38 +151,56 @@
         text-transform: uppercase;
       }
 
-      /* ================= CART LIST (COMPACT CARD DESIGN) ================= */
+      /* ================= CART GRID LAYOUT (NEW) ================= */
       #capture-area {
-        max-width: 800px;
+        max-width: 1200px; /* 增加宽度以容纳多列 */
         margin: 0 auto;
         padding: 10px;
       }
 
       .cart-items-list {
+        display: grid;
+        grid-template-columns: 1fr; /* 默认手机端 1 列 */
+        gap: 12px; /* 卡片之间的间距 */
         list-style: none;
         padding: 0;
         margin: 0;
       }
 
+      /* 平板端显示 2 列 */
+      @media (min-width: 768px) {
+        .cart-items-list {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* 桌面端显示 3 列 */
+      @media (min-width: 1024px) {
+        .cart-items-list {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
       /* Compact Card Container */
       .cart-item {
         background: #fff;
-        margin-bottom: 10px; /* Reduced margin */
-        padding: 12px; /* Reduced padding (was 20px) */
+        padding: 12px;
         display: flex;
         align-items: flex-start;
         border-radius: 4px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         position: relative;
+        /* 移除 margin-bottom，由 grid gap 控制 */
+        height: 100%; /* 确保同一行卡片高度一致 */
       }
 
       /* Product Image */
       .cart-item-img {
-        width: 80px; /* Smaller image (was 100px) */
-        height: 90px;
+        width: 70px; /* 稍微再做小一点，适应多列布局 */
+        height: 80px;
         object-fit: contain;
         flex-shrink: 0;
-        margin-right: 15px;
+        margin-right: 12px;
         align-self: flex-start;
         background: #f9f9f9;
         border-radius: 4px;
@@ -192,7 +210,7 @@
       .item-content {
         flex-grow: 1;
         width: 100%;
-        font-size: 0.9rem; /* Smaller base font */
+        font-size: 0.85rem; /* 字体稍微调小一点 */
       }
 
       /* Row 1: Title & Remove Icon */
@@ -200,25 +218,32 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 8px; /* Tighter spacing */
+        margin-bottom: 6px;
+        height: 2.4em; /* 固定标题高度，防止对齐乱 */
+        overflow: hidden;
       }
       .item-title {
         font-family: "Times New Roman", serif;
-        font-size: 1rem;
+        font-size: 0.95rem;
         color: #0c3e6d;
         margin: 0;
-        padding-right: 10px;
+        padding-right: 5px;
         line-height: 1.2;
         font-weight: 400;
+        /* 文字过多显示省略号 */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
       .remove-btn-icon {
         background: none;
         border: none;
         color: #ccc;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         cursor: pointer;
         padding: 0;
-        line-height: 0.8;
+        line-height: 1;
         margin-left: 5px;
       }
       .remove-btn-icon:hover {
@@ -230,9 +255,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 6px 0; /* Tighter padding (was 10px) */
+        padding: 5px 0;
         border-top: 1px dashed #eee;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: #555;
       }
       .info-row:last-child {
@@ -244,7 +269,6 @@
         font-family: "Times New Roman", serif;
         font-style: italic;
         color: #888;
-        font-size: 0.95rem;
       }
 
       /* Quantity Control (Compact) */
@@ -253,13 +277,13 @@
         border: 1px solid #ddd;
         border-radius: 2px;
         overflow: hidden;
-        height: 26px; /* Compact height */
+        height: 24px;
       }
       .qty-btn {
         background: #fdfdfd;
         border: none;
-        width: 26px;
-        font-size: 1rem;
+        width: 24px;
+        font-size: 0.9rem;
         cursor: pointer;
         color: #555;
         display: flex;
@@ -272,26 +296,30 @@
         border-left: 1px solid #ddd;
       }
       .qty-display {
-        width: 30px;
+        width: 28px;
         text-align: center;
-        line-height: 26px;
-        font-size: 0.9rem;
+        line-height: 24px;
+        font-size: 0.85rem;
         background: #fff;
       }
 
       .subtotal-val {
         color: #b28900;
         font-weight: bold;
-        font-size: 1rem;
+        font-size: 0.9rem;
       }
 
       /* ================= SUMMARY & FOOTER ================= */
       .cart-summary {
         background: #fff;
         padding: 15px;
-        margin-top: 15px;
+        margin-top: 20px;
         border-top: 1px solid #eee;
         border-bottom: 1px solid #eee;
+        /* Summary 不受 grid 影响，保持全宽 */
+        max-width: 600px; /* 限制摘要宽度，看起来更精致 */
+        margin-left: auto;
+        margin-right: auto;
       }
       .cart-summary h2 {
         font-size: 1.1rem;
@@ -361,6 +389,9 @@
         background: #fff;
         padding: 12px;
         text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
       }
       .tiers-grid {
         display: flex;
