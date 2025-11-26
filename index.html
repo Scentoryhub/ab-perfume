@@ -513,6 +513,13 @@
           margin: 0 auto;
         }
       }
+      .trust-item {
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        display: block;
+        background: #fff;
+      }
       .trust-item h4 {
         margin: 10px 0 5px;
         font-size: 1.1rem;
@@ -780,6 +787,9 @@
           <div class="brand-item" onclick="handleMenuClick('Versace')">
             Versace
           </div>
+          <div class="brand-item" onclick="handleMenuClick('Carolina Herrera')">
+            Carolina Herrera
+          </div>
           <div class="brand-item" onclick="handleMenuClick('Giorgio Armani')">
             Armani
           </div>
@@ -843,10 +853,19 @@
 
     <div class="trust-section">
       <div class="trust-grid">
-        <div
-          class="trust-item"
-          style="padding: 20px; border: 1px solid #eee; border-radius: 8px"
-        >
+        <div class="trust-item">
+          <div style="font-size: 2rem; margin-bottom: 10px">🇺🇸</div>
+          <h4>USA Warehouse</h4>
+          <p>Fast delivery within 3-5 days.</p>
+        </div>
+
+        <div class="trust-item">
+          <div style="font-size: 2rem; margin-bottom: 10px">🚚</div>
+          <h4>Free Shipping</h4>
+          <p>On all orders. No hidden fees.</p>
+        </div>
+
+        <div class="trust-item">
           <div style="font-size: 2rem; color: #3498db; margin-bottom: 10px">
             🛡️
           </div>
@@ -865,17 +884,8 @@
             See Policy
           </button>
         </div>
-        <a
-          href="https://wa.me/16232027321"
-          target="_blank"
-          class="trust-item"
-          style="
-            padding: 20px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            display: block;
-          "
-        >
+
+        <a href="https://wa.me/16232027321" target="_blank" class="trust-item">
           <div style="font-size: 2rem; color: #2ecc71; margin-bottom: 10px">
             💬
           </div>
@@ -973,6 +983,7 @@
         "Gucci",
         "Burberry",
         "Versace",
+        "Carolina Herrera", // 新增
         "Giorgio Armani",
         "Prada",
         "Valentino",
@@ -1154,8 +1165,6 @@
           );
           title = `Results: "${term}"`;
         } else if (criteria === "Other") {
-          // 这里为了保证 Grid 里的 Other 和首页 Other 一致
-          // 我们需要重新跑一遍筛选逻辑（虽然稍微耗性能，但最准确）
           // 找出哪些是Featured
           const renderedBrands = new Set();
           FEATURED_BRANDS.forEach((b) => {
