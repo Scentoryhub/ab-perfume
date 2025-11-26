@@ -53,7 +53,7 @@
     </script>
 
     <style>
-      /* ================= 1. 全局配置 (移动优先) ================= */
+      /* ================= 1. 全局配置 ================= */
       :root {
         --header-height: 60px;
         --sidebar-width: 300px;
@@ -64,19 +64,19 @@
 
       * {
         box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent; /* 移除点击高亮 */
+        -webkit-tap-highlight-color: transparent;
       }
 
       body {
         margin: 0;
         padding: 0;
         padding-top: var(--header-height);
-        padding-bottom: 60px; /* 为Toast和底部留空间 */
+        padding-bottom: 60px;
         font-family: var(--font-main);
         background: var(--bg-color);
         color: #333;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden; /* 防止水平滚动条 */
+        overflow-x: hidden;
       }
 
       a {
@@ -152,7 +152,7 @@
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        border: 2px solid #000; /* 增加边框让角标更清晰 */
+        border: 2px solid #000;
       }
 
       /* ================= 3. 侧边栏 (Sidebar) ================= */
@@ -270,7 +270,7 @@
         font-weight: bold;
       }
 
-      /* ================= 4. 首页 (Home View) - 移动端优化 ================= */
+      /* ================= 4. 首页 (Home View) ================= */
       #home-view {
         padding-top: 10px;
         padding-bottom: 30px;
@@ -280,7 +280,7 @@
       .brand-section {
         margin-bottom: 20px;
         background: #fff;
-        padding: 20px 0 20px 12px; /* 调整左侧内边距 */
+        padding: 20px 0 20px 12px;
         border-top: 1px solid #eee;
         border-bottom: 1px solid #eee;
       }
@@ -306,7 +306,6 @@
         padding: 5px;
       }
 
-      /* 横向滚动容器 */
       .scroll-wrapper {
         display: flex;
         overflow-x: auto;
@@ -314,15 +313,15 @@
         padding-bottom: 10px;
         padding-right: 12px;
         scrollbar-width: none;
-        -webkit-overflow-scrolling: touch; /* 关键：iOS顺滑滚动 */
-        scroll-snap-type: x mandatory; /* 增加滚动吸附感 */
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
       }
       .scroll-wrapper::-webkit-scrollbar {
         display: none;
       }
 
       .scroll-card {
-        flex: 0 0 150px; /* 稍微减小宽度以适应小屏 */
+        flex: 0 0 150px;
         display: flex;
         flex-direction: column;
         background: #fff;
@@ -378,7 +377,7 @@
         padding: 5px 0;
       }
 
-      /* ================= 5. 网格视图 (Grid View) - 移动端优化 ================= */
+      /* ================= 5. 网格视图 (Grid View) ================= */
       #grid-view {
         display: none;
         max-width: 1200px;
@@ -405,8 +404,8 @@
 
       .gallery {
         display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 手机端双列 */
-        gap: 12px; /* 减小间距 */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
       @media (min-width: 768px) {
         .gallery {
@@ -423,7 +422,7 @@
       }
       .item img {
         width: 100%;
-        height: 180px; /* 调整高度 */
+        height: 180px;
         object-fit: cover;
         background: #f9f9f9;
       }
@@ -449,7 +448,6 @@
         font-weight: bold;
       }
 
-      /* 分页 */
       .pagination-container {
         display: flex;
         justify-content: center;
@@ -470,7 +468,7 @@
         color: #aaa;
       }
 
-      /* ================= 6. 信任与评论 (Trust) & 轮播优化 ================= */
+      /* ================= 6. 信任与评论 (Trust) & 修复后的轮播 ================= */
       .trust-section {
         background: #fff;
         margin-top: 20px;
@@ -499,7 +497,7 @@
         line-height: 1.4;
       }
 
-      /* 买家秀轮播优化 */
+      /* 轮播容器 */
       .review-carousel {
         display: flex;
         gap: 12px;
@@ -507,13 +505,14 @@
         margin-top: 15px;
         padding-bottom: 10px;
         scrollbar-width: none;
-        scroll-behavior: smooth;
+        scroll-behavior: smooth; /* 平滑滚动 */
         -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: x mandatory; /* 增加滑动吸附 */
       }
       .review-carousel::-webkit-scrollbar {
         display: none;
       }
+
       .trust-review-img {
         flex: 0 0 135px;
         height: 180px;
@@ -538,6 +537,8 @@
       .modal.open {
         display: flex;
       }
+
+      /* Modal Content 阻止点击事件冒泡 */
       .modal-content {
         background: #fff;
         width: 100%;
@@ -583,16 +584,16 @@
         margin-top: 15px;
       }
 
-      /* --- 重点：图片放大灯箱 (Lightbox) --- */
+      /* Lightbox */
       .lightbox {
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.95); /* 深色遮罩 */
+        background: rgba(0, 0, 0, 0.95);
         z-index: 3000;
         justify-content: center;
         align-items: center;
-        cursor: zoom-out; /* 提示可点击关闭 */
+        cursor: zoom-out;
       }
       .lightbox.open {
         display: flex;
@@ -627,7 +628,6 @@
         }
       }
 
-      /* Toast 提示 */
       #toast {
         visibility: hidden;
         min-width: 200px;
@@ -812,7 +812,7 @@
       <div class="trust-grid">
         <div class="trust-item">
           <div style="font-size: 2rem; color: #f39c12">⭐</div>
-          <h4>Happy Customers</h4>
+          <h4 style="margin-top: 5px">Happy Customers</h4>
           <p style="font-size: 0.85rem; color: #999">Tap images to zoom</p>
           <div class="review-carousel" id="review-carousel">
             <img
@@ -958,7 +958,7 @@
       </div>
     </div>
 
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox" id="lightbox">
       <span class="lightbox-close">&times;</span>
       <img class="lightbox-img" id="lightbox-content" />
     </div>
@@ -1005,13 +1005,17 @@
       const itemsPerPage = 20;
       let currentGridData = [];
       let viewMode = "home";
+      let autoScrollInterval = null;
 
       document.addEventListener("DOMContentLoaded", () => {
         loadCart();
         setupMenu();
         renderHome();
         setupEventListeners();
-        startReviewCarousel();
+        setupModalBackdropClosing(); // 启用点击遮罩关闭功能
+
+        // 延迟启动轮播，确保图片已加载
+        setTimeout(startReviewCarousel, 1000);
       });
 
       // 1. 首页渲染
@@ -1294,30 +1298,40 @@
         document.getElementById("header-cart-count").textContent = count;
       }
 
-      // 5. 自动轮播
+      // 5. 自动轮播 (修复：触摸时暂停，增加交互感)
       function startReviewCarousel() {
         const carousel = document.getElementById("review-carousel");
         if (!carousel) return;
-        setInterval(() => {
+
+        const scrollAmount = 147; // 图片宽度+gap
+
+        const scrollStep = () => {
           if (
             carousel.scrollLeft + carousel.clientWidth >=
             carousel.scrollWidth - 10
           ) {
             carousel.scrollTo({ left: 0, behavior: "smooth" });
           } else {
-            carousel.scrollBy({ left: 147, behavior: "smooth" });
+            carousel.scrollBy({ left: scrollAmount, behavior: "smooth" });
           }
-        }, 3000);
+        };
+
+        autoScrollInterval = setInterval(scrollStep, 3000);
+
+        // 用户触摸时暂停轮播
+        carousel.addEventListener("touchstart", () =>
+          clearInterval(autoScrollInterval)
+        );
+        carousel.addEventListener("touchend", () => {
+          clearInterval(autoScrollInterval); // 防止重复
+          autoScrollInterval = setInterval(scrollStep, 3000);
+        });
       }
 
-      // 6. Lightbox Functions (核心：点击遮罩关闭)
+      // 6. Lightbox Functions
       window.openLightbox = function (src) {
         document.getElementById("lightbox-content").src = src;
         document.getElementById("lightbox").classList.add("open");
-      };
-      // 这个函数绑定在 lightbox 容器的 onclick 事件上
-      window.closeLightbox = function () {
-        document.getElementById("lightbox").classList.remove("open");
       };
 
       // 7. Modal Functions
@@ -1337,6 +1351,28 @@
         const p = window.perfumeDB.find((x) => x.id === id);
         if (p) openModal(p);
       };
+
+      // 8. 全局点击遮罩关闭功能 (Modal & Lightbox)
+      function setupModalBackdropClosing() {
+        // 绑定所有带 .modal 或 .lightbox 的元素
+        const overlays = document.querySelectorAll(".modal, .lightbox");
+        overlays.forEach((overlay) => {
+          overlay.addEventListener("click", (e) => {
+            // 只有直接点击背景(overlay本身)才关闭，点击内部内容(content)不关闭
+            if (e.target === overlay) {
+              overlay.classList.remove("open");
+            }
+          });
+        });
+
+        // 额外的关闭按钮绑定
+        const closeBtns = document.querySelectorAll(".lightbox-close");
+        closeBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            btn.closest(".lightbox").classList.remove("open");
+          });
+        });
+      }
     </script>
   </body>
 </html>
