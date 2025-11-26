@@ -377,6 +377,30 @@
         padding: 5px 0;
       }
 
+      /* Shop All Button Section */
+      .shop-all-section {
+        padding: 30px 20px;
+        text-align: center;
+        background: #fff;
+        margin-bottom: 20px;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+      }
+      .shop-all-btn {
+        background: #000;
+        color: #fff;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+      }
+      .shop-all-btn:active {
+        transform: scale(0.95);
+      }
+
       /* ================= 5. 网格视图 (Grid View) ================= */
       #grid-view {
         display: none;
@@ -469,7 +493,7 @@
         color: #aaa;
       }
 
-      /* ================= 6. 信任与评论 (Trust) - 已删除 Review 轮播 ================= */
+      /* ================= 6. 信任与评论 (Trust) ================= */
       .trust-section {
         background: #fff;
         margin-top: 20px;
@@ -550,7 +574,6 @@
         padding: 20px 15px;
       }
 
-      /* 弹窗中的按钮样式 */
       .modal-btn {
         background: #000;
         color: #fff;
@@ -564,7 +587,6 @@
         display: block;
       }
 
-      /* 加减数量控制条样式 */
       .qty-control-box {
         display: flex;
         align-items: center;
@@ -573,7 +595,7 @@
         border: 2px solid #000;
         border-radius: 8px;
         margin-top: 15px;
-        height: 52px; /* 与原来的按钮高度大致一致 */
+        height: 52px;
         overflow: hidden;
       }
       .qty-btn {
@@ -981,7 +1003,7 @@
       let currentGridData = [];
       let viewMode = "home";
 
-      // 当前打开的 Modal 产品 ID，用于 UI 刷新
+      // 当前打开的 Modal 产品 ID
       let currentModalProductId = null;
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -989,7 +1011,7 @@
         setupMenu();
         renderHome();
         setupEventListeners();
-        setupModalBackdropClosing(); // 启用点击遮罩关闭功能
+        setupModalBackdropClosing();
       });
 
       // 1. 首页渲染
@@ -998,6 +1020,7 @@
         const container = document.getElementById("home-content");
         container.innerHTML = "";
 
+        // 1. Best Sellers
         const bestSellers = db.filter((p) => p.top == 1);
         if (bestSellers.length > 0) {
           container.appendChild(
@@ -1005,28 +1028,47 @@
           );
         }
 
-        let smallBrandProducts = [];
+        // 2. Featured Brand Sections (独立品牌区)
+        const renderedBrands = new Set(); // 记录展示过的品牌
+
         FEATURED_BRANDS.forEach((brand) => {
           const products = db.filter((p) => p.brand.includes(brand));
+          // 只有数量 >= 3 才算“展示过”
           if (products.length >= 3) {
             let displayName = brand;
             if (brand === "Yves Saint Laurent") displayName = "YSL";
             container.appendChild(
               createBrandSection(displayName, products, brand)
             );
-          } else if (products.length > 0) {
-            smallBrandProducts = [...smallBrandProducts, ...products];
+            renderedBrands.add(brand);
           }
         });
 
-        if (smallBrandProducts.length > 0) {
-          const uniqueSmall = Array.from(
-            new Set(smallBrandProducts.map((p) => p.id))
-          ).map((id) => smallBrandProducts.find((p) => p.id === id));
+        // 3. Other Brands (未展示的剩余品牌)
+        // 筛选逻辑：遍历所有产品，排除掉那些“品牌名包含在已展示列表中”的产品
+        const otherProducts = db.filter((p) => {
+          // 检查该产品的品牌是否包含在已展示的品牌名中
+          for (let featured of renderedBrands) {
+            if (p.brand.includes(featured)) return false;
+          }
+          return true;
+        });
+
+        if (otherProducts.length > 0) {
           container.appendChild(
-            createBrandSection("More Brands & Others", uniqueSmall, "Other")
+            createBrandSection("Other Brands", otherProducts, "Other")
           );
         }
+
+        // 4. "Shop All" 独立区域
+        const shopAllContainer = document.createElement("div");
+        shopAllContainer.className = "shop-all-section";
+        shopAllContainer.innerHTML = `
+            <button class="shop-all-btn" onclick="handleMenuClick('All')">
+                Shop All Products
+            </button>
+        `;
+        container.appendChild(shopAllContainer);
       }
 
       function createBrandSection(title, products, filterKey) {
@@ -1063,7 +1105,6 @@
           card.className = "scroll-card";
           // 点击整个卡片打开 Modal
           card.onclick = (e) => {
-            // 如果点的是加购按钮，不打开详情 Modal，而是直接加购
             if (e.target.classList.contains("scroll-card-add")) return;
             openModal(p);
           };
@@ -1113,10 +1154,21 @@
           );
           title = `Results: "${term}"`;
         } else if (criteria === "Other") {
-          filtered = db.filter(
-            (p) =>
-              !FEATURED_BRANDS.slice(0, 10).some((b) => p.brand.includes(b))
-          );
+          // 这里为了保证 Grid 里的 Other 和首页 Other 一致
+          // 我们需要重新跑一遍筛选逻辑（虽然稍微耗性能，但最准确）
+          // 找出哪些是Featured
+          const renderedBrands = new Set();
+          FEATURED_BRANDS.forEach((b) => {
+            if (db.filter((p) => p.brand.includes(b)).length >= 3)
+              renderedBrands.add(b);
+          });
+          // 过滤
+          filtered = db.filter((p) => {
+            for (let featured of renderedBrands) {
+              if (p.brand.includes(featured)) return false;
+            }
+            return true;
+          });
           title = "More Brands";
         } else {
           filtered = db.filter((p) => p.brand.includes(criteria));
@@ -1228,7 +1280,7 @@
         overlay.onclick = toggle;
       }
 
-      // 4. 加购与提示 (Toast) - 通用逻辑 (用于列表页点击)
+      // 4. 加购与提示 (Toast)
       window.addToCart = function (id) {
         const db = window.perfumeDB;
         const product = db.find((p) => p.id === id);
@@ -1251,22 +1303,19 @@
         saveCart();
         showToast("Added to Cart! 🛒");
 
-        // 如果当前正好开着这个产品的 Modal，要刷新按钮状态
         if (currentModalProductId === id) {
           updateModalButtonState(id);
         }
       };
 
-      // 5. Modal 内部专用的加购控制逻辑
+      // 5. Modal 内部加购控制
       function updateModalButtonState(id) {
         const container = document.getElementById("modal-action-area");
         const existing = cartItems.find((c) => c.name === id);
 
         if (!existing || existing.quantity === 0) {
-          // 没在购物车里：显示 ADD TO CART 按钮
           container.innerHTML = `<button class="modal-btn" onclick="modalFirstAdd('${id}')">ADD TO CART</button>`;
         } else {
-          // 在购物车里：显示 加减控制条
           container.innerHTML = `
                 <div class="qty-control-box">
                     <div class="qty-btn" onclick="modalChangeQty('${id}', -1)">-</div>
@@ -1278,8 +1327,7 @@
       }
 
       window.modalFirstAdd = function (id) {
-        addToCart(id); // 调用通用加购（会存盘、弹toast）
-        // updateModalButtonState 已在 addToCart 末尾被调用
+        addToCart(id);
       };
 
       window.modalChangeQty = function (id, delta) {
@@ -1287,11 +1335,10 @@
         if (existing) {
           existing.quantity += delta;
           if (existing.quantity <= 0) {
-            // 数量减为0，移除商品
             cartItems = cartItems.filter((c) => c.name !== id);
           }
-          saveCart(); // 存盘并更新 Header 数字
-          updateModalButtonState(id); // 刷新 Modal 界面
+          saveCart();
+          updateModalButtonState(id);
         }
       };
 
@@ -1326,16 +1373,14 @@
 
       // 7. Modal Functions
       window.openModal = function (product) {
-        currentModalProductId = product.id; // 记录当前打开的产品
+        currentModalProductId = product.id;
         document.getElementById("modal-img").src = product.img;
         document.getElementById("modal-title").textContent = product.name;
         document.getElementById("modal-sub").textContent = product.brand;
         document.getElementById("modal-price").textContent =
           "$" + product.price;
 
-        // 初始化按钮状态（是显示按钮还是加减条）
         updateModalButtonState(product.id);
-
         document.getElementById("modal").classList.add("open");
       };
 
@@ -1344,21 +1389,18 @@
         if (p) openModal(p);
       };
 
-      // 8. 全局点击遮罩关闭功能 (Modal & Lightbox)
+      // 8. 全局点击遮罩关闭功能
       function setupModalBackdropClosing() {
-        // 绑定所有带 .modal 或 .lightbox 的元素
         const overlays = document.querySelectorAll(".modal, .lightbox");
         overlays.forEach((overlay) => {
           overlay.addEventListener("click", (e) => {
-            // 只有直接点击背景(overlay本身)才关闭，点击内部内容(content)不关闭
             if (e.target === overlay) {
               overlay.classList.remove("open");
-              currentModalProductId = null; // 清除状态
+              currentModalProductId = null;
             }
           });
         });
 
-        // 额外的关闭按钮绑定
         const closeBtns = document.querySelectorAll(".lightbox-close");
         closeBtns.forEach((btn) => {
           btn.addEventListener("click", () => {
