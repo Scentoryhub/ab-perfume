@@ -10,48 +10,6 @@
     <link rel="icon" type="image/png" href="icon/32.png" />
     <link rel="apple-touch-icon" href="icon/180.png" />
 
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ZKERETN8Y2"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-ZKERETN8Y2", {
-        custom_map: { dimension1: "client_id" },
-      });
-    </script>
-    <script>
-      !(function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = "2.0";
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
-      );
-      fbq("init", "9083739771684521");
-      fbq("track", "PageView");
-    </script>
-
     <style>
       /* ================= 1. 全局配置 ================= */
       :root {
@@ -1027,7 +985,10 @@
 
       // 1. 首页渲染
       function renderHome() {
-        const db = window.perfumeDB || [];
+        // [新增逻辑] 过滤掉 stock 为 0 的商品
+        const db = (window.perfumeDB || []).filter(
+          (p) => parseInt(p.stock) !== 0
+        );
         const container = document.getElementById("home-content");
         container.innerHTML = "";
 
@@ -1146,7 +1107,10 @@
         document.getElementById("grid-view").style.display = "block";
         window.scrollTo({ top: 0, behavior: "smooth" });
 
-        const db = window.perfumeDB || [];
+        // [新增逻辑] 过滤掉 stock 为 0 的商品
+        const db = (window.perfumeDB || []).filter(
+          (p) => parseInt(p.stock) !== 0
+        );
         let filtered = [];
         let title = "";
 
