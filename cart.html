@@ -289,17 +289,15 @@
         font-size: 1rem;
       }
 
-      /* ================= SUMMARY & FOOTER (修改部分) ================= */
+      /* ================= SUMMARY & FOOTER ================= */
       .cart-summary {
         background: #fff;
-        padding: 20px; /* 增加内边距 */
+        padding: 20px;
         margin-top: 20px;
         border-top: 1px solid #eee;
         border-bottom: 1px solid #eee;
-        /* 移除最大宽度限制，使其占满容器 */
         width: 100%;
         border-radius: 6px;
-        /* 增加阴影，与上方卡片保持一致 */
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       }
       .cart-summary h2 {
@@ -366,16 +364,14 @@
         gap: 8px;
       }
 
-      /* Discount Tiers (修改部分) */
+      /* Discount Tiers */
       .tiers-container {
         margin-top: 20px;
         background: #fff;
-        padding: 20px; /* 增加内边距 */
+        padding: 20px;
         text-align: center;
-        /* 移除最大宽度限制，使其占满容器 */
         width: 100%;
         border-radius: 6px;
-        /* 增加阴影 */
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       }
       .tiers-grid {
@@ -825,26 +821,38 @@
       };
 
       confirmOrderBtn.onclick = () => {
+        // 1. 获取输入
         const name = inputs.name.value.trim();
         const addr = inputs.address.value.trim();
         const zip = inputs.zip.value.trim();
         const email = inputs.email.value.trim();
 
+        // 2. 校验
         if (!name || !addr || !zip)
           return alert("Please fill in shipping details");
 
         const cart = loadCart();
-        let msg = `*New Order Request*%0A`;
-        msg += `Name: ${name}%0AAddress: ${addr}%0AZip: ${zip}%0AEmail: ${email}%0A%0A`;
-        msg += `*Items:*%0A`;
+
+        // 3. 构建消息文本（使用 \n 换行）
+        let msgRaw = `*New Order Request*\n`;
+        msgRaw += `Name: ${name}\n`;
+        msgRaw += `Address: ${addr}\n`;
+        msgRaw += `Zip: ${zip}\n`;
+        msgRaw += `Email: ${email}\n\n`;
+        msgRaw += `*Items:*\n`;
 
         cart.forEach((item) => {
-          msg += `- ${item.caption} (x${item.quantity})%0A`;
+          msgRaw += `- ${item.caption} (x${item.quantity})\n`;
         });
 
-        msg += `%0A*Total:* ${summaryEls.total.textContent}`;
+        msgRaw += `\n*Total:* ${summaryEls.total.textContent}`;
 
-        window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, "_blank");
+        // 4. 编码并跳转
+        const encodedMsg = encodeURIComponent(msgRaw);
+        window.open(
+          `https://wa.me/${whatsappNumber}?text=${encodedMsg}`,
+          "_blank"
+        );
         closeModal();
       };
 
