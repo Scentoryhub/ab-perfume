@@ -38,7 +38,6 @@
         style="display: none"
         src="https://www.facebook.com/tr?id=9083739771684521&ev=PageView&noscript=1"
     /></noscript>
-
     <link rel="icon" type="image/png" href="icon/32.png" />
     <link rel="apple-touch-icon" href="icon/180.png" />
     <style>
@@ -91,9 +90,6 @@
       .hamburger-icon {
         font-size: 1.4rem;
         line-height: 1;
-      }
-      .home-icon {
-        font-size: 1.2rem;
       }
 
       .header-title {
@@ -362,6 +358,7 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        background: #25d366; /* WhatsApp Green */
       }
 
       /* Discount Tiers */
@@ -409,46 +406,6 @@
         padding: 10px 25px;
         text-decoration: none;
         border-radius: 4px;
-      }
-
-      /* Modal */
-      .modal {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 2000;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-      .modal-content {
-        background: #fff;
-        width: 100%;
-        max-width: 400px;
-        padding: 25px;
-        border-radius: 8px;
-      }
-      .form-group {
-        margin-bottom: 12px;
-      }
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-        font-size: 0.85rem;
-      }
-      .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-      }
-      .modal-btns {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
       }
     </style>
   </head>
@@ -553,45 +510,9 @@
 
     <div class="cart-actions">
       <button id="clear-cart-btn" class="action-btn btn-clear">Clear</button>
-      <button id="make-order-btn" class="action-btn btn-order">
-        <span>Make Order</span>
+      <button id="send-order-btn" class="action-btn btn-order">
+        <span>Send Order</span>
       </button>
-    </div>
-
-    <div id="order-modal" class="modal">
-      <div class="modal-content">
-        <h3 style="margin-top: 0; text-align: center">Shipping Info</h3>
-
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" id="cust-name" placeholder="Full Name (Fake ok)" />
-        </div>
-        <div class="form-group">
-          <label>Address</label>
-          <input type="text" id="cust-address" placeholder="Street, City" />
-        </div>
-        <div class="form-group">
-          <label>Zip Code</label>
-          <input type="text" id="cust-zip" placeholder="Zip Code" />
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="cust-email" placeholder="Email Address" />
-        </div>
-
-        <div class="modal-btns">
-          <button id="cancel-order-btn" class="action-btn btn-clear">
-            Cancel
-          </button>
-          <button
-            id="confirm-order-btn"
-            class="action-btn btn-order"
-            style="background: #25d366"
-          >
-            Done
-          </button>
-        </div>
-      </div>
     </div>
 
     <script src="db.js"></script>
@@ -605,18 +526,7 @@
       // ================= Cart Logic =================
       const cartItemsList = document.getElementById("cart-items-list");
       const clearCartBtn = document.getElementById("clear-cart-btn");
-      const makeOrderBtn = document.getElementById("make-order-btn");
-
-      const orderModal = document.getElementById("order-modal");
-      const cancelOrderBtn = document.getElementById("cancel-order-btn");
-      const confirmOrderBtn = document.getElementById("confirm-order-btn");
-
-      const inputs = {
-        name: document.getElementById("cust-name"),
-        address: document.getElementById("cust-address"),
-        zip: document.getElementById("cust-zip"),
-        email: document.getElementById("cust-email"),
-      };
+      const sendOrderBtn = document.getElementById("send-order-btn");
 
       const summaryEls = {
         total: document.getElementById("total-price"),
@@ -653,13 +563,6 @@
         window.dispatchEvent(new Event("storage"));
       }
 
-      function getCleanName(caption) {
-        if (caption.includes(" - ")) {
-          return caption.split(" - ").slice(1).join(" - ");
-        }
-        return caption;
-      }
-
       function renderCart() {
         const cart = loadCart();
         cartItemsList.innerHTML = "";
@@ -683,15 +586,17 @@
           const price = Number(item.price) || 0;
           const subtotal = (price * item.quantity).toFixed(2);
 
+          // 修改处：不再隐藏产品ID (移除了 getCleanName 调用)
+          // 这样显示出来的就是 "1001 - Creed Aventus"
+          const displayTitle = item.caption;
+
           const li = document.createElement("li");
           li.className = "cart-item";
           li.innerHTML = `
                 <img src="${item.img}" class="cart-item-img" alt="Product">
                 <div class="item-content">
                     <div class="item-header">
-                        <h3 class="item-title">${getCleanName(
-                          item.caption
-                        )}</h3>
+                        <h3 class="item-title">${displayTitle}</h3>
                         <button class="remove-btn-icon" onclick="removeItem(${index})">&times;</button>
                     </div>
                     
@@ -786,7 +691,12 @@
         const cart = loadCart();
         if (cart[index]) {
           cart[index].quantity += change;
-          if (cart[index].quantity < 1) cart[index].quantity = 1;
+
+          // 数量 <= 0 直接删除
+          if (cart[index].quantity <= 0) {
+            cart.splice(index, 1);
+          }
+
           saveCart(cart);
           renderCart();
         }
@@ -808,54 +718,43 @@
         }
       };
 
-      // Modal Logic
-      makeOrderBtn.onclick = () => {
-        if (loadCart().length === 0) return alert("Cart is empty");
-        orderModal.style.display = "flex";
-      };
-
-      const closeModal = () => (orderModal.style.display = "none");
-      cancelOrderBtn.onclick = closeModal;
-      orderModal.onclick = (e) => {
-        if (e.target === orderModal) closeModal();
-      };
-
-      confirmOrderBtn.onclick = () => {
-        // 1. 获取输入
-        const name = inputs.name.value.trim();
-        const addr = inputs.address.value.trim();
-        const zip = inputs.zip.value.trim();
-        const email = inputs.email.value.trim();
-
-        // 2. 校验
-        if (!name || !addr || !zip)
-          return alert("Please fill in shipping details");
-
+      // Send Order Logic (无需弹窗，直接发送)
+      sendOrderBtn.onclick = () => {
         const cart = loadCart();
+        if (cart.length === 0) return alert("Cart is empty");
 
-        // 3. 构建消息文本（使用 \n 换行）
-        let msgRaw = `*New Order Request*\n`;
-        msgRaw += `Name: ${name}\n`;
-        msgRaw += `Address: ${addr}\n`;
-        msgRaw += `Zip: ${zip}\n`;
-        msgRaw += `Email: ${email}\n\n`;
-        msgRaw += `*Items:*\n`;
+        let totalQty = 0;
+        let lvCount = 0;
+        let otherCount = 0;
 
         cart.forEach((item) => {
-          msgRaw += `- ${item.caption} (x${item.quantity})\n`;
+          const qty = item.quantity;
+          totalQty += qty;
+          if (item.caption.toLowerCase().includes("louis vuitton")) {
+            lvCount += qty;
+          } else {
+            otherCount += qty;
+          }
         });
 
-        msgRaw += `\n*Total:* ${summaryEls.total.textContent}`;
+        let msg = `*New Order Request* 📦%0A`;
+        msg += `----------------------------%0A`;
 
-        // 4. 编码并跳转
-        const encodedMsg = encodeURIComponent(msgRaw);
-        window.open(
-          `https://wa.me/${whatsappNumber}?text=${encodedMsg}`,
-          "_blank"
-        );
-        closeModal();
+        cart.forEach((item) => {
+          // 修改处：用两个 %0A%0A 来增加空行
+          msg += `${item.caption} x *${item.quantity}*%0A%0A`;
+        });
+
+        msg += `----------------------------%0A`;
+        msg += `LV Quantity: ${lvCount}%0A`;
+        msg += `Other Quantity: ${otherCount}%0A`;
+        msg += `*Total Quantity: ${totalQty} pcs*%0A`;
+
+        msg += `----------------------------%0A`;
+        msg += `*Total Amount:* ${summaryEls.total.textContent}`;
+
+        window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, "_blank");
       };
-
       // Init
       document.addEventListener("DOMContentLoaded", renderCart);
     </script>
