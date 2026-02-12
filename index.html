@@ -52,7 +52,7 @@
       }
       button {
         outline: none;
-        font-family: inherit;
+        font-family: inherit; /* 关键：强制继承父级字体 */
         border: none;
         background: none;
         padding: 0;
@@ -119,7 +119,6 @@
         border-color: #fff;
       }
 
-      /* 右上角 Tracking 模块样式 */
       .header-right {
         position: relative;
         cursor: pointer;
@@ -134,6 +133,7 @@
         font-weight: 700;
         letter-spacing: 0.5px;
         text-transform: uppercase;
+        color: #fff;
       }
 
       /* ================= 3. Sidebar ================= */
@@ -283,10 +283,10 @@
         margin-left: 3px;
       }
 
-      /* ================= NEW Floating Capsule Bottom Bar ================= */
+      /* ================= NEW Floating Capsule Bottom Bar (Split Pill Design) ================= */
       .bottom-nav-bar {
         position: fixed;
-        bottom: 25px;
+        bottom: 25px; /* 悬浮 */
         left: 50%;
         transform: translateX(-50%);
         width: 92%;
@@ -295,13 +295,13 @@
         background: #ffffff;
         z-index: 3000;
         display: flex;
-        align-items: stretch;
+        align-items: stretch; /* 撑满高度 */
         justify-content: space-between;
         padding: 0;
-        border-radius: 50px;
+        border-radius: 50px; /* 胶囊外形 */
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         border: 1px solid rgba(0, 0, 0, 0.03);
-        overflow: hidden;
+        overflow: hidden; /* 裁切内部 */
       }
 
       /* Left Side: Asset Area (45%) */
@@ -310,8 +310,8 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-        padding-left: 15px;
-        gap: 8px;
+        padding-left: 15px; /* 左侧留白 */
+        gap: 8px; /* 减少间距 */
         background: #fff;
       }
 
@@ -330,6 +330,7 @@
         stroke-width: 2;
       }
 
+      /* 角标 */
       .nav-badge {
         position: absolute;
         top: -8px;
@@ -388,7 +389,7 @@
       .checkout-pill-btn {
         width: 100%;
         height: 100%;
-        background-color: #25d366;
+        background-color: #25d366; /* WhatsApp Green */
         color: #fff;
         border: none;
         border-radius: 0;
@@ -398,7 +399,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 8px; /* 图标文字间距加大 */
         cursor: pointer;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -408,7 +409,7 @@
         background-color: #1ebc57;
       }
 
-      /* ================= BUTTON STYLES ================= */
+      /* ================= BUTTON STYLES (Cards) ================= */
       .action-btn-black {
         background: #000;
         color: #fff;
@@ -491,7 +492,7 @@
         opacity: 1;
       }
 
-      /* ================= Main UI ================= */
+      /* ================= Home View ================= */
       #home-view {
         padding-bottom: 20px;
         display: block;
@@ -525,7 +526,6 @@
         cursor: pointer;
         padding: 5px;
       }
-
       .scroll-container-wrapper {
         position: relative;
         padding: 0 5px;
@@ -576,7 +576,22 @@
       .scroll-arrow-btn.right {
         right: 2px;
       }
-
+      .scroll-progress-container {
+        width: 60px;
+        height: 4px;
+        background: #eee;
+        border-radius: 2px;
+        margin: 0 auto;
+        margin-top: -5px;
+        overflow: hidden;
+      }
+      .scroll-progress-bar {
+        height: 100%;
+        width: 0;
+        background: var(--accent-color);
+        border-radius: 2px;
+        transition: width 0.1s linear;
+      }
       .scroll-card {
         flex: 0 0 160px;
         display: flex;
@@ -656,7 +671,6 @@
         border-radius: 3px;
         white-space: nowrap;
       }
-
       .shop-all-section {
         padding: 30px 20px;
         text-align: center;
@@ -744,7 +758,6 @@
         flex-wrap: wrap;
         gap: 5px;
       }
-
       .pagination-container {
         display: flex;
         justify-content: center;
@@ -776,7 +789,7 @@
         border: 1px solid #997a00;
       }
 
-      /* ================= Trust Section ================= */
+      /* ================= Trust Section & Modal ================= */
       .trust-section {
         background: #fff;
         margin-top: 20px;
@@ -813,8 +826,6 @@
         margin: 0;
         line-height: 1.4;
       }
-
-      /* ================= Modals ================= */
       .modal {
         display: none;
         position: fixed;
@@ -885,7 +896,6 @@
         font-family: Georgia, serif;
         font-style: italic;
       }
-
       .gender-tag {
         display: inline-block;
         font-size: 0.7rem;
@@ -911,7 +921,6 @@
         background: #eceff1;
         border: 1px solid #cfd8dc;
       }
-
       #toast {
         visibility: hidden;
         min-width: 200px;
@@ -1181,11 +1190,13 @@
         style="max-width: 360px; text-align: center; padding: 25px"
       >
         <div class="modal-close" onclick="closeTrackingModal()">&times;</div>
+
         <h3 style="margin: 0 0 10px 0; font-size: 1.2rem">TRACK YOUR ORDER</h3>
         <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px">
           Enter your <b>Phone Number</b> or <b>Name</b> to retrieve your
           tracking info.
         </p>
+
         <input
           type="text"
           id="track-input"
@@ -1199,6 +1210,7 @@
           "
           placeholder="e.g. 9546731114 or Jackson"
         />
+
         <button
           id="track-btn"
           class="action-btn-black"
@@ -1206,6 +1218,7 @@
         >
           CHECK NOW
         </button>
+
         <div
           id="track-result"
           style="
@@ -1246,10 +1259,12 @@
 
         if (!input) return alert("Please enter a name or phone number.");
 
+        // UI Loading State
         btn.textContent = "SEARCHING...";
         btn.disabled = true;
         resultDiv.style.display = "none";
 
+        // 发起请求
         fetch(`${GOOGLE_SCRIPT_URL}?q=${encodeURIComponent(input)}`)
           .then((response) => response.json())
           .then((data) => {
@@ -1258,22 +1273,52 @@
             resultDiv.style.display = "block";
 
             if (data.status === "success") {
+              // 处理多单号：按换行符或空格分割
+              let rawTracks = String(data.tracking).split(/[\n\s]+/);
+              // 生成每一个单号的 HTML (每行一个，带复制按钮)
+              let trackHtml = rawTracks
+                .map((num) => {
+                  if (num.length < 5) return ""; // 过滤无效短字符
+                  return `
+                    <div style="background:#fff; border:1px dashed #ccc; border-radius:4px; padding:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-family:monospace; font-weight:bold; font-size:0.95rem; word-break:break-all;">${num}</span>
+                        <span onclick="navigator.clipboard.writeText('${num}').then(()=>alert('Copied!'))" style="cursor:pointer; font-size:1.2rem;" title="Copy">📋</span>
+                    </div>
+                  `;
+                })
+                .join("");
+
+              // 渲染结果
               resultDiv.innerHTML = `
-          <div style="color:#28a745; font-weight:bold; margin-bottom:5px;">✅ Order Found!</div>
-          <div style="font-size:0.9rem; color:#333;">Customer: <b>${data.customer_name}</b></div>
-          <div style="font-size:0.9rem; color:#333; margin-top:5px;">Carrier: <b>${data.carrier}</b></div>
-          <div style="margin-top:10px; padding:10px; background:#fff; border:1px dashed #ccc; border-radius:4px; font-family:monospace; font-size:1rem; font-weight:bold; word-break:break-all;">
-            ${data.tracking}
-          </div>
-          <button onclick="navigator.clipboard.writeText('${data.tracking}').then(()=>alert('Copied!'))" style="margin-top:10px; font-size:0.8rem; text-decoration:underline; color:#007bff; cursor:pointer;">Copy Tracking Number</button>
-        `;
+                <div style="color:#28a745; font-weight:bold; margin-bottom:5px; font-size:1.1rem;">✅ Order Found!</div>
+                
+                <div style="background:#eee; height:1px; margin:10px 0;"></div>
+                
+                <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#555; margin-bottom:10px;">
+                    <span>📅 Date: <b>${data.order_date || "N/A"}</b></span>
+                    <span>👤 <b>${data.customer_name}</b></span>
+                </div>
+
+                <div style="font-size:0.9rem; color:#333; margin-bottom:8px;">
+                    Carrier: <b>${data.carrier}</b>
+                </div>
+
+                <div style="text-align:left;">
+                    ${trackHtml}
+                </div>
+                
+                <div style="font-size:0.75rem; color:#999; margin-top:5px; text-align:center;">
+                    *Click icon to copy number
+                </div>
+              `;
             } else {
+              // 没找到
               resultDiv.innerHTML = `
-          <div style="color:#d9534f; font-weight:bold;">❌ Order Not Found</div>
-          <p style="font-size:0.85rem; color:#666; margin-top:5px;">
-            We couldn't find an order with that info. Please try your <b>Phone Number (digits only)</b> or check if the order has been shipped yet.
-          </p>
-        `;
+                <div style="color:#d9534f; font-weight:bold;">❌ Order Not Found</div>
+                <p style="font-size:0.85rem; color:#666; margin-top:5px;">
+                  We couldn't find an order with that info. Please try your <b>Phone Number (digits only)</b> or check if the order has been shipped yet.
+                </p>
+              `;
             }
           })
           .catch((error) => {
@@ -1363,6 +1408,8 @@
         const qty = getCartTotalQty();
         const banner = document.getElementById("wholesale-banner");
         const content = document.getElementById("ws-content");
+
+        // 1. Update Top Banner
         if (banner && content) {
           if (qty === 0) {
             banner.className = "ws-banner";
@@ -1376,8 +1423,11 @@
               nextTierIndex < discountTiers.length
                 ? discountTiers[nextTierIndex]
                 : null;
+
             let html = `<div class="ws-progress-box">`;
             let currentOff = Math.round(currentTier.percent * 100);
+            // "Free Shipping" removed from top
+
             html += `<div class="ws-progress-text">Cart: <strong>${qty}</strong> items • Current: <span class="ws-highlight">-${currentOff}% OFF</span></div>`;
             if (nextTier) {
               let needMore = nextTier.min - qty;
@@ -1391,10 +1441,13 @@
             banner.classList.add("active-tier");
           }
         }
+
+        // 2. Update Bottom Bar Data
         updateBottomBarData(qty);
       }
 
       function updateBottomBarData(totalQty) {
+        // Update Badge
         const badgeEl = document.getElementById("bottom-bar-badge");
         if (totalQty > 0) {
           badgeEl.textContent = totalQty;
@@ -1402,24 +1455,32 @@
         } else {
           badgeEl.style.display = "none";
         }
+
+        // Calculate Total Price with Discount
         let subtotal = 0;
         cartItems.forEach((item) => {
           subtotal += item.price * item.quantity;
         });
+
         const tier = discountTiers.find(
           (t) => totalQty >= t.min && totalQty <= t.max,
         );
         const discountPercent = tier ? tier.percent : 0;
         const finalTotal = subtotal - subtotal * discountPercent;
+
+        // Update Price Text & Strikethrough
         const priceEl = document.getElementById("bottom-bar-price");
         const originalEl = document.getElementById("bottom-bar-original");
+
         if (totalQty === 0) {
           priceEl.textContent = "$0";
           priceEl.style.color = "#999";
           originalEl.style.display = "none";
         } else {
           priceEl.textContent = "$" + Math.round(finalTotal);
-          priceEl.style.color = "#000";
+          priceEl.style.color = "#000"; // Big Black Price
+
+          // Show Strikethrough if discount > 0
           if (discountPercent > 0) {
             originalEl.textContent = "~~$" + subtotal.toFixed(0) + "~~";
             originalEl.style.display = "inline-block";
@@ -1470,16 +1531,21 @@
         return `<div class="img-wrapper skeleton-loader"><picture><source srcset="${webpSrc}" type="image/webp"><img src="${src}" alt="${alt}" loading="lazy" class="lazy-img" onload="this.classList.add('loaded'); this.parentElement.parentElement.classList.remove('skeleton-loader');" onerror="this.parentElement.parentElement.classList.remove('skeleton-loader');"></picture></div>`;
       }
 
+      // --- 4. Logic for "Modal Style" Add-to-Cart Buttons on Cards ---
+      // This is the updated function you requested to move outside
       function getCartQty(id) {
         const item = cartItems.find((c) => c.name === id);
         return item ? item.quantity : 0;
       }
 
+      // Updated: Returns Large Black Button or Rectangular Control Box
       function getAddButtonHtml(id) {
         const qty = getCartQty(id);
         if (qty === 0) {
+          // State 0: Large Black Button
           return `<button class="action-btn-black" onclick="updateItemQty('${id}', 1); event.stopPropagation();">ADD TO CART</button>`;
         } else {
+          // State >0: Rectangular Control Box
           return `
                 <div class="action-qty-box">
                     <div class="qty-btn-rect" onclick="updateItemQty('${id}', -1); event.stopPropagation();">-</div>
@@ -1489,6 +1555,7 @@
         }
       }
 
+      // --- Home Render Logic ---
       function renderHome() {
         const db = (window.perfumeDB || []).filter(
           (p) => parseInt(p.stock) > 0,
@@ -1496,6 +1563,7 @@
         const container = document.getElementById("home-content");
         if (!container) return;
         container.innerHTML = "";
+
         const renderSection = (title, items, filterKey) => {
           const section = createBrandSection(title, items, filterKey);
           if (
@@ -1506,12 +1574,15 @@
           }
           container.appendChild(section);
         };
+
         const bestSellers = db.filter((p) => p.top == 1);
         if (bestSellers.length > 0)
           renderSection("🔥 Best Sellers", bestSellers, "BestSellers");
+
         const newArrivals = db.filter((p) => p.new == 1);
         if (newArrivals.length > 0)
           renderSection("🆕 New Arrivals", newArrivals, "New");
+
         const renderedBrands = new Set();
         FEATURED_BRANDS.forEach((brand) => {
           const products = db.filter((p) =>
@@ -1524,6 +1595,7 @@
             renderedBrands.add(brand);
           }
         });
+
         const otherProducts = db.filter((p) => {
           for (let featured of renderedBrands) {
             if (p.brand.toLowerCase().includes(featured.toLowerCase()))
@@ -1531,6 +1603,7 @@
           }
           return true;
         });
+
         if (otherProducts.length > 0) {
           const otherSection = createBrandSection(
             "Other Brands",
@@ -1540,11 +1613,14 @@
           otherSection.id = "brand-Other";
           container.appendChild(otherSection);
         }
+
         const saleItems = db.filter((p) => p.sale == 1);
         if (saleItems.length > 0)
           renderSection("🏷️ On Sale", saleItems, "Sale");
+
         const setItems = db.filter((p) => p.name.toUpperCase().includes("SET"));
         if (setItems.length > 0) renderSection("🎁 Gift Sets", setItems, "Set");
+
         const shopAllContainer = document.createElement("div");
         shopAllContainer.className = "shop-all-section";
         shopAllContainer.innerHTML = `<button class="shop-all-btn" onclick="handleMenuClick('All')">Shop All Products</button>`;
@@ -1556,10 +1632,12 @@
         section.className = "brand-section";
         const cleanFilterKey =
           filterKey || (title.includes("Best") ? "BestSellers" : "All");
+
         const header = document.createElement("div");
         header.className = "brand-header";
         header.innerHTML = `<h2 class="brand-title">${title}</h2><div class="brand-see-all" onclick="switchToGrid('${cleanFilterKey}')">See All ></div>`;
         section.appendChild(header);
+
         const wrapperContainer = document.createElement("div");
         wrapperContainer.className = "scroll-container-wrapper";
         const leftBtn = document.createElement("div");
@@ -1570,6 +1648,7 @@
         rightBtn.innerHTML = "&#10095;";
         const wrapper = document.createElement("div");
         wrapper.className = "scroll-wrapper";
+
         products.slice(0, 15).forEach((p) => {
           const card = document.createElement("div");
           card.className = "scroll-card";
@@ -1581,6 +1660,7 @@
               return;
             openModal(p);
           };
+
           let badgesHtml = "";
           if (p.top == 1)
             badgesHtml += '<div class="badge-tag badge-hot">HOT</div>';
@@ -1588,13 +1668,17 @@
             badgesHtml += '<div class="badge-tag badge-new">NEW</div>';
           if (p.sale == 1)
             badgesHtml += '<div class="badge-tag badge-sale">SALE</div>';
+
           const imgHtml = generatePictureHTML(p.img, p.name);
           const genderClass = getGenderClass(p.gender);
           const genderHtml = p.gender
             ? `<span class="gender-tag ${genderClass}">${p.gender}</span>`
             : "";
           const stockHtml = getStockHtml(p.inventory);
+
+          // Use NEW button logic
           const buttonHtml = getAddButtonHtml(p.id);
+
           card.innerHTML = `
             <div style="position:relative;">${imgHtml}<div class="badges-container">${badgesHtml}</div></div>
             <div style="padding: 0 5px 5px 5px; display:flex; flex-direction:column; flex:1;">
@@ -1612,16 +1696,19 @@
           `;
           wrapper.appendChild(card);
         });
+
         const progressContainer = document.createElement("div");
         progressContainer.className = "scroll-progress-container";
         const progressBar = document.createElement("div");
         progressBar.className = "scroll-progress-bar";
         progressContainer.appendChild(progressBar);
+
         wrapperContainer.appendChild(leftBtn);
         wrapperContainer.appendChild(wrapper);
         wrapperContainer.appendChild(rightBtn);
         section.appendChild(wrapperContainer);
         section.appendChild(progressContainer);
+
         const updateControls = () => {
           const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
           const scrollLeft = wrapper.scrollLeft;
@@ -1634,14 +1721,47 @@
             progressBar.style.width = "100%";
           }
         };
+
         leftBtn.onclick = () =>
           wrapper.scrollBy({ left: -200, behavior: "smooth" });
         rightBtn.onclick = () =>
           wrapper.scrollBy({ left: 200, behavior: "smooth" });
         wrapper.addEventListener("scroll", updateControls);
         setTimeout(updateControls, 100);
+
         return section;
       }
+
+      // --- Brand & Search Logic ---
+      const BRAND_ALIASES = {
+        lv: "Louis Vuitton",
+        "louis vuitton": "Louis Vuitton",
+        louis: "Louis Vuitton",
+        ysl: "Yves Saint Laurent",
+        yves: "Yves Saint Laurent",
+        saint: "Yves Saint Laurent",
+        tf: "Tom Ford",
+        tom: "Tom Ford",
+        ford: "Tom Ford",
+        creed: "Creed",
+        dior: "Dior",
+        chanel: "Chanel",
+        gucci: "Gucci",
+        pdm: "Parfums de Marly",
+        marly: "Parfums de Marly",
+        mfk: "Maison Francis Kurkdjian",
+        kurkdjian: "Maison Francis Kurkdjian",
+        valentino: "Valentino",
+        versace: "Versace",
+        armani: "Giorgio Armani",
+        "giorgio armani": "Giorgio Armani",
+        burberry: "Burberry",
+        lattafa: "Lattafa",
+        kayali: "Kayali",
+        bond: "Bond No. 9",
+        "bond no 9": "Bond No. 9",
+        jpg: "JEAN PAUL GAULTIER",
+      };
 
       function detectBrandIntent(rawTerm) {
         const lowerTerm = rawTerm.toLowerCase().trim();
@@ -1675,16 +1795,19 @@
         return score;
       }
 
+      // --- Grid Render ---
       function switchToGrid(criteria) {
         viewMode = "grid";
         document.getElementById("home-view").style.display = "none";
         document.getElementById("grid-view").style.display = "block";
         window.scrollTo({ top: 0, behavior: "smooth" });
+
         const db = (window.perfumeDB || []).filter(
           (p) => parseInt(p.stock) > 0,
         );
         let filtered = [];
         let title = "";
+
         if (criteria === "All") {
           filtered = db;
           title = "All Products";
@@ -1763,6 +1886,7 @@
           filtered = db.filter((p) => p.brand === criteria);
           title = criteria;
         }
+
         document.getElementById("grid-title").textContent = title;
         currentGridData = filtered;
         currentPage = 1;
@@ -1774,6 +1898,7 @@
         gallery.innerHTML = "";
         const totalPages = Math.ceil(currentGridData.length / itemsPerPage);
         renderPagination(totalPages, currentPage);
+
         if (currentGridData.length === 0) {
           gallery.innerHTML =
             "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#999;'>No items found.</div>";
@@ -1781,6 +1906,7 @@
         }
         const start = (currentPage - 1) * itemsPerPage;
         const pageItems = currentGridData.slice(start, start + itemsPerPage);
+
         pageItems.forEach((p) => {
           const div = document.createElement("div");
           div.className = "item";
@@ -1797,7 +1923,10 @@
             ? ` · <span class="gender-tag ${genderClass}">${p.gender}</span>`
             : "";
           const stockHtml = getStockHtml(p.inventory);
+
+          // Use NEW button logic
           const buttonHtml = getAddButtonHtml(p.id);
+
           div.innerHTML = `
               <div class="item-img-box skeleton-loader" onclick="openModalById('${p.id}')">
                   <picture><source srcset="${webpSrc}" type="image/webp"><img src="${p.img}" loading="lazy" class="lazy-img" onload="this.classList.add('loaded'); this.parentElement.parentElement.classList.remove('skeleton-loader');" onerror="this.parentElement.parentElement.classList.remove('skeleton-loader');"></picture>
@@ -1823,6 +1952,7 @@
           return;
         }
         container.style.display = "flex";
+
         const createBtn = (
           text,
           page,
@@ -1841,6 +1971,7 @@
             };
           return btn;
         };
+
         container.appendChild(
           createBtn("Prev", activePage - 1, false, activePage === 1),
         );
@@ -1885,6 +2016,7 @@
         const genderClass = getGenderClass(product.gender);
         document.getElementById("modal-sub").innerHTML =
           `<div style="font-size:1.1rem; color:#333; margin-bottom:5px;">${product.brand}</div><div style="margin-bottom:8px; font-size:0.85rem; color:#555; display:flex; align-items:center; justify-content:center;"><span class="gender-tag ${genderClass}" style="font-size:0.8rem; margin:0 5px 0 0;">${product.gender || "Unisex"}</span><span style="color:#ccc">|</span> <span style="margin-left:5px">${formatSize(product)}</span></div>${notesHtml}`;
+
         const stockEl = document.getElementById("modal-stock");
         const stockVal = getStockHtml(product.inventory);
         if (stockVal) {
@@ -1893,6 +2025,7 @@
         } else {
           stockEl.style.display = "none";
         }
+
         document.getElementById("modal-price").textContent =
           "$" + product.price;
         updateModalButtonState(product.id);
@@ -1968,6 +2101,7 @@
         const db = window.perfumeDB;
         const product = db.find((p) => p.id === id);
         if (!product) return;
+
         let existing = cartItems.find((c) => c.name === id);
         if (!existing && delta > 0) {
           let sizeLabel = product.ml
@@ -1992,16 +2126,22 @@
         }
         saveCart();
         updateWholesaleBanner();
+        // Update both the LIST VIEW style button and Modal style button if they exist
         const newBtnHtml = getAddButtonHtml(id);
         const scrollBtnWrap = document.getElementById(`btn-wrap-${id}`);
         if (scrollBtnWrap) scrollBtnWrap.innerHTML = newBtnHtml;
         const gridBtnWrap = document.getElementById(`btn-wrap-grid-${id}`);
         if (gridBtnWrap) gridBtnWrap.innerHTML = newBtnHtml;
+
+        // Also update modal state if open
         if (currentModalProductId === id) updateModalButtonState(id);
       };
 
+      // Separate function for modal button state to ensure it keeps its own styling structure if needed
+      // (Though here we are using the same HTML structure for both, just in case you want to tweak one later)
       function updateModalButtonState(id) {
         const container = document.getElementById("modal-action-area");
+        // Reuse the logic, but we could also write specific HTML if the modal needed to look different
         container.innerHTML = getAddButtonHtml(id);
       }
 
