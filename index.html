@@ -291,7 +291,7 @@
         margin-left: 3px;
       }
 
-      /* ================= NEW Floating Capsule Bottom Bar (Split Pill Design) ================= */
+      /* ================= NEW Floating Capsule Bottom Bar (Ratio 45:55) ================= */
       .bottom-nav-bar {
         position: fixed;
         bottom: 25px; /* 悬浮 */
@@ -303,23 +303,23 @@
         background: #ffffff;
         z-index: 3000;
         display: flex;
-        align-items: stretch; /* 让子元素高度撑满 */
+        align-items: stretch; /* 撑满高度 */
         justify-content: space-between;
-        /* Padding改为0，让右侧按钮可以贴边 */
         padding: 0;
         border-radius: 50px; /* 胶囊外形 */
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         border: 1px solid rgba(0, 0, 0, 0.03);
-        overflow: hidden; /* 关键：裁切内部直角子元素 */
+        overflow: hidden; /* 裁切内部 */
       }
 
-      /* Left Side: Asset Area (65%) */
+      /* Left Side: Asset Area (45%) - 缩短了宽度 */
       .nav-left {
-        flex: 1; /* 占据剩余空间 */
+        width: 45%;
         display: flex;
         align-items: center;
         cursor: pointer;
-        padding-left: 25px; /* 左侧留白 */
+        padding-left: 15px; /* 减少留白，适配 45% 宽度 */
+        gap: 8px; /* 减少间距 */
         background: #fff;
       }
 
@@ -327,7 +327,7 @@
         position: relative;
         display: flex;
         align-items: center;
-        margin-right: 15px;
+        flex-shrink: 0; /* 防止图标被压缩 */
       }
 
       .nav-cart-icon {
@@ -338,7 +338,6 @@
         stroke-width: 2;
       }
 
-      /* 优化后的角标 */
       .nav-badge {
         position: absolute;
         top: -8px;
@@ -362,13 +361,15 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        overflow: hidden; /* 防止文字溢出 */
       }
 
       .price-info-row {
         display: flex;
         align-items: baseline;
-        gap: 8px;
+        gap: 6px;
         line-height: 1;
+        white-space: nowrap; /* 不换行 */
       }
 
       .nav-price {
@@ -386,23 +387,22 @@
         opacity: 0.7;
       }
 
-      /* Right Side: Action Button (35%) - Full Fill */
+      /* Right Side: Action Button (55%) - 更加宽大 */
       .nav-right {
-        width: 35%; /* 占满右侧 1/3 左右 */
-        height: 100%; /* 撑满高度 */
+        width: 55%;
+        height: 100%;
       }
 
       .checkout-pill-btn {
         width: 100%;
         height: 100%;
-        background-color: #25d366; /* WhatsApp Green */
+        background-color: #25d366;
         color: #fff;
         border: none;
-        /* 直角左边 + 圆角右边（由父容器overflow处理，这里设0即可） */
         border-radius: 0;
-        font-size: 1.05rem;
-        font-weight: 700; /* 调整字重，不那么生硬 */
-        font-family: inherit; /* 关键：认祖归宗，继承网站字体 */
+        font-size: 1.1rem; /* 字体加大一点点 */
+        font-weight: 700;
+        font-family: inherit;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -412,7 +412,7 @@
         transition: background 0.2s;
       }
       .checkout-pill-btn:active {
-        background-color: #1ebc57; /* 点击变深 */
+        background-color: #1ebc57;
       }
 
       /* ================= BUTTON STYLES (Cards) ================= */
@@ -1330,7 +1330,7 @@
 
             let html = `<div class="ws-progress-box">`;
             let currentOff = Math.round(currentTier.percent * 100);
-            // "Free Shipping" removed from top as requested
+            // "Free Shipping" removed from top
 
             html += `<div class="ws-progress-text">Cart: <strong>${qty}</strong> items • Current: <span class="ws-highlight">-${currentOff}% OFF</span></div>`;
             if (nextTier) {
