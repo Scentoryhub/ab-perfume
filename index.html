@@ -11,17 +11,17 @@
     <link rel="apple-touch-icon" href="icon/180.png" />
 
     <style>
-      /* ================= 1. 全局配置 & 布局变量 ================= */
+      /* ================= 1. Global Config & Layout ================= */
       :root {
         --header-height: 60px;
-        --total-top-spacing: 60px; /* 只有header */
+        --total-top-spacing: 60px; /* Adjusted: Removed trust bar height */
 
         --sidebar-width: 300px;
         --accent-color: #b28900;
         --bg-color: #f8f8f8;
         --font-main: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-        /* 标签颜色配置 */
+        /* Tag Colors */
         --tag-hot: #d9534f;
         --tag-new: #007bff;
         --tag-sale: #28a745;
@@ -36,7 +36,7 @@
         margin: 0;
         padding: 0;
         padding-top: var(--total-top-spacing);
-        padding-bottom: 80px;
+        padding-bottom: 140px; /* Increased bottom padding for sticky footer */
         font-family: var(--font-main);
         background: var(--bg-color);
         color: #333;
@@ -57,10 +57,7 @@
         padding: 0;
       }
 
-      
-      }
-
-      /* ================= 2. 头部 (Header) ================= */
+      /* ================= 2. Header ================= */
       .site-header {
         position: fixed;
         top: 0;
@@ -146,7 +143,7 @@
         border: 2px solid #000;
       }
 
-      /* ================= 3. 侧边栏 (Sidebar) ================= */
+      /* ================= 3. Sidebar ================= */
       .sidebar-overlay {
         position: fixed;
         top: 0;
@@ -236,84 +233,26 @@
         font-weight: bold;
       }
 
-      /* ================= 4. 极简版购物指引 ================= */
-      .compact-guide {
-        background: #fff;
-        padding: 15px 10px;
-        border-bottom: 8px solid #f8f8f8;
-        margin-bottom: 10px;
-      }
-
-      .compact-steps {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        max-width: 450px;
-        margin: 0 auto;
-      }
-
-      .compact-item {
-        flex: 1;
-        text-align: center;
-        position: relative;
-        padding: 0 2px;
-      }
-
-      .compact-item:not(:last-child)::after {
-        content: "›";
-        position: absolute;
-        right: -6px;
-        top: 8px;
-        font-size: 1.6rem;
-        color: #e0e0e0;
-        line-height: 0;
-        font-weight: 300;
-      }
-
-      .compact-icon {
-        font-size: 1.5rem;
-        margin-bottom: 6px;
-        display: block;
-        line-height: 1;
-      }
-
-      .compact-text {
-        font-size: 0.75rem;
-        line-height: 1.2;
-        color: #333;
-        font-weight: 700;
-        margin-bottom: 2px;
-      }
-
-      .compact-sub {
-        font-size: 0.65rem;
-        color: #999;
-        display: block;
-        font-weight: 500;
-        transform: scale(0.95);
-      }
-
-      /* ================= 批发横幅 (Wholesale Banner) - 底部悬浮 ================= */
+      /* ================= Wholesale Banner (STICKY FOOTER) ================= */
       .ws-banner {
         background: #222;
         color: #fff;
-        padding: 8px 10px;
+        padding: 12px 5px;
+        text-align: center;
         transition: background 0.3s;
+
+        /* STICKY BOTTOM CHANGE */
         position: fixed;
         bottom: 0;
         left: 0;
-        right: 0;
-        z-index: 990;
-        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.15);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
+        width: 100%;
+        z-index: 2100;
+        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
       }
 
       .ws-banner.active-tier {
         background: linear-gradient(135deg, #111 0%, #2a2a2a 100%);
-        border-bottom: 3px solid #ffd700;
+        border-top: 3px solid #ffd700;
       }
 
       .ws-progress-box {
@@ -354,7 +293,50 @@
         margin-left: 3px;
       }
 
-      /* ================= 5. 骨架屏与图片加载动画 ================= */
+      /* ================= NEW +/- Button UI ================= */
+      .btn-qty-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 32px;
+        margin-top: auto;
+      }
+
+      .btn-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.1s;
+      }
+      .btn-circle:active {
+        transform: scale(0.95);
+      }
+      .btn-plus {
+        background-color: #000;
+        color: #fff;
+      }
+      .btn-minus {
+        background-color: #f0f0f0;
+        color: #333;
+        border: 1px solid #ccc;
+      }
+      .qty-display-text {
+        font-weight: bold;
+        margin: 0 8px;
+        min-width: 16px;
+        text-align: center;
+        font-size: 0.95rem;
+      }
+
+      /* ================= Skeleton & Lazy Load ================= */
       @keyframes skeleton-loading {
         0% {
           background-position: 200% 0;
@@ -384,7 +366,7 @@
         opacity: 1;
       }
 
-      /* ================= 6. 首页 (Home View) ================= */
+      /* ================= Home View ================= */
       #home-view {
         padding-bottom: 30px;
         display: block;
@@ -578,14 +560,6 @@
         border-radius: 3px;
         white-space: nowrap;
       }
-      .scroll-card-add {
-        font-size: 0.85rem;
-        color: #000;
-        font-weight: 700;
-        text-decoration: underline;
-        margin-top: auto;
-        padding: 5px 0;
-      }
 
       .shop-all-section {
         padding: 30px 20px;
@@ -607,7 +581,7 @@
         transition: transform 0.2s;
       }
 
-      /* ================= 7. 网格视图 (Grid View) ================= */
+      /* ================= Grid View ================= */
       #grid-view {
         display: none;
         max-width: 1200px;
@@ -677,6 +651,7 @@
         gap: 5px;
       }
       .grid-add-btn {
+        /* Legacy button style overwritten by dynamic +/- */
         display: block;
         width: 100%;
         margin-top: 10px;
@@ -726,7 +701,7 @@
         transform: scale(1.05);
       }
 
-      /* ================= 8. Trust Section & Modal ================= */
+      /* ================= Trust Section & Modal ================= */
       .trust-section {
         background: #fff;
         margin-top: 20px;
@@ -853,31 +828,6 @@
         color: #000;
       }
 
-      #toast {
-        visibility: hidden;
-        min-width: 200px;
-        background-color: rgba(0, 0, 0, 0.9);
-        color: #fff;
-        text-align: center;
-        border-radius: 30px;
-        padding: 12px 20px;
-        position: fixed;
-        z-index: 9999;
-        left: 50%;
-        bottom: 80px;
-        transform: translateX(-50%);
-        font-size: 0.95rem;
-        font-weight: 500;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        opacity: 0;
-        transition: all 0.3s;
-      }
-      #toast.show {
-        visibility: visible;
-        opacity: 1;
-        bottom: 90px;
-      }
-
       /* Loading Spinner */
       .loading-container {
         display: flex;
@@ -923,7 +873,7 @@
         }
       }
 
-      /* ================= 9. Gender Tags & Notes ================= */
+      /* ================= Gender Tags & Notes ================= */
       .modal-notes-box {
         background-color: #f7f7f7;
         border-radius: 8px;
@@ -974,62 +924,9 @@
         background: #eceff1;
         border: 1px solid #cfd8dc;
       }
-
-      /* ================= 产品卡片上的+/-按钮控制 ================= */
-      .card-qty-control {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        margin-top: 8px;
-      }
-      
-      .card-qty-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #000;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-size: 1.2rem;
-        font-weight: bold;
-        transition: all 0.2s;
-        border: none;
-      }
-      
-      .card-qty-btn:active {
-        transform: scale(0.9);
-      }
-      
-      .card-qty-display {
-        min-width: 40px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 1.1rem;
-      }
-      
-      .scroll-card-add {
-        font-size: 1.5rem;
-        color: #000;
-        font-weight: bold;
-        margin-top: auto;
-        padding: 5px 0;
-        text-align: center;
-        cursor: pointer;
-        transition: transform 0.2s;
-      }
-      
-      .scroll-card-add:active {
-        transform: scale(0.9);
-      }
     </style>
   </head>
   <body>
-
-
     <header class="site-header">
       <div class="header-left" id="menu-trigger">
         <span class="hamburger-icon">☰</span>
@@ -1128,16 +1025,6 @@
     </div>
 
     <div id="home-view">
-      <div id="wholesale-banner" class="ws-banner">
-        <div class="ws-info-section">
-          <div class="ws-pills">
-            <div class="ws-pill">5+ <span>-8%</span></div>
-            <div class="ws-pill">10+ <span>-14%</span></div>
-            <div class="ws-pill">20+ <span>-24%</span></div>
-            <div class="ws-pill">100+ <span>-35%</span></div>
-          </div>
-        </div>
-      </div>
       <div class="compact-guide">
         <div class="compact-steps">
           <div class="compact-item">
@@ -1232,7 +1119,14 @@
       </div>
     </div>
 
-    <div id="toast">Added to Cart! 🛒</div>
+    <div id="wholesale-banner" class="ws-banner">
+      <div id="ws-content" class="ws-pills">
+        <div class="ws-pill">5+ <span>-8%</span></div>
+        <div class="ws-pill">10+ <span>-14%</span></div>
+        <div class="ws-pill">20+ <span>-24%</span></div>
+        <div class="ws-pill">100+ <span>-35%</span></div>
+      </div>
+    </div>
 
     <div id="modal" class="modal">
       <div class="modal-content">
@@ -1299,7 +1193,7 @@
 
     <script src="db.js"></script>
     <script>
-      // ================= 配置区 =================
+      // ================= Configuration =================
       const FEATURED_BRANDS = [
         "Creed",
         "Dior",
@@ -1323,7 +1217,6 @@
       ];
       const FEATURED_BRANDS_LOWER = FEATURED_BRANDS.map((b) => b.toLowerCase());
 
-      // === 全局折扣规则 (Discount Tiers) ===
       const discountTiers = [
         { min: 1, max: 1, percent: 0 },
         { min: 2, max: 2, percent: 0.03 },
@@ -1337,7 +1230,7 @@
         { min: 101, max: Infinity, percent: 0.35 },
       ];
 
-      // ================= 状态变量 =================
+      // ================= State Variables =================
       let cartItems = [];
       let currentPage = 1;
       const itemsPerPage = 20;
@@ -1362,6 +1255,9 @@
 
       window.addEventListener("pageshow", function (event) {
         loadCart();
+        // Refresh UI components that depend on cart state if we came back from cart page
+        if (viewMode === "home") renderHome();
+        else renderGridPage();
       });
 
       function getCartTotalQty() {
@@ -1378,20 +1274,17 @@
       function updateWholesaleBanner() {
         const qty = getCartTotalQty();
         const banner = document.getElementById("wholesale-banner");
+        const content = document.getElementById("ws-content");
 
-        if (!banner) return;
+        if (!banner || !content) return;
 
         if (qty === 0) {
           banner.className = "ws-banner";
-          banner.innerHTML = `
-            <div class="ws-info-section">
-              <div class="ws-pills">
-                <div class="ws-pill">5+ <span>-8%</span></div>
-                <div class="ws-pill">10+ <span>-14%</span></div>
-                <div class="ws-pill">20+ <span>-24%</span></div>
-                <div class="ws-pill">100+ <span>-35%</span></div>
-              </div>
-            </div>
+          content.innerHTML = `
+              <div class="ws-pill">5+ <span>-8%</span></div>
+              <div class="ws-pill">10+ <span>-14%</span></div>
+              <div class="ws-pill">20+ <span>-24%</span></div>
+              <div class="ws-pill">100+ <span>-35%</span></div>
             `;
           return;
         }
@@ -1407,7 +1300,7 @@
           nextTier = discountTiers[nextTierIndex];
         }
 
-        let html = `<div class="ws-info-section"><div class="ws-progress-box">`;
+        let html = `<div class="ws-progress-box">`;
         let currentOff = Math.round(currentTier.percent * 100);
         html += `<div class="ws-progress-text">Cart: <strong>${qty}</strong> items • Current: <span class="ws-highlight">-${currentOff}% OFF</span></div>`;
 
@@ -1421,25 +1314,16 @@
           html += `<div style="font-size:0.75rem; color:#ffd700;">👑 Maximum Discount Unlocked!</div>`;
         }
 
-        html += `</div></div>`;
-        html += `<button class="ws-whatsapp-btn" onclick="sendCartToWhatsApp()">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-          </svg>
-          <span>Checkout</span>
-        </button>`;
-        banner.innerHTML = html;
+        html += `</div>`;
+        content.innerHTML = html;
         banner.classList.add("active-tier");
       }
 
-      // 【修改处 1】 formatSize 函数，支持非数字文本
       function formatSize(item) {
         if (!item.ml) return "";
-        // 如果包含非数字字符（如 "30ml x 3"），直接显示原文，不计算
         if (isNaN(Number(item.ml))) {
           return item.ml;
         }
-        // 如果是纯数字，才自动加 ml 和 oz
         const ml = parseInt(item.ml);
         const flOz = (ml / 29.57).toFixed(1);
         return `${ml}ml <span style="color:#999;font-weight:normal">(${flOz} oz)</span>`;
@@ -1492,10 +1376,29 @@
         `;
       }
 
-      // --- 1. 首页渲染逻辑 ---
+      // --- Helper for Button UI ---
+      function getCartQty(id) {
+        const item = cartItems.find((c) => c.name === id);
+        return item ? item.quantity : 0;
+      }
+
+      function getAddButtonHtml(id) {
+        const qty = getCartQty(id);
+        if (qty === 0) {
+          return `<button class="btn-circle btn-plus" onclick="updateItemQty('${id}', 1); event.stopPropagation();">+</button>`;
+        } else {
+          return `
+                <button class="btn-circle btn-minus" onclick="updateItemQty('${id}', -1); event.stopPropagation();">-</button>
+                <span class="qty-display-text">${qty}</span>
+                <button class="btn-circle btn-plus" onclick="updateItemQty('${id}', 1); event.stopPropagation();">+</button>
+            `;
+        }
+      }
+
+      // --- 1. Home Render Logic ---
       function renderHome() {
         const db = (window.perfumeDB || []).filter(
-          (p) => parseInt(p.stock) > 0, // 只有大于0才显示
+          (p) => parseInt(p.stock) > 0,
         );
         const container = document.getElementById("home-content");
         if (!container) return;
@@ -1504,7 +1407,6 @@
 
         const renderSection = (title, items, filterKey) => {
           const section = createBrandSection(title, items, filterKey);
-          // Modified logic: Allow 'Set' to have an ID generated so scrollToBrand works
           if (
             filterKey &&
             filterKey !== "BestSellers" &&
@@ -1559,7 +1461,6 @@
         if (saleItems.length > 0)
           renderSection("🏷️ On Sale", saleItems, "Sale");
 
-        // NEW: Sets Section added at the tail of categories
         const setItems = db.filter((p) => p.name.toUpperCase().includes("SET"));
         if (setItems.length > 0) {
           renderSection("🎁 Gift Sets", setItems, "Set");
@@ -1603,7 +1504,7 @@
           const card = document.createElement("div");
           card.className = "scroll-card";
           card.onclick = (e) => {
-            if (e.target.classList.contains("scroll-card-add")) return;
+            if (e.target.closest(".btn-circle")) return;
             openModal(p);
           };
 
@@ -1622,9 +1523,8 @@
             : "";
 
           const stockHtml = getStockHtml(p.inventory);
+          const buttonHtml = getAddButtonHtml(p.id);
 
-          card.setAttribute('data-product-id', p.id);
-          const buttonHTML = getCardButtonHTML(p.id);
           card.innerHTML = `
             <div style="position:relative;">
                ${imgHtml}
@@ -1644,8 +1544,8 @@
                     ${p.ml ? formatSize(p) : ""}
                 </span>
             </div>
-            <div class="card-button-container">
-              ${buttonHTML}
+            <div class="btn-qty-wrapper" id="btn-wrap-${p.id}">
+                ${buttonHtml}
             </div>
           `;
           wrapper.appendChild(card);
@@ -1757,7 +1657,7 @@
         return score;
       }
 
-      // --- 2. Grid 渲染 ---
+      // --- 2. Grid Render ---
       function switchToGrid(criteria) {
         viewMode = "grid";
         document.getElementById("home-view").style.display = "none";
@@ -1765,7 +1665,7 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
 
         const db = (window.perfumeDB || []).filter(
-          (p) => parseInt(p.stock) > 0, // 只有大于0才显示
+          (p) => parseInt(p.stock) > 0,
         );
         let filtered = [];
         let title = "";
@@ -1783,7 +1683,6 @@
           filtered = db.filter((p) => p.sale == 1);
           title = "On Sale";
         } else if (criteria === "Set") {
-          // NEW: Filter for sets in grid view
           filtered = db.filter((p) => p.name.toUpperCase().includes("SET"));
           title = "Gift Sets Collection";
         } else if (criteria.startsWith("Gender:")) {
@@ -1890,6 +1789,7 @@
             : "";
 
           const stockHtml = getStockHtml(p.inventory);
+          const buttonHtml = getAddButtonHtml(p.id);
 
           div.innerHTML = `
               <div class="item-img-box skeleton-loader" onclick="openModalById('${
@@ -1919,9 +1819,9 @@
                     $${p.price}
                     ${stockHtml}
                  </div>
-                 <button class="grid-add-btn" onclick="addToCart('${
-                   p.id
-                 }')">ADD TO CART</button>
+                 <div class="btn-qty-wrapper" id="btn-wrap-grid-${p.id}">
+                    ${buttonHtml}
+                 </div>
               </div>
            `;
           gallery.appendChild(div);
@@ -2095,55 +1995,6 @@
         }, 50);
       };
 
-
-      // 生成卡片底部的+/-按钮HTML
-      function getCardButtonHTML(productId) {
-        const existing = cartItems.find((c) => c.name === productId);
-        if (!existing || existing.quantity === 0) {
-          return `<div class="scroll-card-add" onclick="addToCartFromCard('${productId}'); event.stopPropagation();">+</div>`;
-        } else {
-          return `
-            <div class="card-qty-control" onclick="event.stopPropagation();">
-              <button class="card-qty-btn" onclick="changeCardQty('${productId}', -1)">-</button>
-              <div class="card-qty-display">${existing.quantity}</div>
-              <button class="card-qty-btn" onclick="changeCardQty('${productId}', 1)">+</button>
-            </div>
-          `;
-        }
-      }
-      
-      window.addToCartFromCard = function(id) {
-        addToCart(id);
-        // 刷新该产品的所有卡片显示
-        updateAllCardButtons(id);
-      };
-      
-      window.changeCardQty = function(id, delta) {
-        const existing = cartItems.find((c) => c.name === id);
-        if (existing) {
-          existing.quantity += delta;
-          if (existing.quantity <= 0) {
-            cartItems = cartItems.filter((c) => c.name !== id);
-          }
-          saveCart();
-          updateWholesaleBanner();
-          updateAllCardButtons(id);
-          if (currentModalProductId === id) updateModalButtonState(id);
-        }
-      };
-      
-      function updateAllCardButtons(productId) {
-        // 更新所有该产品的卡片按钮
-        const cards = document.querySelectorAll(`[data-product-id="${productId}"]`);
-        const buttonHTML = getCardButtonHTML(productId);
-        cards.forEach(card => {
-          const container = card.querySelector('.card-button-container');
-          if (container) {
-            container.innerHTML = buttonHTML;
-          }
-        });
-      }
-
       function setupMenu() {
         const trigger = document.getElementById("menu-trigger");
         const overlay = document.getElementById("sidebar-overlay");
@@ -2156,28 +2007,25 @@
         overlay.onclick = toggle;
       }
 
-      // 【修改处 2】 addToCart 函数，正确生成商品标题
-      window.addToCart = function (id) {
+      // --- New Logic for +/- Button ---
+      // This replaces the old addToCart for the main UI
+      window.updateItemQty = function (id, delta) {
         const db = window.perfumeDB;
         const product = db.find((p) => p.id === id);
         if (!product) return;
 
-        // 【新增逻辑】判断容量显示的格式
-        let sizeLabel = "";
-        if (product.ml) {
-          // 如果是纯数字，就自动加 "ml"；如果是文字(如 30ml each)，就直接用
-          sizeLabel = isNaN(Number(product.ml))
-            ? `(${product.ml})`
-            : `(${product.ml}ml)`;
-        }
+        let existing = cartItems.find((c) => c.name === id);
 
-        const existing = cartItems.find((c) => c.name === id);
-        if (existing) {
-          existing.quantity++;
-        } else {
+        if (!existing && delta > 0) {
+          // Add new item
+          let sizeLabel = "";
+          if (product.ml) {
+            sizeLabel = isNaN(Number(product.ml))
+              ? `(${product.ml})`
+              : `(${product.ml}ml)`;
+          }
           cartItems.push({
             name: id,
-            // 【关键修改】这里使用新的 sizeLabel 变量
             caption: `${id} - ${product.name} ${sizeLabel}`,
             img: product.img,
             price: Number(product.price),
@@ -2185,11 +2033,28 @@
             ml: product.ml,
             quantity: 1,
           });
+        } else if (existing) {
+          existing.quantity += delta;
+          if (existing.quantity <= 0) {
+            cartItems = cartItems.filter((c) => c.name !== id);
+          }
         }
+
         saveCart();
-        showToast("Added to Cart! 🛒");
         updateWholesaleBanner();
-        updateAllCardButtons(id);
+
+        // Update DOM elements specifically to avoid full re-render
+        const newBtnHtml = getAddButtonHtml(id);
+
+        // Update scroll view card if exists
+        const scrollBtnWrap = document.getElementById(`btn-wrap-${id}`);
+        if (scrollBtnWrap) scrollBtnWrap.innerHTML = newBtnHtml;
+
+        // Update grid view card if exists
+        const gridBtnWrap = document.getElementById(`btn-wrap-grid-${id}`);
+        if (gridBtnWrap) gridBtnWrap.innerHTML = newBtnHtml;
+
+        // If modal is open for this item
         if (currentModalProductId === id) updateModalButtonState(id);
       };
 
@@ -2197,36 +2062,17 @@
         const container = document.getElementById("modal-action-area");
         const existing = cartItems.find((c) => c.name === id);
         if (!existing || existing.quantity === 0) {
-          container.innerHTML = `<button class="modal-btn" onclick="modalFirstAdd('${id}')">ADD TO CART</button>`;
+          container.innerHTML = `<button class="modal-btn" onclick="updateItemQty('${id}', 1)">ADD TO CART</button>`;
         } else {
           container.innerHTML = `
                 <div class="qty-control-box">
-                    <div class="qty-btn" onclick="modalChangeQty('${id}', -1)">-</div>
+                    <div class="qty-btn" onclick="updateItemQty('${id}', -1)">-</div>
                     <div class="qty-val">${existing.quantity}</div>
-                    <div class="qty-btn" onclick="modalChangeQty('${id}', 1)">+</div>
+                    <div class="qty-btn" onclick="updateItemQty('${id}', 1)">+</div>
                 </div>`;
         }
       }
 
-      window.modalFirstAdd = (id) => addToCart(id);
-      window.modalChangeQty = (id, delta) => {
-        const existing = cartItems.find((c) => c.name === id);
-        if (existing) {
-          existing.quantity += delta;
-          if (existing.quantity <= 0)
-            cartItems = cartItems.filter((c) => c.name !== id);
-          saveCart();
-          updateWholesaleBanner();
-          updateModalButtonState(id);
-        }
-      };
-
-      function showToast(msg) {
-        const t = document.getElementById("toast");
-        t.textContent = msg;
-        t.classList.add("show");
-        setTimeout(() => t.classList.remove("show"), 2000);
-      }
       function loadCart() {
         cartItems = JSON.parse(localStorage.getItem("perfumeCart") || "[]");
         updateCartCount();
@@ -2240,61 +2086,6 @@
         const el = document.getElementById("header-cart-count");
         if (el) el.textContent = cartItems.reduce((s, i) => s + i.quantity, 0);
       }
-
-
-      // 发送购物车到WhatsApp
-      window.sendCartToWhatsApp = function() {
-        const cart = cartItems;
-        if (cart.length === 0) {
-          alert("Cart is empty");
-          return;
-        }
-
-        const whatsappNumber = "16232027321";
-        let totalQty = 0;
-        let lvCount = 0;
-        let otherCount = 0;
-        let subtotal = 0;
-
-        cart.forEach((item) => {
-          const qty = item.quantity;
-          totalQty += qty;
-          subtotal += item.price * qty;
-          if (item.caption.toLowerCase().includes("louis vuitton")) {
-            lvCount += qty;
-          } else {
-            otherCount += qty;
-          }
-        });
-
-        // 计算折扣
-        const tier = discountTiers.find(
-          (t) => totalQty >= t.min && totalQty <= t.max
-        ) || { percent: 0 };
-        const discountVal = subtotal * tier.percent;
-        const finalTotal = subtotal - discountVal;
-
-        // 构建消息
-        let msg = `*New Order Request* 📦\n`;
-        msg += `----------------------------\n`;
-
-        cart.forEach((item) => {
-          msg += `${item.caption} x *${item.quantity}*\n\n`;
-        });
-
-        msg += `----------------------------\n`;
-        msg += `LV Quantity: ${lvCount}\n`;
-        msg += `Other Quantity: ${otherCount}\n`;
-        msg += `*Total Quantity: ${totalQty} pcs*\n`;
-        msg += `----------------------------\n`;
-        msg += `*Total Amount:* $${Math.round(finalTotal).toFixed(2)}`;
-
-        const encodedMsg = encodeURIComponent(msg);
-        window.open(
-          `https://wa.me/${whatsappNumber}?text=${encodedMsg}`,
-          "_blank"
-        );
-      };
 
       function setupModalBackdropClosing() {
         document.querySelectorAll(".modal").forEach((o) =>
