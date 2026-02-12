@@ -36,8 +36,8 @@
         margin: 0;
         padding: 0;
         padding-top: var(--total-top-spacing);
-        /* Bottom padding adjusted for the new fixed bar height */
-        padding-bottom: 70px;
+        /* 底部留出空间给新的悬浮栏 (70px height + 10px spacing) */
+        padding-bottom: 90px;
         font-family: var(--font-main);
         background: var(--bg-color);
         color: #333;
@@ -292,48 +292,47 @@
         margin-left: 3px;
       }
 
-      /* ================= NEW Split Bottom Bar ================= */
-      .split-bottom-bar {
+      /* ================= NEW Bottom Nav Bar (Refined) ================= */
+      .bottom-nav-bar {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 65px; /* Slightly taller for 2 lines of text */
+        height: 70px;
         background: #fff;
-        z-index: 2000;
+        z-index: 3000;
         display: flex;
-        box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
+        border-top: 1px solid #f5f5f5;
       }
 
-      /* Left Side: Assets Area (40%) - Widened */
-      .bar-left {
-        width: 40%;
-        background-color: #fff;
-        color: #333;
+      /* Left Side: Cart Icon & Price Info */
+      .nav-left {
+        flex: 1;
         display: flex;
-        flex-direction: row;
         align-items: center;
-        justify-content: center;
         cursor: pointer;
-        border-top: 1px solid #f0f0f0;
-      }
-      .bar-left:active {
-        background-color: #f9f9f9;
       }
 
-      .icon-badge-wrap {
+      .nav-icon-wrap {
         position: relative;
-        margin-right: 8px;
+        margin-right: 12px;
         display: flex;
         align-items: center;
       }
-      .bar-cart-icon {
-        width: 26px;
-        height: 26px;
-        /* Using white stroke icon on white bg needs correction? 
-           No, SVG stroke is defined inline. Will set to black below. */
+
+      /* Matching header icon style exactly */
+      .nav-cart-icon {
+        width: 28px;
+        height: 28px;
+        stroke: #333; /* Dark gray/black for white background */
+        fill: none;
       }
-      .bar-badge {
+
+      .nav-badge {
         position: absolute;
         top: -6px;
         right: -8px;
@@ -343,56 +342,69 @@
         font-weight: bold;
         min-width: 18px;
         height: 18px;
-        border-radius: 50%;
+        border-radius: 9px;
         display: flex;
         align-items: center;
         justify-content: center;
         border: 2px solid #fff;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        padding: 0 3px;
       }
 
-      .price-info-col {
+      .nav-info-col {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
       }
 
-      .bar-price {
-        font-size: 1.05rem;
+      .nav-price {
+        font-size: 1.2rem;
         font-weight: 800;
-        color: #333;
-        line-height: 1.1;
-      }
-
-      .bar-savings {
-        font-size: 0.75rem;
-        color: #d9534f; /* Red for savings */
-        font-weight: 600;
+        color: #d9534f; /* Highlighted Red like reference image */
         line-height: 1;
-        margin-top: 2px;
+        margin-bottom: 3px;
       }
 
-      /* Right Side: Action Area (60%) */
-      .bar-right {
-        width: 60%;
-        background-color: #25d366; /* WhatsApp Green */
-        color: #fff;
+      .nav-subtext {
+        font-size: 0.7rem;
+        color: #666;
         display: flex;
         align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background 0.2s;
+      }
+
+      .nav-saved-badge {
+        margin-left: 6px;
+        color: #d9534f;
+        background: #fff0f0;
+        padding: 1px 4px;
+        border-radius: 3px;
+        font-weight: 600;
+        border: 1px solid #ffcccc;
+      }
+
+      /* Right Side: Action Button */
+      .nav-right {
+        flex: 0 0 auto;
+      }
+
+      .checkout-pill-btn {
+        background-color: #25d366; /* WhatsApp Green */
+        color: #fff;
+        border: none;
+        border-radius: 35px; /* Pill shape */
+        padding: 10px 24px;
+        font-size: 1rem;
         font-weight: 800;
-        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        cursor: pointer;
+        transition: transform 0.1s;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
-      .bar-right:active {
-        background-color: #1ebc57;
-      }
-      .checkout-text {
-        margin-left: 8px;
+      .checkout-pill-btn:active {
+        transform: scale(0.96);
       }
 
       /* ================= BUTTON STYLES (Shared: Cards & Modal) ================= */
@@ -1132,13 +1144,11 @@
       </div>
     </div>
 
-    <div class="split-bottom-bar">
-      <div class="bar-left" onclick="window.location.href = 'cart.html'">
-        <div class="icon-badge-wrap">
+    <div class="bottom-nav-bar">
+      <div class="nav-left" onclick="window.location.href = 'cart.html'">
+        <div class="nav-icon-wrap">
           <svg
-            class="bar-cart-icon"
-            width="26"
-            height="26"
+            class="nav-cart-icon"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#333"
@@ -1152,35 +1162,40 @@
               d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
             ></path>
           </svg>
-          <div id="bottom-bar-badge" class="bar-badge" style="display: none">
+          <div id="bottom-bar-badge" class="nav-badge" style="display: none">
             0
           </div>
         </div>
-        <div class="price-info-col">
-          <div id="bottom-bar-price" class="bar-price">$0</div>
-          <div
-            id="bottom-bar-savings"
-            class="bar-savings"
-            style="display: none"
-          >
-            Saved: $0
+
+        <div class="nav-info-col">
+          <div id="bottom-bar-price" class="nav-price">$0</div>
+          <div class="nav-subtext">
+            <span style="font-size: 0.75rem; color: #666">Free Shipping</span>
+            <span
+              id="bottom-bar-savings"
+              class="nav-saved-badge"
+              style="display: none"
+              >Saved: $0</span
+            >
           </div>
         </div>
       </div>
 
-      <div class="bar-right" onclick="checkoutViaWhatsapp()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="currentColor"
-          viewBox="0 0 16 16"
-        >
-          <path
-            d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"
-          />
-        </svg>
-        <span class="checkout-text">CHECKOUT</span>
+      <div class="nav-right">
+        <button class="checkout-pill-btn" onclick="checkoutViaWhatsapp()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"
+            />
+          </svg>
+          CHECKOUT
+        </button>
       </div>
     </div>
 
@@ -1397,12 +1412,12 @@
           savingsEl.style.display = "none";
         } else {
           priceEl.textContent = "$" + Math.round(finalTotal);
-          priceEl.style.color = "#333";
+          priceEl.style.color = "#d9534f"; // Red color
 
           // Show Savings if discount > 0
           if (discountVal > 0) {
             savingsEl.textContent = "Saved: $" + discountVal.toFixed(2);
-            savingsEl.style.display = "block";
+            savingsEl.style.display = "inline-block";
           } else {
             savingsEl.style.display = "none";
           }
