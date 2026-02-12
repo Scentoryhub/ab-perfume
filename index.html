@@ -14,12 +14,11 @@
       /* ================= 1. Global Config & Layout ================= */
       :root {
         --header-height: 60px;
-        --banner-height: 40px; /* Estimated height of discount banner */
         --total-top-spacing: 60px;
 
         --sidebar-width: 300px;
         --accent-color: #b28900;
-        --bg-color: #f4f4f4; /* Slightly darker bg for better contrast */
+        --bg-color: #f4f4f4;
         --font-main: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
         /* Tag Colors */
@@ -37,7 +36,7 @@
         margin: 0;
         padding: 0;
         padding-top: var(--total-top-spacing);
-        /* Critical: Padding bottom = Footer Button Height + extra space */
+        /* 底部留出空间给悬浮按钮 */
         padding-bottom: 80px;
         font-family: var(--font-main);
         background: var(--bg-color);
@@ -243,7 +242,7 @@
         text-align: center;
         transition: background 0.3s;
 
-        /* STICKY TOP Logic */
+        /* 顶部吸附逻辑 */
         position: sticky;
         top: var(--header-height);
         z-index: 990;
@@ -293,7 +292,7 @@
         margin-left: 3px;
       }
 
-      /* ================= NEW Floating Checkout Button (Full Width) ================= */
+      /* ================= 底部全宽结账按钮 ================= */
       .fixed-bottom-bar {
         position: fixed;
         bottom: 0;
@@ -323,13 +322,13 @@
         letter-spacing: 0.5px;
       }
 
-      /* ================= NEW +/- Button UI (Black & White) ================= */
+      /* ================= 列表页：黑白加减按钮样式 ================= */
       .btn-qty-wrapper {
         display: flex;
         align-items: center;
-        justify-content: flex-end; /* Align to right */
+        justify-content: flex-end; /* 靠右对齐 */
         height: 36px;
-        margin-top: 8px; /* Spacing from price */
+        margin-top: 8px;
       }
 
       .btn-circle {
@@ -337,7 +336,7 @@
         height: 30px;
         border-radius: 50%;
         border: none;
-        font-size: 1.4rem; /* Larger symbol */
+        font-size: 1.4rem;
         font-weight: 400;
         display: flex;
         align-items: center;
@@ -348,19 +347,19 @@
           transform 0.1s,
           background 0.2s;
         line-height: 1;
-        padding-bottom: 3px; /* Visual center adjustment */
+        padding-bottom: 3px;
       }
       .btn-circle:active {
         transform: scale(0.9);
       }
 
-      /* Style for Plus (+) */
+      /* 黑色实心加号 */
       .btn-plus-solid {
         background-color: #000;
         color: #fff;
       }
 
-      /* Style for Minus (-) */
+      /* 白色空心减号 */
       .btn-minus-outline {
         background-color: #fff;
         color: #000;
@@ -514,7 +513,7 @@
       }
 
       .scroll-card {
-        flex: 0 0 160px; /* Slightly wider for the buttons */
+        flex: 0 0 160px;
         display: flex;
         flex-direction: column;
         background: #fff;
@@ -673,7 +672,6 @@
       }
       .item .caption {
         padding: 10px 8px;
-        /* Keep text left or center? Buttons are right aligned. */
         text-align: left;
       }
       .item-price {
@@ -755,7 +753,7 @@
         line-height: 1.4;
       }
 
-      /* Modal */
+      /* Modal Style (Original Large Button) */
       .modal {
         display: none;
         position: fixed;
@@ -801,6 +799,50 @@
       }
       .modal-info {
         padding: 8px 15px;
+      }
+
+      .modal-btn {
+        background: #000;
+        color: #fff;
+        padding: 12px 0;
+        width: 100%;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 8px;
+        display: block;
+      }
+
+      /* 弹窗内的长条形数量控制器 */
+      .qty-control-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        border: 2px solid #000;
+        border-radius: 8px;
+        margin-top: 8px;
+        height: 48px;
+        overflow: hidden;
+      }
+      .qty-btn {
+        width: 60px;
+        height: 100%;
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: #000;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .qty-val {
+        flex: 1;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #000;
       }
 
       .modal-notes-box {
@@ -1292,7 +1334,7 @@
         return `<div class="img-wrapper skeleton-loader"><picture><source srcset="${webpSrc}" type="image/webp"><img src="${src}" alt="${alt}" loading="lazy" class="lazy-img" onload="this.classList.add('loaded'); this.parentElement.parentElement.classList.remove('skeleton-loader');" onerror="this.parentElement.parentElement.classList.remove('skeleton-loader');"></picture></div>`;
       }
 
-      // --- 4. Logic for Black/White +/- Button ---
+      // --- 4. Logic for Black/White +/- Button (List/Grid View) ---
       function getCartQty(id) {
         const item = cartItems.find((c) => c.name === id);
         return item ? item.quantity : 0;
@@ -1847,6 +1889,7 @@
         setTimeout(() => t.classList.remove("show"), 2000);
       }
 
+      // 列表/网格页的加减按钮逻辑（共用）
       window.updateItemQty = function (id, delta) {
         const db = window.perfumeDB;
         const product = db.find((p) => p.id === id);
@@ -1876,13 +1919,30 @@
         }
         saveCart();
         updateWholesaleBanner();
+        // 刷新列表和网格的按钮显示
         const newBtnHtml = getAddButtonHtml(id);
         const scrollBtnWrap = document.getElementById(`btn-wrap-${id}`);
         if (scrollBtnWrap) scrollBtnWrap.innerHTML = newBtnHtml;
         const gridBtnWrap = document.getElementById(`btn-wrap-grid-${id}`);
         if (gridBtnWrap) gridBtnWrap.innerHTML = newBtnHtml;
+        // 如果当前正好开着弹窗，也要刷新弹窗里的按钮状态
         if (currentModalProductId === id) updateModalButtonState(id);
       };
+
+      // 恢复原有的弹窗加购逻辑（大黑按钮）
+      window.modalFirstAdd = (id) => window.updateItemQty(id, 1);
+      window.modalChangeQty = (id, delta) => window.updateItemQty(id, delta);
+
+      // 专门为弹窗服务的状态更新函数（保持大按钮样式）
+      function updateModalButtonState(id) {
+        const container = document.getElementById("modal-action-area");
+        const existing = cartItems.find((c) => c.name === id);
+        if (!existing || existing.quantity === 0) {
+          container.innerHTML = `<button class="modal-btn" onclick="modalFirstAdd('${id}')">ADD TO CART</button>`;
+        } else {
+          container.innerHTML = `<div class="qty-control-box"><div class="qty-btn" onclick="modalChangeQty('${id}', -1)">-</div><div class="qty-val">${existing.quantity}</div><div class="qty-btn" onclick="modalChangeQty('${id}', 1)">+</div></div>`;
+        }
+      }
 
       window.checkoutViaWhatsapp = function () {
         if (cartItems.length === 0) return showToast("Cart is empty");
@@ -1913,16 +1973,6 @@
           "_blank",
         );
       };
-
-      function updateModalButtonState(id) {
-        const container = document.getElementById("modal-action-area");
-        const existing = cartItems.find((c) => c.name === id);
-        if (!existing || existing.quantity === 0) {
-          container.innerHTML = `<button class="modal-btn" onclick="updateItemQty('${id}', 1)">ADD TO CART</button>`;
-        } else {
-          container.innerHTML = `<div class="qty-control-box"><div class="qty-btn" onclick="updateItemQty('${id}', -1)">-</div><div class="qty-val">${existing.quantity}</div><div class="qty-btn" onclick="updateItemQty('${id}', 1)">+</div></div>`;
-        }
-      }
 
       function loadCart() {
         cartItems = JSON.parse(localStorage.getItem("perfumeCart") || "[]");
