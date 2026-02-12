@@ -297,18 +297,18 @@
         bottom: 25px; /* 悬浮距离 */
         left: 50%;
         transform: translateX(-50%); /* 居中 */
-        width: 92%; /* 不占满全屏，两侧留白 */
-        max-width: 500px; /* 大屏限制最大宽度 */
-        height: 72px; /* 舒适的高度 */
+        width: 92%; /* 不占满全屏 */
+        max-width: 500px;
+        height: 72px;
         background: #ffffff;
         z-index: 3000;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 5px 8px 5px 20px; /* 左侧留宽，右侧给按钮留空 */
+        padding: 5px 8px 5px 20px;
         border-radius: 50px; /* 完美的胶囊圆角 */
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* 弥散阴影，显高级 */
-        border: 1px solid rgba(0, 0, 0, 0.03); /* 极细描边增加质感 */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* 弥散阴影 */
+        border: 1px solid rgba(0, 0, 0, 0.03);
       }
 
       /* Left Side: Asset Area (Flexbox Aligned) */
@@ -317,7 +317,7 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-        gap: 12px; /* 图标和文字的间距 */
+        gap: 15px; /* 增加间距，避免拥挤 */
       }
 
       .nav-icon-wrap {
@@ -334,22 +334,24 @@
         stroke-width: 2;
       }
 
+      /* 核心修改：角标样式优化 */
       .nav-badge {
         position: absolute;
-        top: -6px;
-        right: -8px;
-        background-color: #d9534f; /* 醒目的红色角标 */
+        top: -8px; /* 往上推 */
+        right: -10px; /* 往右推 */
+        background-color: #d9534f;
         color: #fff;
         font-size: 0.75rem;
-        font-weight: 800;
-        min-width: 18px;
-        height: 18px;
-        border-radius: 9px;
+        font-weight: 700;
+        min-width: 22px; /* 增大尺寸 */
+        height: 22px; /* 增大尺寸 */
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 2px solid #fff; /* 保持描边 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* 加一点投影增加立体感 */
+        z-index: 10; /* 确保在最上层 */
       }
 
       .nav-info-col {
@@ -362,7 +364,7 @@
       .price-info-row {
         display: flex;
         align-items: baseline; /* 关键：基线对齐 */
-        gap: 6px;
+        gap: 8px; /* 价格之间的间距 */
         line-height: 1;
       }
 
@@ -373,11 +375,13 @@
         letter-spacing: -0.5px;
       }
 
+      /* 核心修改：原价样式优化 */
       .nav-original-price {
-        font-size: 0.85rem; /* 小号原价 */
-        color: #999;
+        font-size: 0.9rem; /* 稍微调大一点 */
+        color: #555; /* 加深颜色，提高对比度 */
         text-decoration: line-through;
-        font-weight: 500;
+        font-weight: 600; /* 加粗线条 */
+        opacity: 0.7;
       }
 
       /* Right Side: Action Button */
@@ -389,9 +393,9 @@
         background-color: #25d366; /* WhatsApp Green */
         color: #fff;
         border: none;
-        border-radius: 40px; /* 按钮也是胶囊形 */
-        padding: 0 30px; /* 左右宽内边距 */
-        height: 56px; /* 高度略小于外框，形成同心圆效果 */
+        border-radius: 40px;
+        padding: 0 30px;
+        height: 56px;
         font-size: 1rem;
         font-weight: 800;
         display: flex;
