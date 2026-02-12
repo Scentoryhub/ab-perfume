@@ -298,16 +298,16 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 60px; /* Fixed height standard */
+        height: 65px; /* Slightly taller for 2 lines of text */
         background: #fff;
         z-index: 2000;
         display: flex;
         box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
       }
 
-      /* Left Side: Assets Area (35%) */
+      /* Left Side: Assets Area (40%) - Widened */
       .bar-left {
-        width: 35%;
+        width: 40%;
         background-color: #fff;
         color: #333;
         display: flex;
@@ -328,17 +328,18 @@
         align-items: center;
       }
       .bar-cart-icon {
-        width: 24px;
-        height: 24px;
-        color: #333;
+        width: 26px;
+        height: 26px;
+        /* Using white stroke icon on white bg needs correction? 
+           No, SVG stroke is defined inline. Will set to black below. */
       }
       .bar-badge {
         position: absolute;
-        top: -8px;
+        top: -6px;
         right: -8px;
         background-color: #d9534f;
         color: #fff;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: bold;
         min-width: 18px;
         height: 18px;
@@ -347,17 +348,34 @@
         align-items: center;
         justify-content: center;
         border: 2px solid #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .price-info-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
       }
 
       .bar-price {
-        font-size: 1rem;
+        font-size: 1.05rem;
         font-weight: 800;
         color: #333;
+        line-height: 1.1;
       }
 
-      /* Right Side: Action Area (65%) */
+      .bar-savings {
+        font-size: 0.75rem;
+        color: #d9534f; /* Red for savings */
+        font-weight: 600;
+        line-height: 1;
+        margin-top: 2px;
+      }
+
+      /* Right Side: Action Area (60%) */
       .bar-right {
-        width: 65%;
+        width: 60%;
         background-color: #25d366; /* WhatsApp Green */
         color: #fff;
         display: flex;
@@ -365,8 +383,8 @@
         justify-content: center;
         cursor: pointer;
         transition: background 0.2s;
-        font-weight: bold;
-        font-size: 1rem;
+        font-weight: 800;
+        font-size: 1.05rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
@@ -1119,23 +1137,35 @@
         <div class="icon-badge-wrap">
           <svg
             class="bar-cart-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            width="26"
+            height="26"
             viewBox="0 0 24 24"
-            stroke="currentColor"
+            fill="none"
+            stroke="#333"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           >
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-            />
+              d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+            ></path>
           </svg>
           <div id="bottom-bar-badge" class="bar-badge" style="display: none">
             0
           </div>
         </div>
-        <div id="bottom-bar-price" class="bar-price">$0</div>
+        <div class="price-info-col">
+          <div id="bottom-bar-price" class="bar-price">$0</div>
+          <div
+            id="bottom-bar-savings"
+            class="bar-savings"
+            style="display: none"
+          >
+            Saved: $0
+          </div>
+        </div>
       </div>
 
       <div class="bar-right" onclick="checkoutViaWhatsapp()">
@@ -1330,11 +1360,10 @@
           }
         }
 
-        // 2. Update Bottom Bar Data (Price & Badge)
+        // 2. Update Bottom Bar Data (Price & Badge & Savings)
         updateBottomBarData(qty);
       }
 
-      // New function to update bottom bar price and badge
       function updateBottomBarData(totalQty) {
         // Update Badge
         const badgeEl = document.getElementById("bottom-bar-badge");
@@ -1355,16 +1384,28 @@
           (t) => totalQty >= t.min && totalQty <= t.max,
         );
         const discountPercent = tier ? tier.percent : 0;
-        const finalTotal = subtotal - subtotal * discountPercent;
+        const discountVal = subtotal * discountPercent;
+        const finalTotal = subtotal - discountVal;
 
         // Update Price Text
         const priceEl = document.getElementById("bottom-bar-price");
+        const savingsEl = document.getElementById("bottom-bar-savings");
+
         if (totalQty === 0) {
           priceEl.textContent = "$0";
           priceEl.style.color = "#999";
+          savingsEl.style.display = "none";
         } else {
           priceEl.textContent = "$" + Math.round(finalTotal);
           priceEl.style.color = "#333";
+
+          // Show Savings if discount > 0
+          if (discountVal > 0) {
+            savingsEl.textContent = "Saved: $" + discountVal.toFixed(2);
+            savingsEl.style.display = "block";
+          } else {
+            savingsEl.style.display = "none";
+          }
         }
       }
 
