@@ -14,7 +14,7 @@
       /* ================= 1. Global Config & Layout ================= */
       :root {
         --header-height: 60px;
-        --total-top-spacing: 60px; /* Adjusted: Removed trust bar height */
+        --total-top-spacing: 60px;
 
         --sidebar-width: 300px;
         --accent-color: #b28900;
@@ -36,7 +36,7 @@
         margin: 0;
         padding: 0;
         padding-top: var(--total-top-spacing);
-        padding-bottom: 140px; /* Increased bottom padding for sticky footer */
+        padding-bottom: 80px; /* Space for floating button */
         font-family: var(--font-main);
         background: var(--bg-color);
         color: #333;
@@ -233,26 +233,24 @@
         font-weight: bold;
       }
 
-      /* ================= Wholesale Banner (STICKY FOOTER) ================= */
+      /* ================= Wholesale Banner (Top Sticky) ================= */
       .ws-banner {
         background: #222;
         color: #fff;
-        padding: 12px 5px;
+        padding: 10px 5px;
         text-align: center;
         transition: background 0.3s;
 
-        /* STICKY BOTTOM CHANGE */
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        z-index: 2100;
-        box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+        /* STICKY TOP */
+        position: sticky;
+        top: var(--header-height);
+        z-index: 990;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
       }
 
       .ws-banner.active-tier {
         background: linear-gradient(135deg, #111 0%, #2a2a2a 100%);
-        border-top: 3px solid #ffd700;
+        border-bottom: 3px solid #ffd700;
       }
 
       .ws-progress-box {
@@ -291,6 +289,37 @@
         color: #ffd700;
         font-weight: bold;
         margin-left: 3px;
+      }
+
+      /* ================= Floating Checkout Button ================= */
+      .floating-checkout-btn {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 400px;
+        background-color: #25d366; /* WhatsApp Green */
+        color: #fff;
+        padding: 14px;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        z-index: 2000;
+        cursor: pointer;
+        transition: transform 0.2s;
+        text-transform: uppercase;
+      }
+      .floating-checkout-btn:active {
+        transform: translateX(-50%) scale(0.98);
+      }
+      .floating-checkout-btn svg {
+        fill: currentColor;
       }
 
       /* ================= NEW +/- Button UI ================= */
@@ -651,7 +680,6 @@
         gap: 5px;
       }
       .grid-add-btn {
-        /* Legacy button style overwritten by dynamic +/- */
         display: block;
         width: 100%;
         margin-top: 10px;
@@ -924,6 +952,31 @@
         background: #eceff1;
         border: 1px solid #cfd8dc;
       }
+
+      #toast {
+        visibility: hidden;
+        min-width: 200px;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: #fff;
+        text-align: center;
+        border-radius: 30px;
+        padding: 12px 20px;
+        position: fixed;
+        z-index: 9999;
+        left: 50%;
+        bottom: 80px;
+        transform: translateX(-50%);
+        font-size: 0.95rem;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: all 0.3s;
+      }
+      #toast.show {
+        visibility: visible;
+        opacity: 1;
+        bottom: 90px;
+      }
     </style>
   </head>
   <body>
@@ -1025,27 +1078,15 @@
     </div>
 
     <div id="home-view">
-      <div class="compact-guide">
-        <div class="compact-steps">
-          <div class="compact-item">
-            <span class="compact-icon">🛒</span>
-            <div class="compact-text">1. Add to Cart</div>
-            <span class="compact-sub">Auto Discount</span>
-          </div>
-
-          <div class="compact-item">
-            <span class="compact-icon" style="color: #25d366">💬</span>
-            <div class="compact-text">2. Send List</div>
-            <span class="compact-sub">To WhatsApp</span>
-          </div>
-
-          <div class="compact-item">
-            <span class="compact-icon" style="color: #b28900">🧾</span>
-            <div class="compact-text">3. Make Order</div>
-            <span class="compact-sub">Payment Link</span>
-          </div>
+      <div id="wholesale-banner" class="ws-banner">
+        <div id="ws-content" class="ws-pills">
+          <div class="ws-pill">5+ <span>-8%</span></div>
+          <div class="ws-pill">10+ <span>-14%</span></div>
+          <div class="ws-pill">20+ <span>-24%</span></div>
+          <div class="ws-pill">100+ <span>-35%</span></div>
         </div>
       </div>
+
       <div id="home-content">
         <div class="loading-container">
           <div class="spinner"></div>
@@ -1119,14 +1160,22 @@
       </div>
     </div>
 
-    <div id="wholesale-banner" class="ws-banner">
-      <div id="ws-content" class="ws-pills">
-        <div class="ws-pill">5+ <span>-8%</span></div>
-        <div class="ws-pill">10+ <span>-14%</span></div>
-        <div class="ws-pill">20+ <span>-24%</span></div>
-        <div class="ws-pill">100+ <span>-35%</span></div>
-      </div>
+    <div class="floating-checkout-btn" onclick="checkoutViaWhatsapp()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        fill="currentColor"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"
+        />
+      </svg>
+      <span>Checkout via WhatsApp</span>
     </div>
+
+    <div id="toast">Added to Cart! 🛒</div>
 
     <div id="modal" class="modal">
       <div class="modal-content">
@@ -2007,6 +2056,13 @@
         overlay.onclick = toggle;
       }
 
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2000);
+      }
+
       // --- New Logic for +/- Button ---
       // This replaces the old addToCart for the main UI
       window.updateItemQty = function (id, delta) {
@@ -2033,6 +2089,7 @@
             ml: product.ml,
             quantity: 1,
           });
+          showToast("Added to Cart! 🛒");
         } else if (existing) {
           existing.quantity += delta;
           if (existing.quantity <= 0) {
@@ -2056,6 +2113,61 @@
 
         // If modal is open for this item
         if (currentModalProductId === id) updateModalButtonState(id);
+      };
+
+      // ================= CHECKOUT LOGIC =================
+      window.checkoutViaWhatsapp = function () {
+        if (cartItems.length === 0) return showToast("Cart is empty");
+
+        let totalQty = 0;
+        let lvCount = 0;
+        let otherCount = 0;
+        let subtotal = 0;
+
+        cartItems.forEach((item) => {
+          const qty = item.quantity;
+          totalQty += qty;
+          subtotal += item.price * qty;
+          if (item.caption.toLowerCase().includes("louis vuitton")) {
+            lvCount += qty;
+          } else {
+            otherCount += qty;
+          }
+        });
+
+        // Calculate Discount
+        let discountPercent = 0;
+        const tier = discountTiers.find(
+          (t) => totalQty >= t.min && totalQty <= t.max,
+        );
+        if (tier) discountPercent = tier.percent;
+
+        const discountAmount = subtotal * discountPercent;
+        const finalTotal = subtotal - discountAmount;
+
+        // Format Message
+        let msg = `*New Order Request* 📦\n`;
+        msg += `----------------------------\n`;
+
+        cartItems.forEach((item) => {
+          msg += `${item.caption} x *${item.quantity}*\n\n`;
+        });
+
+        msg += `----------------------------\n`;
+        msg += `LV Quantity: ${lvCount}\n`;
+        msg += `Other Quantity: ${otherCount}\n`;
+        msg += `*Total Quantity: ${totalQty} pcs*\n`;
+
+        msg += `----------------------------\n`;
+        msg += `*Total Amount:* $${Math.round(finalTotal).toFixed(2)}`;
+
+        const whatsappNumber = "16232027321";
+        const encodedMsg = encodeURIComponent(msg);
+
+        window.open(
+          `https://wa.me/${whatsappNumber}?text=${encodedMsg}`,
+          "_blank",
+        );
       };
 
       function updateModalButtonState(id) {
