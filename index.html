@@ -291,7 +291,7 @@
         margin-left: 3px;
       }
 
-      /* ================= NEW Floating Capsule Bottom Bar (Ratio 45:55) ================= */
+      /* ================= NEW Floating Capsule Bottom Bar (Split Pill Design) ================= */
       .bottom-nav-bar {
         position: fixed;
         bottom: 25px; /* 悬浮 */
@@ -312,13 +312,13 @@
         overflow: hidden; /* 裁切内部 */
       }
 
-      /* Left Side: Asset Area (45%) - 缩短了宽度 */
+      /* Left Side: Asset Area (45%) */
       .nav-left {
         width: 45%;
         display: flex;
         align-items: center;
         cursor: pointer;
-        padding-left: 15px; /* 减少留白，适配 45% 宽度 */
+        padding-left: 15px; /* 左侧留白 */
         gap: 8px; /* 减少间距 */
         background: #fff;
       }
@@ -327,7 +327,7 @@
         position: relative;
         display: flex;
         align-items: center;
-        flex-shrink: 0; /* 防止图标被压缩 */
+        flex-shrink: 0;
       }
 
       .nav-cart-icon {
@@ -338,6 +338,7 @@
         stroke-width: 2;
       }
 
+      /* 角标 */
       .nav-badge {
         position: absolute;
         top: -8px;
@@ -361,7 +362,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        overflow: hidden; /* 防止文字溢出 */
+        overflow: hidden;
       }
 
       .price-info-row {
@@ -369,7 +370,7 @@
         align-items: baseline;
         gap: 6px;
         line-height: 1;
-        white-space: nowrap; /* 不换行 */
+        white-space: nowrap;
       }
 
       .nav-price {
@@ -387,7 +388,7 @@
         opacity: 0.7;
       }
 
-      /* Right Side: Action Button (55%) - 更加宽大 */
+      /* Right Side: Action Button (55%) */
       .nav-right {
         width: 55%;
         height: 100%;
@@ -396,16 +397,17 @@
       .checkout-pill-btn {
         width: 100%;
         height: 100%;
-        background-color: #25d366;
+        background-color: #25d366; /* WhatsApp Green */
         color: #fff;
         border: none;
         border-radius: 0;
-        font-size: 1.1rem; /* 字体加大一点点 */
+        font-size: 1.1rem;
         font-weight: 700;
         font-family: inherit;
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 6px; /* 图标文字间距 */
         cursor: pointer;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -1163,6 +1165,17 @@
 
       <div class="nav-right">
         <button class="checkout-pill-btn" onclick="checkoutViaWhatsapp()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"
+            />
+          </svg>
           CHECKOUT
         </button>
       </div>
@@ -1330,7 +1343,7 @@
 
             let html = `<div class="ws-progress-box">`;
             let currentOff = Math.round(currentTier.percent * 100);
-            // "Free Shipping" removed from top
+            // "Free Shipping" logic removed
 
             html += `<div class="ws-progress-text">Cart: <strong>${qty}</strong> items • Current: <span class="ws-highlight">-${currentOff}% OFF</span></div>`;
             if (nextTier) {
