@@ -36,8 +36,8 @@
         margin: 0;
         padding: 0;
         padding-top: var(--total-top-spacing);
-        /* Bottom padding adjusted for the new fixed bar */
-        padding-bottom: 90px;
+        /* 底部留出更多空间，防止内容被悬浮胶囊遮挡 */
+        padding-bottom: 110px;
         font-family: var(--font-main);
         background: var(--bg-color);
         color: #333;
@@ -234,7 +234,7 @@
         font-weight: bold;
       }
 
-      /* ================= Wholesale Banner (Top Sticky - Greedy Bar) ================= */
+      /* ================= Wholesale Banner (Top Sticky) ================= */
       .ws-banner {
         background: #222;
         color: #fff;
@@ -242,7 +242,6 @@
         text-align: center;
         transition: background 0.3s;
 
-        /* Sticky Top Logic */
         position: sticky;
         top: var(--header-height);
         z-index: 990;
@@ -292,35 +291,37 @@
         margin-left: 3px;
       }
 
-      /* ================= NEW Bottom Nav Bar (Split 30/70) ================= */
+      /* ================= NEW Floating Capsule Bottom Bar (Redesigned) ================= */
       .bottom-nav-bar {
         position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 70px;
-        background: #fff;
+        bottom: 25px; /* 悬浮距离 */
+        left: 50%;
+        transform: translateX(-50%); /* 居中 */
+        width: 92%; /* 不占满全屏，两侧留白 */
+        max-width: 500px; /* 大屏限制最大宽度 */
+        height: 72px; /* 舒适的高度 */
+        background: #ffffff;
         z-index: 3000;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 15px;
-        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
-        border-top: 1px solid #f5f5f5;
+        padding: 5px 8px 5px 20px; /* 左侧留宽，右侧给按钮留空 */
+        border-radius: 50px; /* 完美的胶囊圆角 */
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* 弥散阴影，显高级 */
+        border: 1px solid rgba(0, 0, 0, 0.03); /* 极细描边增加质感 */
       }
 
-      /* Left Side: Cart Icon & Price Info (30% visual weight) */
+      /* Left Side: Asset Area (Flexbox Aligned) */
       .nav-left {
-        flex: 0 0 auto;
+        flex: 1;
         display: flex;
         align-items: center;
         cursor: pointer;
-        padding-right: 15px;
+        gap: 12px; /* 图标和文字的间距 */
       }
 
       .nav-icon-wrap {
         position: relative;
-        margin-right: 10px;
         display: flex;
         align-items: center;
       }
@@ -330,16 +331,17 @@
         height: 28px;
         stroke: #333;
         fill: none;
+        stroke-width: 2;
       }
 
       .nav-badge {
         position: absolute;
         top: -6px;
         right: -8px;
-        background-color: #d9534f;
+        background-color: #d9534f; /* 醒目的红色角标 */
         color: #fff;
         font-size: 0.75rem;
-        font-weight: bold;
+        font-weight: 800;
         min-width: 18px;
         height: 18px;
         border-radius: 9px;
@@ -347,53 +349,55 @@
         align-items: center;
         justify-content: center;
         border: 2px solid #fff;
-        padding: 0 3px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
+      .nav-info-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      /* Price Row: Perfect Baseline Alignment */
       .price-info-row {
         display: flex;
-        align-items: baseline; /* Align bottom of text */
+        align-items: baseline; /* 关键：基线对齐 */
         gap: 6px;
+        line-height: 1;
       }
 
-      /* Main Price: Large, Bold, Dark (Premium) */
       .nav-price {
-        font-size: 1.35rem;
+        font-size: 1.3rem; /* 大号现价 */
         font-weight: 800;
-        color: #000; /* Black for premium feel, red is for discount badge */
-        line-height: 1;
+        color: #000; /* 纯黑显贵 */
         letter-spacing: -0.5px;
       }
 
-      /* Strikethrough Price: Small, Grey */
       .nav-original-price {
-        font-size: 0.85rem;
+        font-size: 0.85rem; /* 小号原价 */
         color: #999;
         text-decoration: line-through;
         font-weight: 500;
       }
 
-      /* Right Side: Action Button (70% visual weight) */
+      /* Right Side: Action Button */
       .nav-right {
-        flex: 1;
-        display: flex;
-        justify-content: flex-end;
+        flex: 0 0 auto;
       }
 
       .checkout-pill-btn {
         background-color: #25d366; /* WhatsApp Green */
         color: #fff;
         border: none;
-        border-radius: 35px; /* Pill shape */
-        padding: 12px 0;
-        width: 100%;
-        max-width: 200px; /* Max width to keep pill shape nice */
-        font-size: 1.05rem;
+        border-radius: 40px; /* 按钮也是胶囊形 */
+        padding: 0 30px; /* 左右宽内边距 */
+        height: 56px; /* 高度略小于外框，形成同心圆效果 */
+        font-size: 1rem;
         font-weight: 800;
         display: flex;
         align-items: center;
-        justify-content: center; /* Center text */
-        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        justify-content: center;
+        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35); /* 绿色光晕 */
         cursor: pointer;
         transition: transform 0.1s;
         text-transform: uppercase;
@@ -403,8 +407,7 @@
         transform: scale(0.96);
       }
 
-      /* ================= BUTTON STYLES (Cards & Modal) ================= */
-      /* Large Black "ADD TO CART" Button */
+      /* ================= BUTTON STYLES (Cards) ================= */
       .action-btn-black {
         background: #000;
         color: #fff;
@@ -419,7 +422,6 @@
         text-transform: uppercase;
       }
 
-      /* Rectangular Qty Control Box */
       .action-qty-box {
         display: flex;
         align-items: center;
@@ -924,7 +926,7 @@
         position: fixed;
         z-index: 9999;
         left: 50%;
-        bottom: 100px;
+        bottom: 120px;
         transform: translateX(-50%);
         font-size: 0.95rem;
         font-weight: 500;
@@ -935,7 +937,7 @@
       #toast.show {
         visibility: visible;
         opacity: 1;
-        bottom: 110px;
+        bottom: 130px;
       }
     </style>
   </head>
@@ -1119,7 +1121,7 @@
             class="nav-cart-icon"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#333"
+            stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -1316,7 +1318,6 @@
 
             let html = `<div class="ws-progress-box">`;
             let currentOff = Math.round(currentTier.percent * 100);
-            // "Free Shipping" logic added here
             let shippingText = currentOff > 0 ? " • ✈️ Free Shipping" : "";
 
             html += `<div class="ws-progress-text">Cart: <strong>${qty}</strong> items • Current: <span class="ws-highlight">-${currentOff}% OFF</span>${shippingText}</div>`;
