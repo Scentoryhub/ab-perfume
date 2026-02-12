@@ -18,7 +18,7 @@
 
         --sidebar-width: 300px;
         --accent-color: #b28900;
-        --bg-color: #f4f4f4;
+        --bg-color: #f8f8f8;
         --font-main: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
         /* Tag Colors */
@@ -36,7 +36,7 @@
         margin: 0;
         padding: 0;
         padding-top: var(--total-top-spacing);
-        /* 底部留出空间给新的悬浮栏 (70px height + 10px spacing) */
+        /* Bottom padding adjusted for the new fixed bar */
         padding-bottom: 90px;
         font-family: var(--font-main);
         background: var(--bg-color);
@@ -234,7 +234,7 @@
         font-weight: bold;
       }
 
-      /* ================= Wholesale Banner (Top Sticky) ================= */
+      /* ================= Wholesale Banner (Top Sticky - Greedy Bar) ================= */
       .ws-banner {
         background: #222;
         color: #fff;
@@ -292,7 +292,7 @@
         margin-left: 3px;
       }
 
-      /* ================= NEW Bottom Nav Bar (Refined) ================= */
+      /* ================= NEW Bottom Nav Bar (Split 30/70) ================= */
       .bottom-nav-bar {
         position: fixed;
         bottom: 0;
@@ -309,26 +309,26 @@
         border-top: 1px solid #f5f5f5;
       }
 
-      /* Left Side: Cart Icon & Price Info */
+      /* Left Side: Cart Icon & Price Info (30% visual weight) */
       .nav-left {
-        flex: 1;
+        flex: 0 0 auto;
         display: flex;
         align-items: center;
         cursor: pointer;
+        padding-right: 15px;
       }
 
       .nav-icon-wrap {
         position: relative;
-        margin-right: 12px;
+        margin-right: 10px;
         display: flex;
         align-items: center;
       }
 
-      /* Matching header icon style exactly */
       .nav-cart-icon {
         width: 28px;
         height: 28px;
-        stroke: #333; /* Dark gray/black for white background */
+        stroke: #333;
         fill: none;
       }
 
@@ -350,40 +350,34 @@
         padding: 0 3px;
       }
 
-      .nav-info-col {
+      .price-info-row {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        align-items: baseline; /* Align bottom of text */
+        gap: 6px;
       }
 
+      /* Main Price: Large, Bold, Dark (Premium) */
       .nav-price {
-        font-size: 1.2rem;
+        font-size: 1.35rem;
         font-weight: 800;
-        color: #d9534f; /* Highlighted Red like reference image */
+        color: #000; /* Black for premium feel, red is for discount badge */
         line-height: 1;
-        margin-bottom: 3px;
+        letter-spacing: -0.5px;
       }
 
-      .nav-subtext {
-        font-size: 0.7rem;
-        color: #666;
-        display: flex;
-        align-items: center;
+      /* Strikethrough Price: Small, Grey */
+      .nav-original-price {
+        font-size: 0.85rem;
+        color: #999;
+        text-decoration: line-through;
+        font-weight: 500;
       }
 
-      .nav-saved-badge {
-        margin-left: 6px;
-        color: #d9534f;
-        background: #fff0f0;
-        padding: 1px 4px;
-        border-radius: 3px;
-        font-weight: 600;
-        border: 1px solid #ffcccc;
-      }
-
-      /* Right Side: Action Button */
+      /* Right Side: Action Button (70% visual weight) */
       .nav-right {
-        flex: 0 0 auto;
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
       }
 
       .checkout-pill-btn {
@@ -391,24 +385,26 @@
         color: #fff;
         border: none;
         border-radius: 35px; /* Pill shape */
-        padding: 10px 24px;
-        font-size: 1rem;
+        padding: 12px 0;
+        width: 100%;
+        max-width: 200px; /* Max width to keep pill shape nice */
+        font-size: 1.05rem;
         font-weight: 800;
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center; /* Center text */
         box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
         cursor: pointer;
         transition: transform 0.1s;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
       }
       .checkout-pill-btn:active {
         transform: scale(0.96);
       }
 
-      /* ================= BUTTON STYLES (Shared: Cards & Modal) ================= */
-      /* 1. Large Black "ADD TO CART" Button */
+      /* ================= BUTTON STYLES (Cards & Modal) ================= */
+      /* Large Black "ADD TO CART" Button */
       .action-btn-black {
         background: #000;
         color: #fff;
@@ -423,7 +419,7 @@
         text-transform: uppercase;
       }
 
-      /* 2. Rectangular Qty Control Box */
+      /* Rectangular Qty Control Box */
       .action-qty-box {
         display: flex;
         align-items: center;
@@ -456,7 +452,6 @@
         text-align: center;
       }
 
-      /* Container in cards to hold the button */
       .btn-qty-wrapper {
         width: 100%;
         margin-top: 8px;
@@ -472,7 +467,6 @@
           background-position: -200% 0;
         }
       }
-
       .skeleton-loader {
         background: #f0f0f0;
         background-image: linear-gradient(
@@ -484,7 +478,6 @@
         background-size: 200% 100%;
         animation: skeleton-loading 1.5s infinite;
       }
-
       img.lazy-img {
         opacity: 0;
         transition: opacity 0.4s ease-in;
@@ -498,7 +491,6 @@
         padding-bottom: 20px;
         display: block;
       }
-
       .brand-section {
         margin-bottom: 15px;
         background: #fff;
@@ -508,7 +500,6 @@
         scroll-margin-top: 170px;
         position: relative;
       }
-
       .brand-header {
         display: flex;
         justify-content: space-between;
@@ -529,12 +520,10 @@
         cursor: pointer;
         padding: 5px;
       }
-
       .scroll-container-wrapper {
         position: relative;
         padding: 0 5px;
       }
-
       .scroll-wrapper {
         display: flex;
         overflow-x: auto;
@@ -548,7 +537,6 @@
       .scroll-wrapper::-webkit-scrollbar {
         display: none;
       }
-
       .scroll-arrow-btn {
         position: absolute;
         top: 35%;
@@ -582,7 +570,6 @@
       .scroll-arrow-btn.right {
         right: 2px;
       }
-
       .scroll-progress-container {
         width: 60px;
         height: 4px;
@@ -599,7 +586,6 @@
         border-radius: 2px;
         transition: width 0.1s linear;
       }
-
       .scroll-card {
         flex: 0 0 160px;
         display: flex;
@@ -609,7 +595,6 @@
         position: relative;
         scroll-snap-align: start;
       }
-
       .img-wrapper {
         width: 100%;
         height: 160px;
@@ -624,7 +609,6 @@
         object-fit: cover;
         display: block;
       }
-
       .badges-container {
         position: absolute;
         top: 0;
@@ -653,7 +637,6 @@
       .badge-sale {
         background: var(--tag-sale);
       }
-
       .scroll-card-title {
         font-size: 0.85rem;
         color: #333;
@@ -682,7 +665,6 @@
         border-radius: 3px;
         white-space: nowrap;
       }
-
       .shop-all-section {
         padding: 30px 20px;
         text-align: center;
@@ -727,7 +709,6 @@
         color: #666;
         padding: 5px;
       }
-
       .gallery {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -739,7 +720,6 @@
           gap: 30px;
         }
       }
-
       .item {
         background: #fff;
         border-radius: 8px;
@@ -771,8 +751,6 @@
         flex-wrap: wrap;
         gap: 5px;
       }
-
-      /* ===== Pagination CSS ===== */
       .pagination-container {
         display: flex;
         justify-content: center;
@@ -840,8 +818,6 @@
         margin: 0;
         line-height: 1.4;
       }
-
-      /* Modal Style */
       .modal {
         display: none;
         position: fixed;
@@ -888,7 +864,6 @@
       .modal-info {
         padding: 8px 15px;
       }
-
       .modal-notes-box {
         background-color: #f7f7f7;
         border-radius: 8px;
@@ -913,7 +888,6 @@
         font-family: Georgia, serif;
         font-style: italic;
       }
-
       .gender-tag {
         display: inline-block;
         font-size: 0.7rem;
@@ -939,7 +913,6 @@
         background: #eceff1;
         border: 1px solid #cfd8dc;
       }
-
       #toast {
         visibility: hidden;
         min-width: 200px;
@@ -951,7 +924,7 @@
         position: fixed;
         z-index: 9999;
         left: 50%;
-        bottom: 90px;
+        bottom: 100px;
         transform: translateX(-50%);
         font-size: 0.95rem;
         font-weight: 500;
@@ -962,7 +935,7 @@
       #toast.show {
         visibility: visible;
         opacity: 1;
-        bottom: 100px;
+        bottom: 110px;
       }
     </style>
   </head>
@@ -1064,12 +1037,7 @@
 
     <div id="home-view">
       <div id="wholesale-banner" class="ws-banner">
-        <div id="ws-content" class="ws-pills">
-          <div class="ws-pill">5+ <span>-8%</span></div>
-          <div class="ws-pill">10+ <span>-14%</span></div>
-          <div class="ws-pill">20+ <span>-24%</span></div>
-          <div class="ws-pill">100+ <span>-35%</span></div>
-        </div>
+        <div id="ws-content" class="ws-pills"></div>
       </div>
 
       <div id="home-content">
@@ -1168,32 +1136,19 @@
         </div>
 
         <div class="nav-info-col">
-          <div id="bottom-bar-price" class="nav-price">$0</div>
-          <div class="nav-subtext">
-            <span style="font-size: 0.75rem; color: #666">Free Shipping</span>
+          <div class="price-info-row">
+            <span id="bottom-bar-price" class="nav-price">$0</span>
             <span
-              id="bottom-bar-savings"
-              class="nav-saved-badge"
+              id="bottom-bar-original"
+              class="nav-original-price"
               style="display: none"
-              >Saved: $0</span
-            >
+            ></span>
           </div>
         </div>
       </div>
 
       <div class="nav-right">
         <button class="checkout-pill-btn" onclick="checkoutViaWhatsapp()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"
-            />
-          </svg>
           CHECKOUT
         </button>
       </div>
@@ -1361,7 +1316,10 @@
 
             let html = `<div class="ws-progress-box">`;
             let currentOff = Math.round(currentTier.percent * 100);
-            html += `<div class="ws-progress-text">Cart: <strong>${qty}</strong> items • Current: <span class="ws-highlight">-${currentOff}% OFF</span></div>`;
+            // "Free Shipping" logic added here
+            let shippingText = currentOff > 0 ? " • ✈️ Free Shipping" : "";
+
+            html += `<div class="ws-progress-text">Cart: <strong>${qty}</strong> items • Current: <span class="ws-highlight">-${currentOff}% OFF</span>${shippingText}</div>`;
             if (nextTier) {
               let needMore = nextTier.min - qty;
               let nextOff = Math.round(nextTier.percent * 100);
@@ -1375,7 +1333,7 @@
           }
         }
 
-        // 2. Update Bottom Bar Data (Price & Badge & Savings)
+        // 2. Update Bottom Bar Data
         updateBottomBarData(qty);
       }
 
@@ -1399,27 +1357,26 @@
           (t) => totalQty >= t.min && totalQty <= t.max,
         );
         const discountPercent = tier ? tier.percent : 0;
-        const discountVal = subtotal * discountPercent;
-        const finalTotal = subtotal - discountVal;
+        const finalTotal = subtotal - subtotal * discountPercent;
 
-        // Update Price Text
+        // Update Price Text & Strikethrough
         const priceEl = document.getElementById("bottom-bar-price");
-        const savingsEl = document.getElementById("bottom-bar-savings");
+        const originalEl = document.getElementById("bottom-bar-original");
 
         if (totalQty === 0) {
           priceEl.textContent = "$0";
           priceEl.style.color = "#999";
-          savingsEl.style.display = "none";
+          originalEl.style.display = "none";
         } else {
           priceEl.textContent = "$" + Math.round(finalTotal);
-          priceEl.style.color = "#d9534f"; // Red color
+          priceEl.style.color = "#000"; // Big Black Price
 
-          // Show Savings if discount > 0
-          if (discountVal > 0) {
-            savingsEl.textContent = "Saved: $" + discountVal.toFixed(2);
-            savingsEl.style.display = "inline-block";
+          // Show Strikethrough if discount > 0
+          if (discountPercent > 0) {
+            originalEl.textContent = "~~$" + subtotal.toFixed(0) + "~~";
+            originalEl.style.display = "inline-block";
           } else {
-            savingsEl.style.display = "none";
+            originalEl.style.display = "none";
           }
         }
       }
