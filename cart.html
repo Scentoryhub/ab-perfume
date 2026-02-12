@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -26,7 +26,7 @@
         window,
         document,
         "script",
-        "https://connect.facebook.net/en_US/fbevents.js",
+        "https://connect.facebook.net/en_US/fbevents.js"
       );
       fbq("init", "9083739771684521");
       fbq("track", "PageView");
@@ -664,7 +664,7 @@
 
         // Discount Logic
         const tier = tiers.find(
-          (t) => totalQty >= t.min && totalQty <= t.max,
+          (t) => totalQty >= t.min && totalQty <= t.max
         ) || { percent: 0 };
         const discountVal = subtotal * tier.percent;
         const finalTotal = subtotal - discountVal;
@@ -779,7 +779,7 @@
 
         window.open(
           `https://wa.me/${whatsappNumber}?text=${encodedMsg}`,
-          "_blank",
+          "_blank"
         );
       };
 
