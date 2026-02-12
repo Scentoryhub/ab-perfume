@@ -2091,11 +2091,20 @@
         overlay.onclick = toggle;
       }
       function showToast(msg) {
-        const t = document.getElementById("toast");
-        t.textContent = msg;
-        t.classList.add("show");
-        setTimeout(() => t.classList.remove("show"), 2000);
-      }
+  const t = document.getElementById("toast");
+  if (!t) {
+    // Prevent crash if #toast is missing on some page
+    console.warn('[showToast] Missing #toast element. Message:', msg);
+    return;
+  }
+
+  t.textContent = msg;
+  t.classList.add("show");
+
+  // Prevent stacked timers when called repeatedly
+  if (t._toastTimer) clearTimeout(t._toastTimer);
+  t._toastTimer = setTimeout(() => t.classList.remove("show"), 2000);
+}
 
       window.updateItemQty = function (id, delta) {
         const db = window.perfumeDB;
@@ -2199,5 +2208,9 @@
         );
       }
     </script>
-  </body>
+  
+  <!-- Toast (auto-added to fix showToast null error) -->
+  <div id="toast"></div>
+
+</body>
 </html>
