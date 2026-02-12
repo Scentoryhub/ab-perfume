@@ -242,7 +242,7 @@
         text-align: center;
         transition: background 0.3s;
 
-        /* 顶部吸附逻辑 */
+        /* Sticky Top Logic */
         position: sticky;
         top: var(--header-height);
         z-index: 990;
@@ -292,7 +292,7 @@
         margin-left: 3px;
       }
 
-      /* ================= 底部全宽结账按钮 ================= */
+      /* ================= Fixed Bottom Checkout Button ================= */
       .fixed-bottom-bar {
         position: fixed;
         bottom: 0;
@@ -322,57 +322,60 @@
         letter-spacing: 0.5px;
       }
 
-      /* ================= 列表页：黑白加减按钮样式 ================= */
-      .btn-qty-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end; /* 靠右对齐 */
-        height: 36px;
-        margin-top: 8px;
+      /* ================= BUTTON STYLES (Shared: Cards & Modal) ================= */
+      /* 1. Large Black "ADD TO CART" Button */
+      .action-btn-black {
+        background: #000;
+        color: #fff;
+        padding: 10px 0; /* Slightly smaller padding for cards */
+        width: 100%;
+        font-size: 0.95rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        display: block;
+        border: none;
+        text-transform: uppercase;
       }
 
-      .btn-circle {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        border: none;
+      /* 2. Rectangular Qty Control Box */
+      .action-qty-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        border: 2px solid #000;
+        border-radius: 6px;
+        height: 42px; /* Fixed height fitting well in cards */
+        overflow: hidden;
+        width: 100%;
+      }
+      .qty-btn-rect {
+        width: 45px;
+        height: 100%;
         font-size: 1.4rem;
-        font-weight: 400;
+        font-weight: bold;
+        background: #000;
+        color: #fff;
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition:
-          transform 0.1s,
-          background 0.2s;
         line-height: 1;
-        padding-bottom: 3px;
       }
-      .btn-circle:active {
-        transform: scale(0.9);
-      }
-
-      /* 黑色实心加号 */
-      .btn-plus-solid {
-        background-color: #000;
-        color: #fff;
-      }
-
-      /* 白色空心减号 */
-      .btn-minus-outline {
-        background-color: #fff;
-        color: #000;
-        border: 1px solid #ddd;
-      }
-
-      .qty-display-text {
+      .qty-val-rect {
+        flex: 1;
+        font-size: 1.1rem;
         font-weight: bold;
-        margin: 0 10px;
-        min-width: 20px;
-        text-align: center;
-        font-size: 1rem;
         color: #000;
+        text-align: center;
+      }
+
+      /* Container in cards to hold the button */
+      .btn-qty-wrapper {
+        width: 100%;
+        margin-top: 8px;
+        min-height: 42px; /* Placeholder height to prevent jumps */
       }
 
       /* ================= Skeleton & Lazy Load ================= */
@@ -753,7 +756,7 @@
         line-height: 1.4;
       }
 
-      /* Modal Style (Original Large Button) */
+      /* Modal Style */
       .modal {
         display: none;
         position: fixed;
@@ -799,50 +802,6 @@
       }
       .modal-info {
         padding: 8px 15px;
-      }
-
-      .modal-btn {
-        background: #000;
-        color: #fff;
-        padding: 12px 0;
-        width: 100%;
-        font-size: 1rem;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-top: 8px;
-        display: block;
-      }
-
-      /* 弹窗内的长条形数量控制器 */
-      .qty-control-box {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #fff;
-        border: 2px solid #000;
-        border-radius: 8px;
-        margin-top: 8px;
-        height: 48px;
-        overflow: hidden;
-      }
-      .qty-btn {
-        width: 60px;
-        height: 100%;
-        font-size: 1.5rem;
-        font-weight: bold;
-        background: #000;
-        color: #fff;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .qty-val {
-        flex: 1;
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #000;
       }
 
       .modal-notes-box {
@@ -1334,24 +1293,27 @@
         return `<div class="img-wrapper skeleton-loader"><picture><source srcset="${webpSrc}" type="image/webp"><img src="${src}" alt="${alt}" loading="lazy" class="lazy-img" onload="this.classList.add('loaded'); this.parentElement.parentElement.classList.remove('skeleton-loader');" onerror="this.parentElement.parentElement.classList.remove('skeleton-loader');"></picture></div>`;
       }
 
-      // --- 4. Logic for Black/White +/- Button (List/Grid View) ---
+      // --- 4. Logic for "Modal Style" Add-to-Cart Buttons on Cards ---
+      // This is the updated function you requested to move outside
       function getCartQty(id) {
         const item = cartItems.find((c) => c.name === id);
         return item ? item.quantity : 0;
       }
 
+      // Updated: Returns Large Black Button or Rectangular Control Box
       function getAddButtonHtml(id) {
         const qty = getCartQty(id);
         if (qty === 0) {
-          // State 0: Black Solid Circle with Plus
-          return `<button class="btn-circle btn-plus-solid" onclick="updateItemQty('${id}', 1); event.stopPropagation();">+</button>`;
+          // State 0: Large Black Button
+          return `<button class="action-btn-black" onclick="updateItemQty('${id}', 1); event.stopPropagation();">ADD TO CART</button>`;
         } else {
-          // State >0: White Outline Minus | Qty | Black Solid Plus
+          // State >0: Rectangular Control Box
           return `
-                <button class="btn-circle btn-minus-outline" onclick="updateItemQty('${id}', -1); event.stopPropagation();">-</button>
-                <span class="qty-display-text">${qty}</span>
-                <button class="btn-circle btn-plus-solid" onclick="updateItemQty('${id}', 1); event.stopPropagation();">+</button>
-            `;
+                <div class="action-qty-box">
+                    <div class="qty-btn-rect" onclick="updateItemQty('${id}', -1); event.stopPropagation();">-</div>
+                    <div class="qty-val-rect">${qty}</div>
+                    <div class="qty-btn-rect" onclick="updateItemQty('${id}', 1); event.stopPropagation();">+</div>
+                </div>`;
         }
       }
 
@@ -1453,7 +1415,11 @@
           const card = document.createElement("div");
           card.className = "scroll-card";
           card.onclick = (e) => {
-            if (e.target.closest(".btn-circle")) return;
+            if (
+              e.target.closest(".action-btn-black") ||
+              e.target.closest(".action-qty-box")
+            )
+              return;
             openModal(p);
           };
 
@@ -1471,6 +1437,8 @@
             ? `<span class="gender-tag ${genderClass}">${p.gender}</span>`
             : "";
           const stockHtml = getStockHtml(p.inventory);
+
+          // Use NEW button logic
           const buttonHtml = getAddButtonHtml(p.id);
 
           card.innerHTML = `
@@ -1717,6 +1685,8 @@
             ? ` · <span class="gender-tag ${genderClass}">${p.gender}</span>`
             : "";
           const stockHtml = getStockHtml(p.inventory);
+
+          // Use NEW button logic
           const buttonHtml = getAddButtonHtml(p.id);
 
           div.innerHTML = `
@@ -1889,7 +1859,6 @@
         setTimeout(() => t.classList.remove("show"), 2000);
       }
 
-      // 列表/网格页的加减按钮逻辑（共用）
       window.updateItemQty = function (id, delta) {
         const db = window.perfumeDB;
         const product = db.find((p) => p.id === id);
@@ -1919,29 +1888,23 @@
         }
         saveCart();
         updateWholesaleBanner();
-        // 刷新列表和网格的按钮显示
+        // Update both the LIST VIEW style button and Modal style button if they exist
         const newBtnHtml = getAddButtonHtml(id);
         const scrollBtnWrap = document.getElementById(`btn-wrap-${id}`);
         if (scrollBtnWrap) scrollBtnWrap.innerHTML = newBtnHtml;
         const gridBtnWrap = document.getElementById(`btn-wrap-grid-${id}`);
         if (gridBtnWrap) gridBtnWrap.innerHTML = newBtnHtml;
-        // 如果当前正好开着弹窗，也要刷新弹窗里的按钮状态
+
+        // Also update modal state if open
         if (currentModalProductId === id) updateModalButtonState(id);
       };
 
-      // 恢复原有的弹窗加购逻辑（大黑按钮）
-      window.modalFirstAdd = (id) => window.updateItemQty(id, 1);
-      window.modalChangeQty = (id, delta) => window.updateItemQty(id, delta);
-
-      // 专门为弹窗服务的状态更新函数（保持大按钮样式）
+      // Separate function for modal button state to ensure it keeps its own styling structure if needed
+      // (Though here we are using the same HTML structure for both, just in case you want to tweak one later)
       function updateModalButtonState(id) {
         const container = document.getElementById("modal-action-area");
-        const existing = cartItems.find((c) => c.name === id);
-        if (!existing || existing.quantity === 0) {
-          container.innerHTML = `<button class="modal-btn" onclick="modalFirstAdd('${id}')">ADD TO CART</button>`;
-        } else {
-          container.innerHTML = `<div class="qty-control-box"><div class="qty-btn" onclick="modalChangeQty('${id}', -1)">-</div><div class="qty-val">${existing.quantity}</div><div class="qty-btn" onclick="modalChangeQty('${id}', 1)">+</div></div>`;
-        }
+        // Reuse the logic, but we could also write specific HTML if the modal needed to look different
+        container.innerHTML = getAddButtonHtml(id);
       }
 
       window.checkoutViaWhatsapp = function () {
