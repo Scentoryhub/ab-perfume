@@ -1129,7 +1129,7 @@
 
     <div id="home-view">
       <div id="wholesale-banner" class="ws-banner">
-        <div id="ws-content" class="ws-info-section">
+        <div class="ws-info-section">
           <div class="ws-pills">
             <div class="ws-pill">5+ <span>-8%</span></div>
             <div class="ws-pill">10+ <span>-14%</span></div>
@@ -1378,13 +1378,12 @@
       function updateWholesaleBanner() {
         const qty = getCartTotalQty();
         const banner = document.getElementById("wholesale-banner");
-        const content = document.getElementById("ws-content");
 
-        if (!banner || !content) return;
+        if (!banner) return;
 
         if (qty === 0) {
           banner.className = "ws-banner";
-          content.innerHTML = `
+          banner.innerHTML = `
             <div class="ws-info-section">
               <div class="ws-pills">
                 <div class="ws-pill">5+ <span>-8%</span></div>
@@ -1429,7 +1428,7 @@
           </svg>
           <span>Checkout</span>
         </button>`;
-        content.innerHTML = html;
+        banner.innerHTML = html;
         banner.classList.add("active-tier");
       }
 
