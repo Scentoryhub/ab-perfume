@@ -294,7 +294,8 @@
         max-width: 500px;
         height: 70px;
         background: #ffffff;
-        z-index: 3000;
+        /* 核心修改：Z-index 降低到 980，低于 Header(1000)、Sidebar(2001) 和 Modal(2000) */
+        z-index: 980;
         display: flex;
         align-items: stretch; /* 撑满高度 */
         justify-content: space-between;
@@ -1273,7 +1274,7 @@
             margin-bottom: 15px;
             text-align: center;
           "
-          placeholder="e.g. 9546731114 or Jackson"
+          placeholder="e.g. 1234567890 or Jackson"
         />
 
         <button
